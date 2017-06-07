@@ -1,0 +1,62 @@
+div.console1 {
+	word-wrap: break-word; 
+}
+
+div.console1 {
+	height: 220px;
+	font-size: 14px;
+	margin-bottom: 10px;
+	margin: 0 auto;
+}
+
+div.console1 textarea{
+	font-size: 2em;
+}
+
+#consolebar{
+	margin: 0 auto;
+	width: 600px;
+}
+
+div.console1 div.jquery-console-inner
+       {
+	 width:600px; 
+	 height:200px; 
+	 background:#333; 
+	 margin: 0 auto; 
+	 overflow:auto;  
+	 text-align:left; 
+}
+
+div.console1 div.jquery-console-prompt-box
+       {
+       color:#fff; font-family:monospace; 
+}
+
+div.console1 div.jquery-console-focus span.jquery-console-cursor
+       {
+       background:#fefefe; color:#333; font-weight:bold 
+}
+
+div.concole div.jquery-console-prompt-label {
+  font-weight:bold;
+}
+
+div.console1 div.jquery-console-message-error
+       {
+	color:#ef0505; font-family:sans-serif; font-weight:bold;
+         padding:0.1em; 
+}
+
+div.console1 div.jquery-console-message-value
+       {
+	 color:#00ff00; font-family:monospace;
+         padding:0.1em; 
+}
+
+div.console1 div.jquery-console-message-type
+       {
+	 color:#fefefe; font-family:monospace;
+         padding:0.1em; 
+}
+
