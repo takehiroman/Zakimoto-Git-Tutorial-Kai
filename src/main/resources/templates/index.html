@@ -10,9 +10,20 @@
 </head>
 <body>
 <p>Zakimoto Git Tutorial Kai</p>
+    <form method="post" action="/">
+        <span>学生証番号</span>
+        <input type="text" id="number" name="number" />
+    </form>
 <div id="console">
     <div id="consolebar">
     </div>
 </div>
+<table>
+<tr th:each="obj:${datalist}">
+	<td th:text="${obj.number}"></td>
+	<td th:text="${obj.command}"></td>
+	<td th:text="${obj.date}"></td>
+</tr>
+</table>
 </body>
 </html>

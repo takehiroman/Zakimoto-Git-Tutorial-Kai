@@ -1,3 +1,21 @@
+function data_input(line,report){
+	var hostUrl = 'store';
+	var article = new Object();
+	article.number = $('#number').val();
+	article.command = $.trim(line);
+	
+	$.ajax({
+		type:"POST",
+		url:hostUrl,
+		data:JSON.stringify(article),
+		contentType:'application/json',
+		dataType:'json',
+		success:function(data){
+			console.log("SUCCESS: ", data);
+			display(data);
+	}});
+}
+
 $(document).ready(function(){
     var consoleCancelFlag = false;
     var console1 = $('<div class="console1">');
@@ -17,7 +35,8 @@ $(document).ready(function(){
 				className:"jquery-console-message-error"}]);
 		       console3CancelFlag = false;
 		   }
-	       },1000);
+	       },100);
+           data_input(line,report);
         },
         autofocus:true,
         animateScroll:true,
