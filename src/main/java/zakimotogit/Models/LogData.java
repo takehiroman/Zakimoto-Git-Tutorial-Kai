@@ -1,14 +1,14 @@
-package com.sample.Models;
+package zakimotogit.Models;
 import org.springframework.data.annotation.Id;
 
-public class MyDataMongo {
+public class LogData {
 	@Id
 	private String id;
 	
 	private String number;
 	private String command;
 	
-	public MyDataMongo(){
+	public LogData(){
 		super();
 	}
 	
@@ -36,6 +36,11 @@ public class MyDataMongo {
 		return command;
 	}
 	
-	
+	@Override
+    public String toString() {
+        return String.format(
+                "LogData[id=%s, number='%s', command='%s']",
+                id, number, command);
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.sample.jgit;
+package zakimotogit;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
