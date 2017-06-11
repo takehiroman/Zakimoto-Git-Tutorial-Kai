@@ -1,5 +1,15 @@
 # Zakimoto-Git-Tutorial-Kai
 
+* 利用しているもの
+ * バックエンド
+  * Java
+  * Spring boot
+ * フロントエンド
+  * jQuery
+  * jQuery-console
+ * データベース
+  * MongoDB  
+
 ### 実行方法
 
 * MongoDBの起動
