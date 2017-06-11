@@ -1,12 +1,15 @@
 # Zakimoto-Git-Tutorial-Kai
 
-* 利用しているもの
- * バックエンド
+* 利用しているツール，ライブラリ
+
+ * バックエンド  
   * Java
   * Spring boot
+  
  * フロントエンド
   * jQuery
   * jQuery-console
+  
  * データベース
   * MongoDB  
 
