@@ -1,6 +1,13 @@
 # Zakimoto-Git-Tutorial-Kai
 
 ### 実行方法
+
+* MongoDBの起動
+
+```
+mongod
+```
+
 * 実行可能jarの作成
 
 ```
