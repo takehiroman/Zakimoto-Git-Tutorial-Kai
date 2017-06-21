@@ -4,8 +4,6 @@ function data_input(line,report){
 	article.number = $('#number').val();
 	article.command = $.trim(line);
 	
-	console.log(JSON.stringify(article));
-	
 	$.ajax({
 		type:"POST",
 		url:hostUrl,
@@ -13,7 +11,6 @@ function data_input(line,report){
 		contentType:'application/json',
 		dataType:'json',
 		success:function(data){
-			console.log('post success');
 	        console.log(data);
 		},
 		error:function(xhr, text, err) {

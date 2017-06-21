@@ -3,7 +3,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class LogData {
 	@Id
@@ -13,9 +16,10 @@ public class LogData {
 	
 	private String number;
 	private String command;
+	private String address;
+	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss.SSS")
 	private Date logDate = new Date();
-	
-	
+
 	public LogData(){
 		super();
 	}
@@ -32,7 +36,11 @@ public class LogData {
 		this.command = command;
 	}
 	
-    public String getId() {
+	public void setAddress(String address){
+		this.address = address;
+	}
+	
+   public String getId() {
 		return id;
 	}
 	
@@ -48,11 +56,15 @@ public class LogData {
 		return logDate;
 	}
 	
+	public String getAddress(){
+		return address;
+	}
+	
 	@Override
     public String toString() {
         return String.format(
-                "LogData[id=%s, number='%s', command='%s',logDate='%d']",
-                id, number, command,formatter.format(logDate));
+                "LogData[id=%s, number='%s', command='%s',logDate='%d',address='%s']",
+                id, number, command,formatter.format(logDate),address);
     }
 
 }
