@@ -45,5 +45,6 @@ $(document).ready(function(){
         autofocus:true,
         animateScroll:true,
         promptHistory:true,
+		welcomeMessage:'ZGT-Kaiにようこそ！これから初めてのgitを学んでいきましょう！\nまずはGitのリポジトリを作りましょう！'
     });
 });

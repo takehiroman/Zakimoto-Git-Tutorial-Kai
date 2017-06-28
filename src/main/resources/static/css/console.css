@@ -59,4 +59,8 @@ div.console1 div.jquery-console-message-type
 	 color:#fefefe; font-family:monospace;
          padding:0.1em; 
 }
+div.console1 div.jquery-console-welcome
+	{
+		 color:#ffffff; font-weight:bold;
+}
 
