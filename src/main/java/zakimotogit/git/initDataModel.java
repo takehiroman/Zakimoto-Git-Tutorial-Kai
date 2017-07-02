@@ -1,27 +1,49 @@
 package zakimotogit.git;
 
-public class initDataModel {
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.Repository;
 
-	private String ProjectId;
-	private String ProjectDir;
+public class initDataModel {
+	
+	private String localPath;
+	private Repository localRepo;
+	private Git git;
+	
 	
 	public initDataModel(){
 		super();
 	}
 	
-	public void setProjectId(String ProjectId){
-		this.ProjectId = ProjectId;
+
+	
+	public void setlocalPath(String localPath){
+		this.localPath = localPath;
 	}
 	
-	public void setProjectDir(String ProjectDir){
-		this.ProjectDir = ProjectDir;
+	public void setlocalRepo(Repository localRepo){
+		this.localRepo = localRepo;
 	}
 	
-	public String getProjectId(){
-		return ProjectId;
+	public void setGit(Git git){
+		this.git = git;
 	}
 	
-	public String getProject(){
-		return ProjectDir;
+	public Git getGit(){
+		return git;
 	}
+	
+	public Repository getlocalRepo(){
+		return localRepo;
+	}
+	
+	public String getlocalPath(){
+		return localPath;
+	}
+	
+	@Override
+    public String toString() {
+        return String.format(
+                "initData[git=%s, localRepo='%s', localPath='%s']",
+                git,localRepo,localPath);
+    }
 }
