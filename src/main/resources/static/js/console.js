@@ -1,5 +1,33 @@
 var PageNumber = 0;
 
+function progress(page){
+	PageNumber = page;
+	var $pb = $('.progress-bar');
+  	$("#console").keypress(function() {
+    if(PageNumber == 0) {
+      $pb.attr({
+        'style':'width:33%;',
+        'class':'progress-bar'
+      }).html(" 33% ");
+      } else if(PageNumber == 1) {
+      $pb.attr({
+        'style':'width:66%;',
+        'class':'progress-bar'  
+      }).html(" 66% ");
+      } else if(PageNumber == 2) {
+      $pb.attr({
+        'style':'width:100%;',
+        'class':'progress-bar progress-bar-striped active'  
+      }).html(" 100% ");
+      } else {
+      $pb.attr({
+        'style':'width:0%;',
+        'class':'progress-bar'  
+      }).html(" 0% ");
+    }
+  })
+}
+
 function data_input(line,report){
 	var hostUrl = 'store';
 	var article = new Object();
@@ -24,9 +52,11 @@ function data_input(line,report){
 
 function init_repo(line,report){
 	var hostUrl = 'init';
+	//var article1 = new Object();
+	//article1.repositoryId = $('#number').val();
 
 	$.ajax({
-		type:"POST",
+		type:"GET",
 		url:hostUrl,
 		contentType:'application/json',
 		dataType:'json',
@@ -41,6 +71,7 @@ function init_repo(line,report){
 }
 
 function onHandle(line,report){
+		var $pb = $('.progress-bar');
 	    var input = $.trim(line);
 		input = input.replace(/ +/g," ");
 
@@ -49,41 +80,48 @@ function onHandle(line,report){
 			  		   {msg:comment1,className:"jquery-console-message-type"}]);
 			   init_repo(line,report);
 			   PageNumber++;
-			   
+			   $pb.attr({'style':'width:13%;','class':'progress-bar'}).html(" 13% ");
 		   }else if(PageNumber == 1 && input == 'git add README.md'){
 		       report([{msg:"=> Success",className:"jquery-console-message-value"},
 			   		   {msg:comment2,className:"jquery-console-message-type"}]);
 			   PageNumber++;
+			   $pb.attr({'style':'width:26%;','class':'progress-bar'}).html(" 26% ");
 		   }else if(PageNumber == 2){
 			   if(input.match(/^git commit -m ".*"$/)  ){
 		       report([{msg:"=> Success",className:"jquery-console-message-value"},
 			   		   {msg:comment3,className:"jquery-console-message-type"}]);
 			   PageNumber++;
+			   progress(PageNumber);
+			   $pb.attr({'style':'width:39%;','class':'progress-bar'}).html(" 39% ");
 			   }
 		   }else if(PageNumber == 3 && input == 'git add README.md'){
 		       report([{msg:"=> Success",className:"jquery-console-message-value"},
 			   		   {msg:comment4,className:"jquery-console-message-type"}]);
 			   PageNumber++;
+			   $pb.attr({'style':'width:52%;','class':'progress-bar'}).html(" 52% ");
 		   }else if(PageNumber == 4){
 			   if(input.match(/^git commit -m ".*"$/)){
 		       report([{msg:"=> Success",className:"jquery-console-message-value"},
 			   		   {msg:comment5,className:"jquery-console-message-type"}]);
 			   PageNumber++;
+			   $pb.attr({'style':'width:65%;','class':'progress-bar'}).html(" 65% ");
 			   }
 		   }else if(PageNumber == 5 && input == 'git add README.md'){
 		       report([{msg:"=> Success",className:"jquery-console-message-value"},
 			   		   {msg:comment6,className:"jquery-console-message-type"}]);
 			   PageNumber++;
+			   $pb.attr({'style':'width:78%;','class':'progress-bar'}).html(" 78% ");
 		   }else if(PageNumber == 6){
 			   if(input.match(/^git commit -m ".*"$/)){
 		       report([{msg:"=> Success",className:"jquery-console-message-value"},
 			   		   {msg:comment7,className:"jquery-console-message-type"}]);
 			   PageNumber++;
+			   $pb.attr({'style':'width:91%;','class':'progress-bar'}).html(" 91% ");
 			   }
 		   }
 		   
 		   else {
-		       report([{msg:"User interrupt",
+		       report([{msg:"コマンドが見つかりません",
 				className:"jquery-console-message-error"}]);
 		       console3CancelFlag = false;
 		   }
