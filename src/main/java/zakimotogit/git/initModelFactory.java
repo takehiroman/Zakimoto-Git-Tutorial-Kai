@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 
 @Component
 public class initModelFactory {
+	/*
 	@Value("${zakimotogit.workbench.repository-dir}")
 	private String gitDir;
 	
@@ -14,4 +15,5 @@ public class initModelFactory {
 		System.out.println(gitDir);
 		return new initDataModel(repositoryId,Paths.get(gitDir,repositoryId));
 	}
+	*/
 }

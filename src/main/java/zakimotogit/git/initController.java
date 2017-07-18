@@ -6,11 +6,10 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
+import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
@@ -30,18 +29,23 @@ public class initController {
 	@Autowired
 	HttpServletRequest request;
 	
-	String ProjectDir = new File(".").getAbsoluteFile().getParent();
-	String localPath = ProjectDir + "/target/test";
+	//String ProjectDir = new File(".").getAbsoluteFile().getParent();
+	//String localPath = ProjectDir + "/target/test";
 	
-	@RequestMapping(method=RequestMethod.GET)
-	public initDataModel create(@Valid @RequestBody initDataModel data) throws IOException {
+	@RequestMapping(method=RequestMethod.POST)
+	public initDataModel create(@RequestBody initDataModel data) throws IOException{
 		//String repoID = request.getRemoteAddr();
 		//initDataModel repos = repositoryFactory.create(data.getrepositoryId());
-        Path p1 = Paths.get("/tmp/foo");
-        
-        data.setrepositoryId(request.getRemoteAddr());
-        data.setrepositoryDir(p1);
-        
+		
+		try {
+			data.init();		
+		} catch(Exception ex){
+			throw new RuntimeException("ApplicationStartup::createDirectories: ", ex);
+		}
+		
+		
+		data.setrepositoryId(data.getrepositoryId());
+		
 		return data;
 	}
 }

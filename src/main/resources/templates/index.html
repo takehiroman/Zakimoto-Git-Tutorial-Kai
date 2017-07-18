@@ -9,8 +9,9 @@
 <script type="text/javascript" src="../static/js/console.js" th:src="@{/js/console.js}"></script>
 <script type="text/javascript" src="../static/js/CommentList.js" th:src="@{/js/CommentList.js}"></script>
 <script type="text/javascript" src="../static/js/ProgressBar.js" th:src="@{/js/ProgressBar.js}"></script>
-    <link rel="stylesheet" type="text/css" media="screen" href="../static/css/console.css" th:href="@{/css/console.css}"></link>
-        <link rel="stylesheet" type="text/css" media="screen" href="../static/css/progress.css" th:href="@{/css/progress.css}"></link>
+<link rel="stylesheet" type="text/css" media="screen" href="../static/css/console.css" th:href="@{/css/console.css}"></link>
+<link rel="stylesheet" type="text/css" media="screen" href="../static/css/progress.css" th:href="@{/css/progress.css}"></link>
+<link rel="stylesheet" type="text/css" media="screen" href="../static/css/commentbar.css" th:href="@{/css/commentbar.css}"></link>
 
 <title>ZGT-kai</title>
 </head>
@@ -26,6 +27,13 @@
     <div id="console">
         <div id="consolebar">
         </div>
+    </div>
+    <div class="comment">
+        <p id="message">ZGT-Kaiにようこそ！これから初めてのgitを学んでいきましょう！<br/>
+        ではまずバージョン管理に必要なリポジトリを作りましょう！</p>
+    </div>
+    <div align="center">
+    <img src="../static/image/zakimoto.jpg"  width="200" alt="zakimoto" th:src="@{/image/zakimoto.jpg}" ></img>
     </div>
 <table>
 <tr th:each="obj:${datalist}">
