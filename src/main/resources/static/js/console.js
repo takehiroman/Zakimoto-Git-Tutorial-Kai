@@ -23,6 +23,7 @@ function data_input(line,report){
 	})
 }
 
+//メッセージを置換する
 function nextMessage(){
 	var message = document.getElementById("message");
 	console.log(message);
@@ -60,9 +61,55 @@ function init_repo(){
 	})
 }
 
+function add_repo(){
+	var hostUrl = ip+'/add'
+	var article2 = new Object();
+	article2.repositoryId = ip;
+
+	$.ajax({
+		type:"PUT",
+		url:hostUrl,
+		contentType:'application/json',
+		dataType:'json',
+		data:JSON.stringify(article2),
+		success:function(data){
+	        console.log(data);
+		},
+		error:function(xhr, text, err) {
+	          console.log('text: ', text);
+	          console.log('xhr: ',xhr);
+	     }
+	})
+}
+
+function commit_repo(line){
+	var hostUrl = 'commit'
+	var article3 = new Object();
+	var a = line.match(/".*"/);
+	console.log(a);
+	article3.repositoryId = ip;
+	article3.commitMessage = a[0];
+
+	$.ajax({
+		type:"POST",
+		url:hostUrl,
+		contentType:'application/json',
+		dataType:'json',
+		data:JSON.stringify(article3),
+		success:function(data){
+	        console.log(data);
+		},
+		error:function(xhr, text, err) {
+	          console.log('text: ', text);
+	          console.log('xhr: ',xhr);
+	     }
+	})
+}
+
 function onHandle(line,report){
 		var $pb = $('.progress-bar');
-	    var input = $.trim(line);
+		var input = $.trim(line);
+		var message = new RegExp(/^git commit -m ".*"$/);
 		input = input.replace(/ +/g," ");
 
 		   if(PageNumber == 0 && input == 'git init'){
@@ -74,14 +121,15 @@ function onHandle(line,report){
 		   }else if(PageNumber == 1 && input == 'git add README.md'){
 		       report([{msg:"=> Success",className:"jquery-console-message-value"}]);
 			   PageNumber++;
+			   add_repo();
 			   nextMessage();
 			   $pb.attr({'style':'width:26%;','class':'progress-bar'}).html(" 26% ");
 		   }else if(PageNumber == 2){
-			   if(input.match(/^git commit -m ".*"$/)  ){
+			   if(input.match(message)  ){
 		       report([{msg:"=> Success",className:"jquery-console-message-value"}]);
 			   PageNumber++;
+			   commit_repo(line);
 			   nextMessage();
-			   progress(PageNumber);
 			   $pb.attr({'style':'width:39%;','class':'progress-bar'}).html(" 39% ");
 			   }
 		   }else if(PageNumber == 3 && input == 'git add README.md'){
