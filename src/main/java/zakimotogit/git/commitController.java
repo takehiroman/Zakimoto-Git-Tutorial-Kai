@@ -17,7 +17,7 @@ public class commitController {
 	@RequestMapping(method=RequestMethod.POST)
 	public initDataModel create(@RequestBody initDataModel data) throws IOException{
 		try {
-			data.setrepositoryId(data.getrepositoryId());
+			data.setrepositoryDir(data.getrepositoryDir());
 			data.setcommitMessage(data.getcommitMessage());
 			data.commit();		
 		} catch(Exception ex){

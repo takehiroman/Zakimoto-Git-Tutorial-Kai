@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @EnableAutoConfiguration
-public class addController {
-	@RequestMapping(method=RequestMethod.PUT,value="{repositoryDir}/add")
-	public initDataModel add(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException{
+public class diffController {
+	@RequestMapping(method=RequestMethod.GET,value="{repositoryDir}/diff")
+	public initDataModel diff(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException{
 		try{
 			data.setrepositoryDir(data.getrepositoryDir());
-			data.add();
+			data.diff();
 		} catch(Exception ex){
 			throw new RuntimeException("ApplicationStartup::createDirectories: ", ex);
 		}

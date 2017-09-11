@@ -11,7 +11,7 @@
   content: "";
   position: absolute;
   bottom: -10px;
-  left: 50%;
+  left: 25%;
   margin-left: -10px;
   width: 0;
   height: 0;
@@ -23,11 +23,24 @@
   content: "";
   position: absolute;
   bottom: -9px;
-  left: 50%;
+  left: 25%;
   margin-left: -10px;
   width: 0;
   height: 0;
   border-top: 10px solid #fff;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
+}
+
+.img-pos{
+ display: block;
+ margin-left: auto;
+ margin-right: auto;
+}
+
+.img-link{
+  position: relative;
+  width: 600px;
+  height: 200px;
+  margin: auto;
 }

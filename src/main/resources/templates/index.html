@@ -32,8 +32,15 @@
         <p id="message">ZGT-Kaiにようこそ！これから初めてのgitを学んでいきましょう！<br/>
         ではまずバージョン管理に必要なリポジトリを作りましょう！</p>
     </div>
-    <div align="center">
-    <img src="../static/image/zakimoto.jpg"  width="200" alt="zakimoto" th:src="@{/image/zakimoto.jpg}" ></img>
+    <div align= "right" class="img-link">
+    <p>
+    <img src="../static/image/zakimoto.jpg"  width="200" height="200" alt="zakimoto" class="img-pos" th:src="@{/image/zakimoto.jpg}" align="left"></img>
+    Girに関する参考リンク<br/>
+    <a href="http://www.backlog.jp/git-guide/" target="_blank" >サルでもわかるGit入門</a><br/>
+    <a href="https://www.atlassian.com/ja/git/tutorial" target="_blank" >AtlassianのGitチュートリアル</a><br/>
+    <a href="https://git-scm.com/docs" target="_blank" >Git公式のリファレンス</a><br/>
+    <a href="https://git-scm.com/book/ja/v2" target="_blank" >ProGitの日本語書籍</a>
+    </p>
     </div>
 <table>
 <tr th:each="obj:${datalist}">
