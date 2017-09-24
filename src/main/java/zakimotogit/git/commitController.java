@@ -19,7 +19,16 @@ public class commitController {
 		try {
 			data.setrepositoryDir(data.getrepositoryDir());
 			data.setcommitMessage(data.getcommitMessage());
-			data.commit();		
+			data.setNumber(data.getNumber());
+			data.commit();
+			
+			if(data.getNumber().equals("3")){
+				data.file_edit();
+				data.diff();
+			}else{
+				data.file_delete();
+				data.diff();
+			}
 		} catch(Exception ex){
 			throw new RuntimeException("ApplicationStartup::createDirectories: ", ex);
 		}

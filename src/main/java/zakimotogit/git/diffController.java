@@ -16,6 +16,7 @@ public class diffController {
 	public initDataModel diff(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException{
 		try{
 			data.setrepositoryDir(data.getrepositoryDir());
+			data.setdiffMessage(data.getdiffMessage());
 			data.diff();
 		} catch(Exception ex){
 			throw new RuntimeException("ApplicationStartup::createDirectories: ", ex);

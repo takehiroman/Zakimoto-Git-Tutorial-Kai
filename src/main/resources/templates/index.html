@@ -9,9 +9,11 @@
 <script type="text/javascript" src="../static/js/console.js" th:src="@{/js/console.js}"></script>
 <script type="text/javascript" src="../static/js/CommentList.js" th:src="@{/js/CommentList.js}"></script>
 <script type="text/javascript" src="../static/js/ProgressBar.js" th:src="@{/js/ProgressBar.js}"></script>
+<script type="text/javascript" src="../static/js/md5.js" th:src="@{/js/md5.js}"></script>
 <link rel="stylesheet" type="text/css" media="screen" href="../static/css/console.css" th:href="@{/css/console.css}"></link>
 <link rel="stylesheet" type="text/css" media="screen" href="../static/css/progress.css" th:href="@{/css/progress.css}"></link>
 <link rel="stylesheet" type="text/css" media="screen" href="../static/css/commentbar.css" th:href="@{/css/commentbar.css}"></link>
+<link rel="stylesheet" type="text/css" media="screen" href="../static/css/directory.css" th:href="@{/css/directory.css}"></link>
 
 <title>ZGT-kai</title>
 </head>
@@ -28,6 +30,23 @@
         <div id="consolebar">
         </div>
     </div>
+    <p class="header" style="text-align:center;" >your directory</p>
+    <div class="directory" style="display:table;">
+        <div style="display:table-cell; width:50%;" class="file_list">
+            <div class="folder">
+            </div>
+            <div class="file">
+            <p><img src="../static/image/computer_document.png" width="20" height="20" th:src="@{/image/computer_document.png}"></img>README.md</p>
+            </div>
+        </div>
+        <div style="display:table-cell; width:50%;" class="file_preview">
+            <p class="filename">README.md</p>
+            <div class="preview">
+            <p>Hello git world</p>
+            </div>
+        </div>
+    </div>
+    <br />
     <div class="comment">
         <p id="message">ZGT-Kaiにようこそ！これから初めてのgitを学んでいきましょう！<br/>
         ではまずバージョン管理に必要なリポジトリを作りましょう！</p>
