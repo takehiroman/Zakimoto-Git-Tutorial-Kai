@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @EnableAutoConfiguration
 public class diffController {
-	@RequestMapping(method=RequestMethod.GET,value="{repositoryDir}/diff")
+	@RequestMapping(method=RequestMethod.POST,value="{repositoryDir}/diff")
 	public initDataModel diff(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException{
 		try{
 			data.setrepositoryDir(data.getrepositoryDir());

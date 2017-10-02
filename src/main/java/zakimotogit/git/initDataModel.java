@@ -27,6 +27,7 @@ public class initDataModel {
 	private String repositoryDir;
 	private String commitMessage;
 	private String diffMessage;
+	private String statusMessage;
 	private String number;
 	private Git git;
 	
@@ -45,6 +46,10 @@ public class initDataModel {
 	
 	public void setdiffMessage(String diffMessage){
 		this.diffMessage = diffMessage;
+	}
+	
+	public void setstatusMessage(String statusMessage){
+		this.statusMessage = statusMessage;
 	}
 	
 	public void setrepositoryDir(String repositoryDir){
@@ -70,6 +75,10 @@ public class initDataModel {
 	
 	public String getdiffMessage(){
 		return diffMessage;
+	}
+	
+	public String getstatusMessage(){
+		return statusMessage;
 	}
 	
 	public String getNumber(){
@@ -157,8 +166,26 @@ public class initDataModel {
 		Repository repo = this.createNewRepository();
 		git = new Git(repo);
 		Status status = git.status().call();
-		System.out.println(status.getUntracked());
-		System.out.println(status.getChanged());
+		String strStatus = "";
+        if (!status.getAdded().isEmpty()) {
+            strStatus += "new file: " + status.getAdded() + "\n";
+        }
+        if (!status.getChanged().isEmpty()) {
+            strStatus += "Changed: " + status.getChanged() + "\n";
+        }
+        if (!status.getMissing().isEmpty()) {
+            strStatus += "deleted: " + status.getMissing() + "\n";
+        }
+        if (!status.getModified().isEmpty()) {
+            strStatus += "Modified: " + status.getModified() + "\n";
+        }
+        if(!status.getRemoved().isEmpty()){
+        	strStatus += "Changed:" + status.getRemoved() + "\n";
+        }
+        if (!status.getUntracked().isEmpty()) {
+            strStatus += "Untracked: " + status.getUntracked() + "\n";
+        }
+        statusMessage = strStatus;
 		
 	}
 	

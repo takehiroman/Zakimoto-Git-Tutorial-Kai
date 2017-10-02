@@ -21,6 +21,7 @@ public class commitController {
 			data.setcommitMessage(data.getcommitMessage());
 			data.setNumber(data.getNumber());
 			data.commit();
+			data.status();
 			
 			if(data.getNumber().equals("3")){
 				data.file_edit();

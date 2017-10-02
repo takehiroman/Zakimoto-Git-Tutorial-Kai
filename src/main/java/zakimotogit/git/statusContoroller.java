@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @EnableAutoConfiguration
 public class statusContoroller {
-	@RequestMapping(method=RequestMethod.GET,value="{repositoryDir}/status")
+	@RequestMapping(method=RequestMethod.POST,value="{repositoryDir}/status")
 	public initDataModel status(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException{
 		try{
 			data.setrepositoryDir(data.getrepositoryDir());
+			data.setstatusMessage(data.getstatusMessage());
 			data.status();
 		} catch(Exception ex){
 			throw new RuntimeException("ApplicationStartup::createDirectories: ", ex);

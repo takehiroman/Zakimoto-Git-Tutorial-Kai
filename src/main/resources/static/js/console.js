@@ -1,6 +1,8 @@
 var PageNumber = 0;
 var ip;
 var Dirname;
+var diffMessage;
+var statusMessage;
 //ログを保存する
 function data_input(line,report){
 	var hostUrl = 'store';
@@ -107,16 +109,18 @@ function diff_repo(){
 	var hostUrl = Dirname+'/diff'
 	var article3 = new Object();
 	article3.repositoryDir = Dirname;
-	article3.diff = Dirname;
 
 	$.ajax({
-		type:"GET",
+		type:"POST",
 		url:hostUrl,
 		contentType:'application/json',
 		dataType:'json',
 		data:JSON.stringify(article3),
 		success:function(data){
-	        console.log(data);
+			console.log(data.diffMessage);
+			diffMessage = data.diffMessage;
+			console.log(diffMessage);
+			
 		},
 		error:function(xhr, text, err) {
 	          console.log('text: ', text);
@@ -131,13 +135,15 @@ function status_repo(){
 	article4.repositoryDir = Dirname;
 
 	$.ajax({
-		type:"GET",
+		type:"POST",
 		url:hostUrl,
 		contentType:'application/json',
 		dataType:'json',
 		data:JSON.stringify(article4),
 		success:function(data){
-	        console.log(data);
+			console.log(data.statusMessage);
+			statusMessage = data.statusMessage;
+			console.log(statusMessage);
 		},
 		error:function(xhr, text, err) {
 	          console.log('text: ', text);
@@ -188,13 +194,16 @@ function onHandle(line,report){
 			   nextMessage();
 			   $pb.attr({'style':'width:13%;','class':'progress-bar'}).html(" 13% ");
 			   },3500);
-			}else if(input == 'git diff'){report([{msg:"コマンドが見つかりません",
-				className:"jquery-console-message-value"}]);
-		   		diff_repo();
+			}else if(input == 'git diff'){
+				diff_repo();
+				report([{msg:diffMessage,
+				className:"jquery-console-message-type"}]);
+		   		
 		   }
-		   else if(input == 'git status'){report([{msg:"コマンドが見つかりません",
-			className:"jquery-console-message-value"}]);
+		   else if(input == 'git status'){
 			   status_repo();
+			   report([{msg:statusMessage,
+			   className:"jquery-console-message-value"}]);
 		   }else if(PageNumber == 1 && input == 'git add README.md'){
 		       report([{msg:"=> Success",className:"jquery-console-message-value"}]);
 			   PageNumber++;
@@ -226,13 +235,15 @@ function onHandle(line,report){
 		   }else if(PageNumber == 5 && input == 'git add README.md'){
 		       report([{msg:"=> Success",className:"jquery-console-message-value"}]);
 			   PageNumber++;
+			   add_repo();
 			   nextMessage();
 			   $pb.attr({'style':'width:78%;','class':'progress-bar'}).html(" 78% ");
 		   }else if(PageNumber == 6){
 			   if(input.match(/^git commit -m ".*"$/)){
 		       report([{msg:"=> Success",className:"jquery-console-message-value"}]);
 			   PageNumber++;
-				nextMessage();
+			   commit_repo(line);
+			   nextMessage();
 			   $pb.attr({'style':'width:91%;','class':'progress-bar'}).html(" 91% ");
 			   }
 		   }else if(input == 'git -help' || input == 'git -h'){
