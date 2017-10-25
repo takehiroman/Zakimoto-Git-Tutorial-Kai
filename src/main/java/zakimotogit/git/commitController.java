@@ -21,15 +21,9 @@ public class commitController {
 			data.setcommitMessage(data.getcommitMessage());
 			data.setNumber(data.getNumber());
 			data.commit();
+			data.setstatusMessage(data.getstatusMessage());
 			data.status();
-			
-			if(data.getNumber().equals("3")){
-				data.file_edit();
-				data.diff();
-			}else{
-				data.file_delete();
-				data.diff();
-			}
+
 		} catch(Exception ex){
 			throw new RuntimeException("ApplicationStartup::createDirectories: ", ex);
 		}

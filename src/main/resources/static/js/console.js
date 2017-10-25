@@ -1,8 +1,15 @@
 var PageNumber = 0;
+barWidth = 0;
 var ip;
 var Dirname;
 var diffMessage;
 var statusMessage;
+var lsMessage;
+var catMessage;
+var gHogeNum = new HogeNum();
+var sets;
+var gitstatus = [];
+
 //ログを保存する
 function data_input(line,report){
 	var hostUrl = 'store';
@@ -26,11 +33,16 @@ function data_input(line,report){
 	})
 }
 
-//チュートリアルメッセージを置換する
-function nextMessage(){
-	var message = document.getElementById("message");
-	console.log(message);
-	message.textContent = comments[PageNumber-1];
+function story_get(){
+	$.getJSON("js/story1.json", function(json) {
+		console.log(json.story.length)
+		for(var i = 0;i < json.story.length;i++){
+			var number = json.story[i].number
+			console.log(number)
+			var text = json.story[i].comment
+			console.log(text)
+		}
+	});
 }
 
 //ipアドレスを取得する
@@ -42,6 +54,7 @@ function getIp(){
 			init_repo();
 		});
 		add_filelist();
+		story_get();		
 }
 
 function add_filelist(){
@@ -75,7 +88,11 @@ function init_repo(){
 		dataType:'json',
 		data:JSON.stringify(article1),
 		success:function(data){
-	        console.log(data);
+			console.log(data);
+			statusMessage = data.statusMessage;
+			gHogeNum.setNum(statusMessage);
+			console.log('statusMessage:'+statusMessage)
+			
 		},
 		error:function(xhr, text, err) {
 	          console.log('text: ', text);
@@ -96,10 +113,13 @@ function add_repo(){
 		dataType:'json',
 		data:JSON.stringify(article2),
 		success:function(data){
-	        console.log(data);
+			console.log(data);
+			statusMessage = data.statusMessage;
+			gHogeNum.setNum(statusMessage);
+			console.log('statusMessage:'+statusMessage)
 		},
 		error:function(xhr, text, err) {
-	          console.log('text: ', text);
+			  console.log('text: ', text);
 	          console.log('xhr: ',xhr);
 	     }
 	})
@@ -141,9 +161,9 @@ function status_repo(){
 		dataType:'json',
 		data:JSON.stringify(article4),
 		success:function(data){
+			console.log(data)
 			console.log(data.statusMessage);
 			statusMessage = data.statusMessage;
-			console.log(statusMessage);
 		},
 		error:function(xhr, text, err) {
 	          console.log('text: ', text);
@@ -169,7 +189,10 @@ function commit_repo(line){
 		dataType:'json',
 		data:JSON.stringify(article5),
 		success:function(data){
-	        console.log(data);
+			console.log(data);
+			statusMessage = data.statusMessage;
+			gHogeNum.setNum(statusMessage);
+			console.log('statusMessage:'+statusMessage)
 		},
 		error:function(xhr, text, err) {
 	          console.log('text: ', text);
@@ -178,82 +201,299 @@ function commit_repo(line){
 	})
 }
 
-function onHandle(line,report){
+function edit(){
+	var hostUrl = Dirname+'/edit'
+	var article6 = new Object();
+	article6.repositoryDir = Dirname;
+
+	$.ajax({
+		type:"POST",
+		url:hostUrl,
+		contentType:'application/json',
+		dataType:'json',
+		data:JSON.stringify(article6),
+		success:function(data){
+			console.log(data);
+			statusMessage = data.statusMessage;
+			gHogeNum.setNum(statusMessage);
+			console.log('statusMessage:'+statusMessage)
+		},
+		error:function(xhr, text, err) {
+	          console.log('text: ', text);
+	          console.log('xhr: ',xhr);
+	     }
+	})
+}
+
+
+
+
+
+function cat(){
+	var hostUrl = Dirname+'/cat'
+	var article8 = new Object();
+	article8.repositoryDir = Dirname;
+
+	$.ajax({
+		type:"POST",
+		url:hostUrl,
+		contentType:'application/json',
+		dataType:'json',
+		data:JSON.stringify(article8),
+		success:function(data){
+			console.log(data);
+			catMessage = data.catMessage;
+			
+		},
+		error:function(xhr, text, err) {
+	          console.log('text: ', text);
+	          console.log('xhr: ',xhr);
+	     }
+	})
+}
+
+function ls(){
+	var hostUrl = Dirname+'/ls'
+	var article9 = new Object();
+	article9.repositoryDir = Dirname;
+
+	$.ajax({
+		type:"POST",
+		url:hostUrl,
+		contentType:'application/json',
+		dataType:'json',
+		data:JSON.stringify(article9),
+		success:function(data){
+			console.log(data);
+			lsMessage = data.lsMessage;
+		},
+		error:function(xhr, text, err) {
+	          console.log('text: ', text);
+	          console.log('xhr: ',xhr);
+	     }
+	})
+}
+
+function deleted(){
+	var hostUrl = Dirname+'/delete'
+	var article7 = new Object();
+	article7.repositoryDir = Dirname;
+
+	$.ajax({
+		type:"POST",
+		url:hostUrl,
+		contentType:'application/json',
+		dataType:'json',
+		data:JSON.stringify(article7),
+		success:function(data){
+			console.log(data);
+			statusMessage = data.statusMessage;
+			gHogeNum.setNum(statusMessage);
+			console.log('statusMessage:'+statusMessage)
+		},
+		error:function(xhr, text, err) {
+	          console.log('text: ', text);
+	          console.log('xhr: ',xhr);
+	     }
+	})
+}
+
+function remove(){
+	var hostUrl = Dirname+'/remove'
+	var article10 = new Object();
+	article10.repositoryDir = Dirname;
+
+	$.ajax({
+		type:"POST",
+		url:hostUrl,
+		contentType:'application/json',
+		dataType:'json',
+		data:JSON.stringify(article10),
+		success:function(data){
+			console.log(data);
+			statusMessage = data.statusMessage;
+			gHogeNum.setNum(statusMessage);
+			console.log('statusMessage:'+statusMessage)
+		},
+		error:function(xhr, text, err) {
+	          console.log('text: ', text);
+	          console.log('xhr: ',xhr);
+	     }
+	})
+}
+
+
+function HogeNum() {
+	sets = gitstatus;
+	console.log(sets);
+
+    this.getNum = function() {
+        return gitstatus;
+    };
+
+    this.setNum = function(val) {
+		console.log(sets)
+		console.log(val)
+        if(sets !== val){
+		statusMessage = val
+		doSomething(val);
+		}
+		
+    };
+}
+
+function story_get(){
+	$.getJSON("js/story1.json", function(json) {
+		console.log(json.story.length)
+		for(var i = 0;i < json.story.length;i++){
+			var number = json.story[i].number
+			var text = json.story[i].comment
+		}
+	});
+}
+
+function doSomething(val) {
+	PageNumber++;
+	//bar()
+	//nextMessage()
+	$.getJSON("js/story1.json", function(json) {
+		console.log(json.story.length)
+		var message = document.getElementById("message");
+			//var number = json.story[i].number
+			console.log(number)
+			message.textContent = json.story[PageNumber-1].comment
+		gitstatus.push(json.story[PageNumber-1].status)
+		console.log('gitstatus:'+gitstatus)
 		var $pb = $('.progress-bar');
+		var bargage = PageNumber/json.story.length
+		$pb.attr({'style':'width:'+Math.round(PageNumber/json.story.length * 100)+'%;','class':'progress-bar'}).html(" "+Math.round(PageNumber/json.story.length * 100)+"% ");
+	});
+	//bar()
+	//nextMessage()
+}
+
+//チュートリアルメッセージを置換する
+function nextMessage(){
+	var message = document.getElementById("message");
+	console.log(message);
+	message.textContent = comments[PageNumber-1];
+}
+
+function bar(){
+	var $pb = $('.progress-bar');
+	barWidth = barWidth + 10
+	console.log(barWidth)
+	$pb.attr({'style':'width:'+barWidth+'%;','class':'progress-bar'}).html(" "+barWidth+"% ");
+}
+
+function onHandle(line,report){
 		var input = $.trim(line);
-		var message = new RegExp(/^git commit -m ".*"$/);
+		var commit = new RegExp(/^git commit -m ".*"$'/);
+		console.log(commit)
+		var moge = "20"
 		input = input.replace(/ +/g," ");
+		input = input.replace(/\'/g,"\"");
+		console.log('gitstatus1:'+gitstatus)
+		console.log('statusMessage:'+statusMessage)
+		HogeNum();
+		console.log('gitstatus2:'+gitstatus)
+		console.log('statusMessage:'+statusMessage)
 		console.log(PageNumber);
+		console.log(input)
+		console.log(statusMessage === gitstatus[PageNumber-1])
 
 
-		   if(PageNumber == 0 && input == 'git init'){
+
+		if(input == 'git init'){
 			   getIp();
 			   setTimeout(function(){ 
-		       report([{msg:"=> Success",className:"jquery-console-message-value"}]);
-			   PageNumber++;
-			   nextMessage();
-			   $pb.attr({'style':'width:13%;','class':'progress-bar'}).html(" 13% ");
+			   console.log(gHogeNum.getNum());
 			   },3500);
-			}else if(input == 'git diff'){
+			   report([{msg:"=> Success",className:"jquery-console-message-value"}]);
+		
+		}else if(input == 'git diff'){
 				diff_repo();
 				report([{msg:diffMessage,
-				className:"jquery-console-message-type"}]);
-		   		
-		   }
-		   else if(input == 'git status'){
+				className:"jquery-console-message-type"}]);	
+		}else if(input == 'git status'){
 			   status_repo();
 			   report([{msg:statusMessage,
-			   className:"jquery-console-message-value"}]);
-		   }else if(PageNumber == 1 && input == 'git add README.md'){
-		       report([{msg:"=> Success",className:"jquery-console-message-value"}]);
-			   PageNumber++;
+			   className:"jquery-console-message-type"}]);
+		
+		}else if(input == 'help'){
+			   report([{msg:"help         - this help text\nls           - list files\nedit - edit the contents of the file\ncat FILENAME - print contents of a file\nrm FILENAME  - remove file\n git help    - list of git command that can be used at this terminal",className:"jquery-console-message-type"}])
+		
+		}else if(input == 'ls'){
+			ls()
+			report([{msg:lsMessage,className:"jquery-console-message-type"}]);
+		
+		}else if(input == 'cat README.md'){
+			cat()
+			report([{msg:catMessage,className:"jquery-console-message-type"}]);
+			}
+
+		//git add
+		else if(input.match(/^git add README.md$/) || input.match(/^git add .$/)){   	
+			if("Modified: [README.md]" === statusMessage && "Changed: [README.md]" === gitstatus[PageNumber-1]){
 			   add_repo();
-			   nextMessage();
-			   $pb.attr({'style':'width:26%;','class':'progress-bar'}).html(" 26% ");
-		   }else if(PageNumber == 2 && input.match(/^git commit -m ".*"$/)){
-			   if(input.match(message)  ){
-		       report([{msg:"=> Success",className:"jquery-console-message-value"}]);
-			   PageNumber++;
-			   commit_repo(line);
-			   nextMessage();
-			   edit_file();
-			   $pb.attr({'style':'width:39%;','class':'progress-bar'}).html(" 39% ");
-			   }
-		   }else if(PageNumber == 3 && input == 'git add README.md'){
-		       report([{msg:"=> Success",className:"jquery-console-message-value"}]);
-			   PageNumber++;
-			   add_repo();
-			   nextMessage();
-			   $pb.attr({'style':'width:52%;','class':'progress-bar'}).html(" 52% ");
-		   }else if(PageNumber == 4 && input.match(/^git commit -m ".*"$/)){
-		       report([{msg:"=> Success",className:"jquery-console-message-value"}]);
-			   PageNumber++;
-			   commit_repo(line);
-			   nextMessage();
-			   file_delete();
-			   $pb.attr({'style':'width:65%;','class':'progress-bar'}).html(" 65% ");
-		   }else if(PageNumber == 5 && input == 'git add README.md'){
-		       report([{msg:"=> Success",className:"jquery-console-message-value"}]);
-			   PageNumber++;
-			   add_repo();
-			   nextMessage();
-			   $pb.attr({'style':'width:78%;','class':'progress-bar'}).html(" 78% ");
-		   }else if(PageNumber == 6){
-			   if(input.match(/^git commit -m ".*"$/)){
-		       report([{msg:"=> Success",className:"jquery-console-message-value"}]);
-			   PageNumber++;
-			   commit_repo(line);
-			   nextMessage();
-			   $pb.attr({'style':'width:91%;','class':'progress-bar'}).html(" 91% ");
-			   }
-		   }else if(input == 'git -help' || input == 'git -h'){
-				report([{msg:"git init - リポジトリ作成\n git add FILENAME - インデックスへの追加\n git commit -m 'message' - リポジトリに変更を登録\n git status - リポジトリの状態を確認\n git diff - リポジトリの差分を確認",
+			   report();
+		   
+			}else if("Untracked: [README.md]" === statusMessage && "new file: [README.md]" === gitstatus[PageNumber-1]){
+				add_repo();
+				report([{msg:"=> Success",className:"jquery-console-message-value"}]);
+			}else{
+				report();
+			}
+
+		//git rm
+		}else if(input.match(/^git rm README.md$/)){
+			if("Removed:[README.md]" === gitstatus[PageNumber-1] && statusMessage === "deleted: [README.md]"){
+				
+			remove();
+			report([{msg:"=> Success",className:"jquery-console-message-value"}]);
+			}else{
+				report();
+			}
+		   
+		//rm				   
+		}else if("deleted: [README.md]" === gitstatus[PageNumber-1] && statusMessage === ""){
+			
+			deleted();
+			file_delete();
+			report([{msg:"=> Success",className:"jquery-console-message-value"}]);
+			
+		//edit
+		}else if(input.match(/^edit$/)){
+			if("Modified: [README.md]" === gitstatus[PageNumber-1] && statusMessage === ""){
+				edit();
+				edit_file();
+				report([{msg:"=> Success",className:"jquery-console-message-value"}]);
+		    }else{
+				report();
+			}
+		//git commit
+		}else if(input.match(/^git commit -m ".*"$/)){
+			if("" === gitstatus[PageNumber-1]){
+				commit_repo(input);
+				report([{msg:"=> Success",className:"jquery-console-message-value"}]);
+
+			}else if(statusMessage === ""){
+				report([{msg:"nothing to commit, working tree clean",className:"jquery-console-message-error"}]);
+			}else{
+				status_repo();
+				report([{msg:statusMessage,className:"jquery-console-message-error"}]);
+			}	
+		}else if(input == 'git help' || input == 'git -h'){
+				report([{msg:"git init - Create an empty Git repository\n git add FILENAME - Add file contents to the index\n git commit -m 'message' - Record changes to the repository\n git status - Show the working tree status\n git diff - Show changes between commits",
               className:"jquery-console-message-type"}])
-			}else {
-		       report([{msg:"コマンドが見つかりません",
+		
+		}else {
+		       report([{msg:"command not found\nType `help` to see what all commands are available",
 				className:"jquery-console-message-error"}]);
+				console.log('gitstatus1:'+gitstatus)
+				console.log('statusMessage:'+statusMessage)
 		       console3CancelFlag = false;
-		   }
+		}
 }
 
 $(document).ready(function(){
@@ -271,6 +511,7 @@ $(document).ready(function(){
         },
         autofocus:true,
         animateScroll:true,
-        promptHistory:true,
+		promptHistory:true,
+		welcomeMessage:'Type `help` to see what all commands are available'
     });
 });

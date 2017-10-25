@@ -9,20 +9,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+
+
 @RestController
 @EnableAutoConfiguration
-public class addController {
-	@RequestMapping(method=RequestMethod.PUT,value="{repositoryDir}/add")
-	public initDataModel add(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException{
+public class catController {
+	@RequestMapping(method=RequestMethod.POST,value="{repositoryDir}/cat")
+		public initDataModel cat(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException{
 		try{
 			data.setrepositoryDir(data.getrepositoryDir());
-			data.add();
-			data.setstatusMessage(data.getstatusMessage());
-			data.status();
-		} catch(Exception ex){
-			throw new RuntimeException("ApplicationStartup::createDirectories: ", ex);
-		}
-		return data;
-	}
-
+			data.setcatMessage(data.getcatMessage());
+			data.file_cat();
+				} catch(Exception ex){
+					throw new RuntimeException("ApplicationStartup::createDirectories: ", ex);
+			}	
+			return data;
+		}	
+	
 }
+

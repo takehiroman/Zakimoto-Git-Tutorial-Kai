@@ -1,5 +1,6 @@
 package zakimotogit.git;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,6 +29,8 @@ public class initDataModel {
 	private String commitMessage;
 	private String diffMessage;
 	private String statusMessage;
+	private String catMessage;
+	private String lsMessage;
 	private String number;
 	private Git git;
 	
@@ -50,6 +53,14 @@ public class initDataModel {
 	
 	public void setstatusMessage(String statusMessage){
 		this.statusMessage = statusMessage;
+	}
+	
+	public void setcatMessage(String catMessage){
+		this.catMessage = catMessage;
+	}
+	
+	public void setlsMessage(String lsMessage){
+		this.lsMessage = lsMessage;
 	}
 	
 	public void setrepositoryDir(String repositoryDir){
@@ -79,6 +90,14 @@ public class initDataModel {
 	
 	public String getstatusMessage(){
 		return statusMessage;
+	}
+	
+	public String getcatMessage(){
+		return catMessage;
+	}
+	
+	public String getlsMessage(){
+		return lsMessage;
 	}
 	
 	public String getNumber(){
@@ -116,7 +135,7 @@ public class initDataModel {
 	public void add() throws IOException, GitAPIException {
 		Repository repo = this.createNewRepository();
 		git = new Git(repo);
-		git.add().addFilepattern(".").call();
+		git.add().addFilepattern("README.md").call();
 		
 	}
 	
@@ -141,17 +160,62 @@ public class initDataModel {
 			}
 	}
 	
+	public void file_cat() throws IOException {
+		Repository repo = this.createNewRepository();
+		String strFile = "";
+		//ファイルの読み込み
+		Path path = Paths.get(repo.getDirectory().getParent(),"README.md");
+		
+		try(BufferedReader reader = Files.newBufferedReader(path,StandardCharsets.UTF_8)){
+			for (String line;(line = reader.readLine()) != null;){
+				strFile += line;
+				System.out.println(line);
+			}
+			catMessage = strFile;
+			
+		}catch(IOException ex){
+			System.err.println(ex);
+		}
+	}
+	
+	public void file_ls() throws IOException {
+		Repository repo = this.createNewRepository();
+		File myfile = new File(repo.getDirectory().getParent());
+		String filename  = "";
+		
+		File[] files = myfile.listFiles();
+		for(int index = 0;index < files.length;index ++){
+			File item = files[index];
+			if(item.isFile()){
+				System.out.println(item.getName());
+				filename += item.getName();
+			}
+			System.out.println("[12][" + myfile + "]はディレクトリでもファイルでもありません");
+		}
+		lsMessage = filename;
+	}
+	
 	public void file_delete() throws IOException{
 		Repository repo = this.createNewRepository();
 		//ファイルの削除
+//		
 		Path path = Paths.get(repo.getDirectory().getParent(),"README.md");
 			try{
-				Files.delete(path);
+			Files.delete(path);
 			}catch(IOException e){
 				System.out.println(e);
 			}
+//			
+
 	}
 	
+	public void remove() throws IOException, GitAPIException{
+		Repository repo = this.createNewRepository();
+		
+		git = new Git(repo);
+		git.rm().addFilepattern("README.md").call();
+	}
+	 
 	public void diff() throws IOException, GitAPIException{
 		Repository repo = this.createNewRepository();
 		git = new Git(repo);
@@ -168,23 +232,24 @@ public class initDataModel {
 		Status status = git.status().call();
 		String strStatus = "";
         if (!status.getAdded().isEmpty()) {
-            strStatus += "new file: " + status.getAdded() + "\n";
+            strStatus += "new file: " + status.getAdded();
         }
         if (!status.getChanged().isEmpty()) {
-            strStatus += "Changed: " + status.getChanged() + "\n";
+            strStatus += "Changed: " + status.getChanged();
         }
         if (!status.getMissing().isEmpty()) {
-            strStatus += "deleted: " + status.getMissing() + "\n";
+            strStatus += "deleted: " + status.getMissing();
         }
         if (!status.getModified().isEmpty()) {
-            strStatus += "Modified: " + status.getModified() + "\n";
+            strStatus += "Modified: " + status.getModified();
         }
         if(!status.getRemoved().isEmpty()){
-        	strStatus += "Changed:" + status.getRemoved() + "\n";
+        	strStatus += "Removed:" + status.getRemoved();
         }
         if (!status.getUntracked().isEmpty()) {
-            strStatus += "Untracked: " + status.getUntracked() + "\n";
+            strStatus += "Untracked: " + status.getUntracked();
         }
+        System.out.println(strStatus);
         statusMessage = strStatus;
 		
 	}

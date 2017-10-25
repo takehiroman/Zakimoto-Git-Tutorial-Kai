@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/init")
 @EnableAutoConfiguration
 public class initController {
-	private initModelFactory repositoryFactory;
 	
 	@Autowired
 	HttpServletRequest request;
@@ -38,7 +37,9 @@ public class initController {
 		//initDataModel repos = repositoryFactory.create(data.getrepositoryId());
 		
 		try {
-			data.init();		
+			data.init();
+			data.setstatusMessage(data.getstatusMessage());
+			data.status();
 		} catch(Exception ex){
 			throw new RuntimeException("ApplicationStartup::createDirectories: ", ex);
 		}

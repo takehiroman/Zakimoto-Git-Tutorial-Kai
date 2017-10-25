@@ -8,21 +8,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 @RestController
 @EnableAutoConfiguration
-public class addController {
-	@RequestMapping(method=RequestMethod.PUT,value="{repositoryDir}/add")
-	public initDataModel add(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException{
-		try{
-			data.setrepositoryDir(data.getrepositoryDir());
-			data.add();
-			data.setstatusMessage(data.getstatusMessage());
-			data.status();
-		} catch(Exception ex){
-			throw new RuntimeException("ApplicationStartup::createDirectories: ", ex);
+public class lsController {
+		@RequestMapping(method=RequestMethod.POST,value="{repositoryDir}/ls")
+		public initDataModel ls(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException{
+			try{
+				data.setrepositoryDir(data.getrepositoryDir());
+				data.setlsMessage(data.getlsMessage());
+				data.file_ls();
+			} catch(Exception ex){
+				throw new RuntimeException("ApplicationStartup::createDirectories: ", ex);
+			}
+			return data;
 		}
-		return data;
-	}
-
 }
