@@ -507,7 +507,7 @@ $(document).ready(function(){
         },
         commandHandle:function(line,report){
            onHandle(line,report);
-		   data_input(line,report);
+		   //data_input(line,report);
         },
         autofocus:true,
         animateScroll:true,

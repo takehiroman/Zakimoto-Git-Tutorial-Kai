@@ -1,0 +1,7 @@
+runtime: java
+env: flex
+api_version: 1
+threadsafe: True
+handlers:
+  - url: .*
+    script: dynamic

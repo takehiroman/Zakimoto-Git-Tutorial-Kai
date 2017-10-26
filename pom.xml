@@ -52,6 +52,20 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
 		</dependency>
+		<dependency>
+    			<groupId>org.springframework.boot</groupId>
+    			<artifactId>spring-boot-starter-web</artifactId>
+    			<exclusions>
+        			<exclusion>
+            			<groupId>org.springframework.boot</groupId>
+           	        	<artifactId>spring-boot-starter-tomcat</artifactId>
+        			</exclusion>
+    			</exclusions>
+		</dependency>
+		<dependency>
+    			<groupId>org.springframework.boot</groupId>
+    			<artifactId>spring-boot-starter-jetty</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -60,6 +74,14 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>com.google.appengine</groupId>
+				<artifactId>gcloud-maven-plugin</artifactId>
+			</plugin>
+     			<plugin>
+        			<groupId>com.google.cloud.tools</groupId>
+        			<artifactId>appengine-maven-plugin</artifactId>
+      			</plugin>
 		</plugins>
 	</build>
 
