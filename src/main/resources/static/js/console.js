@@ -421,7 +421,7 @@ function onHandle(line,report){
 			   className:"jquery-console-message-type"}]);
 		
 		}else if(input == 'help'){
-			   report([{msg:"help         - this help text\nls           - list files\nedit - edit the contents of the file\ncat FILENAME - print contents of a file\nrm FILENAME  - remove file\n git help    - list of git command that can be used at this terminal",className:"jquery-console-message-type"}])
+			   report([{msg:"help         - 各コマンドのヘルプを表示します\nls           - フォルダ内のリストを表示します\nedit - ファイルの内容を変更します\ncat FILENAME - ファイル内のテキストを表示します\nrm FILENAME  - ファイルを削除します\n git help    - このターミナル上で使えるgitコマンドのリストを表示します",className:"jquery-console-message-type"}])
 		
 		}else if(input == 'ls'){
 			ls()
@@ -484,7 +484,7 @@ function onHandle(line,report){
 				report([{msg:statusMessage,className:"jquery-console-message-error"}]);
 			}	
 		}else if(input == 'git help' || input == 'git -h'){
-				report([{msg:"git init - Create an empty Git repository\n git add FILENAME - Add file contents to the index\n git commit -m 'message' - Record changes to the repository\n git status - Show the working tree status\n git diff - Show changes between commits",
+				report([{msg:"git init - Gitのリポジトリを作成します\n git add FILENAME - インデックスにファイルを追加します\n git commit -m 'message' - 変更した内容をリポジトリに登録します\n git status - 現在のリポジトリの状態を表示します\n git diff - 現在のリポジトリの状態と最後にコミットした状態の差分を表示します\n git rm FILENAME - インデックスからファイルを削除します\n",
               className:"jquery-console-message-type"}])
 		
 		}else {
