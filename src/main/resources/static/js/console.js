@@ -10,12 +10,18 @@ var gHogeNum = new HogeNum();
 var sets;
 var gitstatus = [];
 
+$.getJSON("http://ip-api.com/json/?callback=?", function(data) {
+	ip = data.query;
+	console.log(ip);
+});
+
 //ログを保存する
 function data_input(line,report){
 	var hostUrl = 'store';
 	var article = new Object();
 	article.number = $('#number').val();
 	article.command = $.trim(line);
+	article.address = ip
 	
 	$.ajax({
 		type:"POST",
@@ -401,6 +407,7 @@ function onHandle(line,report){
 		console.log(PageNumber);
 		console.log(input)
 		console.log(statusMessage === gitstatus[PageNumber-1])
+		data_input(line,report);
 
 
 
@@ -507,7 +514,6 @@ $(document).ready(function(){
         },
         commandHandle:function(line,report){
            onHandle(line,report);
-		   data_input(line,report);
         },
         autofocus:true,
         animateScroll:true,
