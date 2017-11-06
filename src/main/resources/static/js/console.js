@@ -55,7 +55,6 @@ function story_get(){
 function getIp(){
 		$.ajaxSetup({async: false});
 		$.getJSON("http://ip-api.com/json/?callback=?", function(data) {
-			ip = data.query;
 			console.log(ip);
 			init_repo();
 		});

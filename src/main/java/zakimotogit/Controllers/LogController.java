@@ -35,7 +35,6 @@ public class LogController {
 
 	@RequestMapping(method=RequestMethod.POST)
 	public LogData createLog(@Valid @RequestBody LogData data){
-		data.setAddress(request.getRemoteAddr());
 		return repository.save(data);
 	}
 	
