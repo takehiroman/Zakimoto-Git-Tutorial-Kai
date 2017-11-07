@@ -1,48 +1,52 @@
 {               
     "story":    [
-   
                 {
                     "number":"1",
+                    "comment":"README.mdを作成しよう",
+                    "status":"Untracked: [README.md]"
+                },  
+                {
+                    "number":"2",
                     "comment":"README.mdをインデックスに登録しましょう。",
                     "status":"new file: [README.md]"
                 },
                 {
-                    "number":"2",
+                    "number":"3",
                     "comment": "インデックスにREADME.mdが登録されました。追加したファイルをリポジトリに保存するために,メッセージオプションを付けて登録しましょう。",
                     "status":""
                 },
                 {
-                    "number":"3",
+                    "number":"4",
                     "comment": "リポジトリに新しいファイルを追加したという内容が登録されました。先ほど追加したREADME.mdの内容を`edit`コマンドで編集しましょう。",
                     "status":"Modified: [README.md]"
                 },
                 {
-                    "number":"4",
+                    "number":"5",
                     "comment":"編集されたファイルをインデックスに登録しましょう",
                     "status":"Changed: [README.md]"
                 },
                 {
-                    "number":"5",
+                    "number":"6",
                     "comment":"編集したファイルをリポジトリに登録しましょう。",
                     "status":""
                 },
                 {
-                    "number":"6",
+                    "number":"7",
                     "comment": "変更したファイルも，同じ操作で登録することができます。次にREADMEファイルを`rm`コマンドで削除しましょう",
                     "status":"deleted: [README.md]"
                 },
                 {
-                    "number":"7",
+                    "number":"8",
                     "comment":"次に，リポジトリの中のREADME.mdを削除しました。削除したファイルをインデックスに登録しましょう。",
                     "status":"Removed:[README.md]"
                 },
                 {
-                    "number":"8",
+                    "number":"9",
                     "comment":  "ファイルを削除した場合でも，同じ操作で登録することができます。削除したファイルをリポジトリに登録しましょう。",
                     "status":""
                 },
                 {
-                    "number":"9",
+                    "number":"10",
                     "comment": "ファイルを削除したことが新しくリポジトリに登録されました。リポジトリ内での変更した内容は，全て同じ操作で行うことができます。",
                     "status":""
                 }

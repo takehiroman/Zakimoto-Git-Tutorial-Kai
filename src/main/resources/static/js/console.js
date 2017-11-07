@@ -55,7 +55,7 @@ function story_get(){
 function getIp(){
 		$.ajaxSetup({async: false});
 		$.getJSON("http://ip-api.com/json/?callback=?", function(data) {
-			console.log(ip);
+			//console.log(ip);
 			init_repo();
 		});
 		add_filelist();
@@ -327,6 +327,29 @@ function remove(){
 	})
 }
 
+function make_file(){
+	var hostUrl = Dirname+'/make'
+	var article11 = new Object();
+	article11.repositoryDir = Dirname;
+	$.ajax({
+		type:"POST",
+		url:hostUrl,
+		contentType:'application/json',
+		dataType:'json',
+		data:JSON.stringify(article11),
+		success:function(data){
+			console.log(data);
+			statusMessage = data.statusMessage;
+			gHogeNum.setNum(statusMessage);
+			console.log('statusMessage:'+statusMessage)
+		},
+		error:function(xhr, text, err) {
+	          console.log('text: ', text);
+	          console.log('xhr: ',xhr);
+	     }
+	})	
+}
+
 
 function HogeNum() {
 	sets = gitstatus;
@@ -460,7 +483,15 @@ function onHandle(line,report){
 			}else{
 				report();
 			}
-		   
+
+		//make
+		}else if(input.match(/^touch$/)){
+			if("Untracked: [README.md]" === gitstatus[PageNumber-1] && statusMessage === ""){
+			make_file();
+			report([{msg:"=> Success",className:"jquery-console-message-value"}]);
+			}else{
+				report();
+			}
 		//rm				   
 		}else if("deleted: [README.md]" === gitstatus[PageNumber-1] && statusMessage === ""){
 			

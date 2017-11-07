@@ -112,8 +112,11 @@ public class initDataModel {
         Repository repo = this.createNewRepository();        
         repo.create();
         
-   
-     // ファイルを生成
+    }
+	
+	public void make_file() throws IOException {
+		Repository repo = this.createNewRepository();
+		// ファイルを生成
         File myfile = new File(repo.getDirectory().getParent(), "README.md");
         if(!myfile.createNewFile()) {
             throw new IOException("Could not create file " + myfile);
@@ -132,9 +135,7 @@ public class initDataModel {
         		writer.close();
         	}
         }
-
-
-    }
+	}
 	
 	public void add() throws IOException, GitAPIException {
 		Repository repo = this.createNewRepository();
