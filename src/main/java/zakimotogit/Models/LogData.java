@@ -1,9 +1,6 @@
 package zakimotogit.Models;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -12,8 +9,7 @@ public class LogData {
 	@Id
 	private String id;
 	
-	private static final DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
-	
+	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
 	private String number;
 	private String command;
 	private String address;

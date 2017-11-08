@@ -2,7 +2,6 @@ package zakimotogit.Controllers;
 
 import java.util.List;
 import javax.validation.Valid;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -24,9 +23,6 @@ public class LogController {
 	
 	@Autowired
 	LogRepository repository;
-	
-	@Autowired
-	HttpServletRequest request;
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public List<LogData> getAllLog() {
