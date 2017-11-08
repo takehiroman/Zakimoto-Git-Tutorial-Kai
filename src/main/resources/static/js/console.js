@@ -429,7 +429,7 @@ function onHandle(line,report){
 		console.log(PageNumber);
 		console.log(input)
 		console.log(statusMessage === gitstatus[PageNumber-1])
-		data_input(line,report);
+		//data_input(line,report);
 
 
 

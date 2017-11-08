@@ -113,6 +113,8 @@ public class initDataModel {
 		Repository repo = this.createNewRepository();
 		// ファイルを生成
         File myfile = new File(repo.getDirectory().getParent(), "README.md");
+        String path = myfile.getAbsolutePath();
+        System.out.println(path);
         if(!myfile.createNewFile()) {
             throw new IOException("Could not create file " + myfile);
         }
