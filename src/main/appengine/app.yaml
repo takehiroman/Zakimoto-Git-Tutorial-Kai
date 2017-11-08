@@ -5,8 +5,8 @@ runtime_config:
    jdk: openjdk8
 
 automatic_scaling:
-  min_num_instances: 1
-  max_num_instances: 1
+  min_num_instances: 5
+  max_num_instances: 20
 
 handlers:
 - url: /.*
