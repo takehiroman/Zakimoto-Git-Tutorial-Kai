@@ -1,4 +1,5 @@
 package zakimotogit.Models;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -10,7 +11,7 @@ public class LogData {
 	@Id
 	private String id;
 	
-	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+	private static final DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
 	private String number;
 	private String command;
 	private String address;
