@@ -1,7 +1,6 @@
 package zakimotogit.Models;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 import org.springframework.data.annotation.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
