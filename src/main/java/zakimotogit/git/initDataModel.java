@@ -112,6 +112,13 @@ public class initDataModel {
         Repository repo = this.createNewRepository();        
         repo.create();
         
+
+    }
+	
+	public void touch() throws IOException {
+
+        Repository repo = this.createNewRepository();        
+        
    
      // ファイルを生成
         File myfile = new File(repo.getDirectory().getParent(), "README.md");
