@@ -58,7 +58,6 @@ function getIp(){
 			console.log(ip);
 			init_repo();
 		});
-		add_filelist();
 		story_get();		
 }
 
@@ -327,6 +326,30 @@ function remove(){
 	})
 }
 
+function make(){
+	var hostUrl = '/make'
+	var article11 = new Object();
+	article11.repositoryDir = Dirname;
+
+	$.ajax({
+		type:"POST",
+		url:hostUrl,
+		contentType:'application/json',
+		dataType:'json',
+		data:JSON.stringify(article11),
+		success:function(data){
+			console.log(data);
+			statusMessage = data.statusMessage;
+			gHogeNum.setNum(statusMessage);
+			console.log('statusMessage:'+statusMessage)
+		},
+		error:function(xhr, text, err) {
+	          console.log('text: ', text);
+	          console.log('xhr: ',xhr);
+	     }
+	})
+}
+
 
 function HogeNum() {
 	sets = gitstatus;
@@ -450,6 +473,15 @@ function onHandle(line,report){
 			}else{
 				report();
 			}
+//git add
+		}else if(input.match(/^mkfile$/)){   	
+	if("" === statusMessage && "Untracked: [README.md]" === gitstatus[PageNumber-1]){
+		make();
+		add_filelist();
+		report([{msg:"=> Success",className:"jquery-console-message-value"}]);
+	}else{
+		report();
+	}
 
 		//git rm
 		}else if(input.match(/^git rm README.md$/)){
