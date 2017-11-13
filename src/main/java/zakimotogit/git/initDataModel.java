@@ -192,8 +192,9 @@ public class initDataModel {
 	public void file_ls() throws IOException {
 		Repository repo = this.createNewRepository();
 		File myfile = new File(repo.getDirectory().getParent());
+		String path = myfile.getAbsolutePath();
 		String filename  = "";
-		
+		/*
 		File[] files = myfile.listFiles();
 		for(int index = 0;index < files.length;index ++){
 			File item = files[index];
@@ -203,7 +204,8 @@ public class initDataModel {
 			}
 			System.out.println("[12][" + myfile + "]はディレクトリでもファイルでもありません");
 		}
-		lsMessage = filename;
+		*/
+		lsMessage = path;
 	}
 	
 	public void file_delete() throws IOException{
@@ -269,7 +271,7 @@ public class initDataModel {
 		
 		String hexString = DigestUtils.md5Hex(repositoryDir);
 		Repository repo = new FileRepositoryBuilder()
-	            .setGitDir(new File("/tmp/" + hexString + "/.git"))
+	            .setGitDir(new File("repos/" + hexString + "/.git"))
 	            .build();
 
         return repo;
