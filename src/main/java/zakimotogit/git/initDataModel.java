@@ -269,7 +269,7 @@ public class initDataModel {
 		
 		String hexString = DigestUtils.md5Hex(repositoryDir);
 		Repository repo = new FileRepositoryBuilder()
-	            .setGitDir(new File("repos/" + hexString + "/.git"))
+	            .setGitDir(new File("/tmp/" + hexString + "/.git"))
 	            .build();
 
         return repo;

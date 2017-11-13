@@ -429,7 +429,7 @@ function onHandle(line,report){
 		console.log(PageNumber);
 		console.log(input)
 		console.log(statusMessage === gitstatus[PageNumber-1])
-		data_input(line,report);
+		//data_input(line,report);
 
 
 
@@ -458,15 +458,22 @@ function onHandle(line,report){
 		
 		}else if(input == 'cat README.md'){
 			cat()
-			report([{msg:catMessage,className:"jquery-console-message-type"}]);
+			console.log(catMessage)
+			if(!catMessage){
+				report([{msg:"No such file or directory",className:"jquery-console-message-error"}]);
+			}else{
+				report([{msg:catMessage,className:"jquery-console-message-type"}]);
 			}
+		}
 
 		//git add
 		else if(input.match(/^git add README.md$/) || input.match(/^git add .$/)){   	
 			if("Modified: [README.md]" === statusMessage && "Changed: [README.md]" === gitstatus[PageNumber-1]){
 			   add_repo();
-			   report();
-		   
+			   report([{msg:"=> Success",className:"jquery-console-message-value"}]);
+			}else if("Removed:[README.md]" === gitstatus[PageNumber-1] && statusMessage === "deleted: [README.md]"){
+				remove();
+				report([{msg:"=> Success",className:"jquery-console-message-value"}]);
 			}else if("Untracked: [README.md]" === statusMessage && "new file: [README.md]" === gitstatus[PageNumber-1]){
 				add_repo();
 				report([{msg:"=> Success",className:"jquery-console-message-value"}]);
@@ -494,11 +501,14 @@ function onHandle(line,report){
 			}
 		   
 		//rm				   
-		}else if("deleted: [README.md]" === gitstatus[PageNumber-1] && statusMessage === ""){
-			
+		}else if(input.match(/^rm README.md$/)){
+			if("deleted: [README.md]" === gitstatus[PageNumber-1] && statusMessage === ""){
 			deleted();
 			file_delete();
 			report([{msg:"=> Success",className:"jquery-console-message-value"}]);
+			}else{
+				report();
+			}
 			
 		//edit
 		}else if(input.match(/^edit$/)){
