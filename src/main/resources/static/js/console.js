@@ -450,7 +450,7 @@ function onHandle(line,report){
 			   className:"jquery-console-message-type"}]);
 		
 		}else if(input == 'help'){
-			   report([{msg:"help         - 各コマンドのヘルプを表示します\nls           - フォルダ内のリストを表示します\nedit - ファイルの内容を変更します\ncat FILENAME - ファイル内のテキストを表示します\nrm FILENAME  - ファイルを削除します\n git help    - このターミナル上で使えるgitコマンドのリストを表示します",className:"jquery-console-message-type"}])
+			   report([{msg:"help         - 各コマンドのヘルプを表示します\nls           - フォルダ内のリストを表示します\nmkfile - READMEファイルを追加します\nedit - ファイルの内容を変更します\ncat FILENAME - ファイル内のテキストを表示します\nrm FILENAME  - ファイルを削除します\n git help    - このターミナル上で使えるgitコマンドのリストを表示します",className:"jquery-console-message-type"}])
 		
 		}else if(input == 'ls'){
 			ls()
