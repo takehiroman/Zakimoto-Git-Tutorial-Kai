@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css}"></link>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js}"></script>
-<script type="text/javascript" src="../static/js/jquery.console.js" th:src="@{/js/jquery.console.js}"></script>
-<script type="text/javascript" src="../static/js/console.js" th:src="@{/js/console.js}"></script>
-<link rel="stylesheet" type="text/css" media="screen" href="../static/css/console.css" th:href="@{/css/console.css}"></link>
-<link rel="stylesheet" type="text/css" media="screen" href="../static/css/progress.css" th:href="@{/css/progress.css}"></link>
-<link rel="stylesheet" type="text/css" media="screen" href="../static/css/commentbar.css" th:href="@{/css/commentbar.css}"></link>
-<link rel="stylesheet" type="text/css" media="screen" href="../static/css/directory.css" th:href="@{/css/directory.css}"></link>
 
-<title>ZGT-kai</title>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css}"></link>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js}"></script>
+    <script type="text/javascript" src="../static/js/jquery.console.js" th:src="@{/js/jquery.console.js}"></script>
+    <script type="text/javascript" src="../static/js/console.js" th:src="@{/js/console.js}"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="../static/css/console.css" th:href="@{/css/console.css}"></link>
+    <link rel="stylesheet" type="text/css" media="screen" href="../static/css/progress.css" th:href="@{/css/progress.css}"></link>
+    <link rel="stylesheet" type="text/css" media="screen" href="../static/css/commentbar.css" th:href="@{/css/commentbar.css}"></link>
+    <link rel="stylesheet" type="text/css" media="screen" href="../static/css/directory.css" th:href="@{/css/directory.css}"></link>
+
+    <title>ZGT-kai</title>
 </head>
+
 <body>
-<h1>Zakimoto Git Tutorial Kai</h1>
+    <h1>Zakimoto Git Tutorial Kai</h1>
     <form method="post" action="/" name="form1">
         <span>学生証番号</span>
-        <input type="text" id="number" name="number" size="20" /><div class="err"></div>
+        <input type="text" id="number" name="number" size="20" />
+        <div class="err"></div>
     </form>
     <div class="progress">
-      <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
     <div id="console">
         <div id="consolebar">
         </div>
     </div>
-    <p class="header" style="text-align:center;" >your directory</p>
+    <p class="header" style="text-align:center;">your directory</p>
     <div class="directory" style="display:table;">
         <div style="display:table-cell; width:50%;" class="file_list">
             <div class="folder">
@@ -39,26 +42,34 @@
     </div>
     <br />
     <div class="comment">
-        <p id="message">ZGT-Kaiにようこそ！これから初めてのgitを学んでいきましょう！<br/>
-        ではまずバージョン管理に必要なリポジトリを作りましょう！</p>
+        <p id="message">ZGT-Kaiにようこそ！これから初めてのgitを学んでいきましょう！
+            <br/> ではまずバージョン管理に必要なリポジトリを作りましょう！
+        </p>
     </div>
-    <div align= "right" class="img-link">
-    <p>
-    <img src="../static/image/zakimoto.jpg"  width="200" height="200" alt="zakimoto" class="img-pos" th:src="@{/image/zakimoto.jpg}" align="left"></img>
-    Girに関する参考リンク<br/>
-    <a href="http://www.backlog.jp/git-guide/" target="_blank" >サルでもわかるGit入門</a><br/>
-    <a href="https://www.atlassian.com/ja/git/tutorial" target="_blank" >AtlassianのGitチュートリアル</a><br/>
-    <a href="https://git-scm.com/docs" target="_blank" >Git公式のリファレンス</a><br/>
-    <a href="https://git-scm.com/book/ja/v2" target="_blank" >ProGitの日本語書籍</a><br/>
-    <b>このチュートリアルはsafariでは利用できません。</b>
-    </p>
+    <div align="right" class="img-link">
+        <p>
+            <img src="../static/image/zakimoto.jpg" width="200" height="200" alt="zakimoto" class="img-pos" th:src="@{/image/zakimoto.jpg}"
+                align="left"></img>
+            Girに関する参考リンク
+            <br/>
+            <a href="http://www.backlog.jp/git-guide/" target="_blank">サルでもわかるGit入門</a>
+            <br/>
+            <a href="https://www.atlassian.com/ja/git/tutorial" target="_blank">AtlassianのGitチュートリアル</a>
+            <br/>
+            <a href="https://git-scm.com/docs" target="_blank">Git公式のリファレンス</a>
+            <br/>
+            <a href="https://git-scm.com/book/ja/v2" target="_blank">ProGitの日本語書籍</a>
+            <br/>
+            <b>このチュートリアルはsafariでは利用できません。</b>
+        </p>
     </div>
-<table>
-<tr th:each="obj:${datalist}">
-	<td th:text="${obj.number}"></td>
-	<td th:text="${obj.command}"></td>
-	<td th:text="${obj.date}"></td>
-</tr>
-</table>
+    <table>
+        <tr th:each="obj:${datalist}">
+            <td th:text="${obj.number}"></td>
+            <td th:text="${obj.command}"></td>
+            <td th:text="${obj.date}"></td>
+        </tr>
+    </table>
 </body>
+
 </html>

@@ -42,3 +42,8 @@
     text-align: left;
   }
 
+  div.err{
+    color:#ef0505; font-family: "Hiragino Kaku Gothic ProN","メイリオ"; font-weight:bold;
+    padding:0.1em; 
+}
+
