@@ -192,9 +192,7 @@ public class initDataModel {
 	public void file_ls() throws IOException {
 		Repository repo = this.createNewRepository();
 		File myfile = new File(repo.getDirectory().getParent());
-		String path = myfile.getAbsolutePath();
 		String filename  = "";
-		/*
 		File[] files = myfile.listFiles();
 		for(int index = 0;index < files.length;index ++){
 			File item = files[index];
@@ -204,8 +202,7 @@ public class initDataModel {
 			}
 			System.out.println("[12][" + myfile + "]はディレクトリでもファイルでもありません");
 		}
-		*/
-		lsMessage = path;
+		lsMessage = filename;
 	}
 	
 	public void file_delete() throws IOException{
