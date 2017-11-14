@@ -391,8 +391,6 @@ function story_get() {
 
 function doSomething(val) {
 	PageNumber++;
-	//bar()
-	//nextMessage()
 	$.getJSON("js/story1.json", function (json) {
 		console.log(json.story.length)
 		var message = document.getElementById("message");
@@ -405,17 +403,7 @@ function doSomething(val) {
 		var bargage = PageNumber / json.story.length
 		$pb.attr({ 'style': 'width:' + Math.round(PageNumber / json.story.length * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / json.story.length * 100) + "% ");
 	});
-	//bar()
-	//nextMessage()
 }
-
-$('input[type="text"]').on('keydown', function (e) {
-	if ((e.wich && e.wich === 13) || (e.keyCode && e.keyCode === 13)) {
-		return false
-	} else {
-		return true
-	}
-})
 
 //チュートリアルメッセージを置換する
 function nextMessage() {
