@@ -51,18 +51,27 @@ function story_get(){
 	});
 }
 
+function val_error(){
+	$(".err").append('<span class="error">未入力です</span>');
+}
+
 //ipアドレスを取得する
 function getIp(){
 		$.ajaxSetup({async: false});
 		$.getJSON("http://ip-api.com/json/?callback=?", function(data) {
 			console.log(ip);
 			init_repo();
+			add_filelist();
 		});
 		story_get();		
 }
 
 function add_filelist(){
 	$(".folder").append('<p><img src="./image/computer_folder.png" width="20" height="20" th:src="@{/image/computer_folder.png}"></img>.git</p>')
+}
+
+function add_file(){
+	$(".file").append('<p><img src="./image/computer_document.png" width="20" height="20" th:src="@{/image/computer_document.png}"></img>README.md</p>')
 }
 
 function edit_file(){
@@ -73,6 +82,10 @@ function file_delete(){
 	$(".file").empty();
 	$(".filename").remove();
 	$(".preview").empty();
+}
+
+function file_add(){
+	$(".file_preview").append('<p class="filename">README.md</p><div class="preview"><p>Hello git world</p></div>')
 }
 
 function init_repo(){
@@ -400,6 +413,14 @@ function doSomething(val) {
 	//nextMessage()
 }
 
+$('input[type="text"]').on('keydown', function(e){
+	if ((e.wich && e.wich === 13) || (e.keyCode && e.keyCode === 13)) {
+	  return false
+	} else {
+	  return true
+	}
+  })
+
 //チュートリアルメッセージを置換する
 function nextMessage(){
 	var message = document.getElementById("message");
@@ -429,7 +450,7 @@ function onHandle(line,report){
 		console.log(PageNumber);
 		console.log(input)
 		console.log(statusMessage === gitstatus[PageNumber-1])
-		//data_input(line,report);
+		data_input(line,report);
 
 
 
@@ -484,7 +505,8 @@ function onHandle(line,report){
 		}else if(input.match(/^touch$/)){   	
 	if("" === statusMessage && "Untracked: [README.md]" === gitstatus[PageNumber-1]){
 		make();
-		add_filelist();
+		add_file();
+		file_add();
 		report([{msg:"=> Success",className:"jquery-console-message-value"}]);
 	}else{
 		report();
@@ -545,13 +567,24 @@ function onHandle(line,report){
 }
 
 $(document).ready(function(){
-    var console1 = $('<div class="console1">');
+	var console1 = $('<div class="console1">');
+	var error = false
     $('#console').append(console1);
     var controller1 = console1.console({
         promptLabel: '$ ',
         commandValidate:function(line){
-            if (line == "") return false;
-            else return true;
+			if (line == "") return false;
+			else if(document.form1.number.value == ""){
+				if(!error){
+				error = true;
+				$(".err").append('<span class="error">学生証番号が未入力です</span>');				
+				}
+				return false;
+			}
+			else 
+			error = false;
+			$(".err").remove();
+			return true;
         },
         commandHandle:function(line,report){
            onHandle(line,report);
