@@ -501,7 +501,7 @@ function onHandle(line, report) {
 		} else {
 			report();
 		}
-		//git add
+		//touch
 	} else if (input.match(/^touch$/)) {
 		if ("" === statusMessage && "Untracked: [README.md]" === gitstatus[PageNumber - 1]) {
 			make();
