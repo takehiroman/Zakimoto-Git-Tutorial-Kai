@@ -12,6 +12,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.*;
@@ -25,6 +28,8 @@ import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class initDataModel {
 	
 	private String repositoryId;
@@ -36,7 +41,8 @@ public class initDataModel {
 	private String lsMessage;
 	private String number;
 	private Git git;
-	
+	private static final DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+	private Date time = new Date();
 	
 	public initDataModel(){
 		super();
@@ -125,20 +131,6 @@ public class initDataModel {
         if(!myfile.createNewFile()) {
             throw new IOException("Could not create file " + myfile);
         }
-        //ファイルの書き込み
-        BufferedWriter writer = null;
-        try{
-        	writer = new BufferedWriter(new OutputStreamWriter(
-        			new FileOutputStream(myfile),"UTF-8"));
-        	writer.append("Hello git World");
-        	writer.newLine();
-        }catch(IOException e){
-        	System.out.println(e);
-        }finally{
-        	if(writer != null ){
-        		writer.close();
-        	}
-        }
 
 
     }
@@ -163,7 +155,7 @@ public class initDataModel {
 		//ファイルの書き換え
 		Path path = Paths.get(repo.getDirectory().getParent(),"README.md");
 			try(BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)){
-				writer.append("file changed");
+				writer.append("Modified time is " + formatter.format(time));
 					writer.newLine();
 				}	
 			catch(IOException e){

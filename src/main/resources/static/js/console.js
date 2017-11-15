@@ -59,7 +59,7 @@ function add_file() {
 }
 
 function edit_file() {
-	$(".preview").text("file changed")
+	$(".preview").text(catMessage)
 }
 
 function file_delete() {
@@ -69,7 +69,7 @@ function file_delete() {
 }
 
 function file_add() {
-	$(".file_preview").append('<p class="filename">README.md</p><div class="preview"><p>Hello git world</p></div>')
+	$(".file_preview").append('<p class="filename">README.md</p><div class="preview"><p></p></div>')
 }
 
 function init_repo() {
@@ -403,7 +403,6 @@ function onHandle(line, report) {
 	var commit = new RegExp(/^git commit -m ".*"$'/);
 	var cats = new RegExp(/^cat /);
 	var rm = new RegExp(/^rm /);
-	var moge = "20"
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
 	//data_input(line, report);
@@ -471,6 +470,7 @@ function onHandle(line, report) {
 			add_repo();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 		} else {
+			add_repo();
 			report();
 		}
 		//touch
@@ -495,7 +495,7 @@ function onHandle(line, report) {
 	} else if (input.match(rm)) {
 		ls()
 		if (input.match(/README.md$/)) {
-			if ("deleted:[README.md]" === gitstatus[PageNumber - 1] && statusMessage === "") {
+			if ("deleted:[README.md]" === gitstatus[PageNumber - 1]) {
 				doSomething()
 				deleted();
 				file_delete();
@@ -516,10 +516,12 @@ function onHandle(line, report) {
 		if ("Modified:[README.md]" === gitstatus[PageNumber - 1] && statusMessage === "") {
 			doSomething()
 			edit();
+			cat();
 			edit_file();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 		} else {
 			edit();
+			cat();
 			edit_file();
 			report();
 		}
@@ -529,7 +531,8 @@ function onHandle(line, report) {
 			doSomething()
 			commit_repo(input);
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-
+		}else if(statusMessage === "new file:[README.md]" || statusMessage === "Changed:[README.md]"){
+			commit_repo(input);
 		} else if (statusMessage === "") {
 			report([{ msg: "nothing to commit, working tree clean", className: "jquery-console-message-error" }]);
 		} else {
