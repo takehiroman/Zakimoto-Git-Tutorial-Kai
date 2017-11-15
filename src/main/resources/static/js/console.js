@@ -434,7 +434,7 @@ function onHandle(line, report) {
 		}]);
 
 	} else if (input == 'help') {
-		report([{ msg: "help         - 各コマンドのヘルプを表示します\nls           - フォルダ内のリストを表示します\ntouch - READMEファイルを追加します\nedit - ファイルの内容を変更します\ncat FILENAME - ファイル内のテキストを表示します\nrm FILENAME  - ファイルを削除します\n git help    - このターミナル上で使えるgitコマンドのリストを表示します", className: "jquery-console-message-type" }])
+		report([{ msg: "help - 各コマンドのヘルプを表示します\nls - フォルダ内のファイルリストを表示します\ncreate - フォルダにREADMEファイルを追加します\nedit - READMEファイルの内容を変更します\ncat FILENAME - 指定したファイル内のテキストを表示します\nrm FILENAME  - 指定したファイルを削除します\n git help - このターミナル上で使えるgitコマンドのリストを表示します", className: "jquery-console-message-type" }])
 
 	} else if (input == 'ls') {
 		ls()
@@ -473,8 +473,8 @@ function onHandle(line, report) {
 			add_repo();
 			report();
 		}
-		//touch
-	} else if (input.match(/^touch$/)) {
+		//create
+	} else if (input.match(/^create$/)) {
 		ls()
 		if ("" === statusMessage && "Untracked:[README.md]" === gitstatus[PageNumber - 1]) {
 			doSomething()
@@ -541,7 +541,7 @@ function onHandle(line, report) {
 		}
 	} else if (input == 'git help' || input == 'git -h') {
 		report([{
-			msg: "git init - Gitのリポジトリを作成します\n git add FILENAME - インデックスにファイルを追加します\n git commit -m 'message' - 変更した内容をリポジトリに登録します\n git status - 現在のリポジトリの状態を表示します\n git diff - 現在のリポジトリの状態と最後にコミットした状態の差分を表示します\n",
+			msg: "git init - Gitのリポジトリを作成します\n git add FILENAME - 指定したファイルをインデックスに追加します\n git commit -m 'MESSAGE' - 変更した内容をリポジトリに登録します\n git status - 現在のリポジトリの状態を表示します\n git diff - 現在のリポジトリの状態と最後にコミットした状態の差分を表示します\n",
 			className: "jquery-console-message-type"
 		}])
 

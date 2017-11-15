@@ -2,7 +2,7 @@
     "story": [
         {
             "number": "1",
-            "comment": "README.mdを作成しましょう",
+            "comment": "'create'コマンドを使って，README.mdを作成しましょう",
             "status": "Untracked:[README.md]",
             "file":"README.md"
         },
@@ -38,7 +38,7 @@
         },
         {
             "number": "7",
-            "comment": "変更したファイルも，同じ操作で登録することができます。次にREADMEファイルを`rm`コマンドで削除しましょう",
+            "comment": "変更したファイルも，同じ操作で登録することができます。次にREADMEファイルをrmコマンドで削除しましょう",
             "status": "deleted:[README.md]",
             "file":"README.md"
         },
