@@ -242,22 +242,22 @@ public class initDataModel {
 		Status status = git.status().call();
 		String strStatus = "";
         if (!status.getAdded().isEmpty()) {
-            strStatus += "new file: " + status.getAdded();
+            strStatus += "new file:" + status.getAdded();
         }
         if (!status.getChanged().isEmpty()) {
-            strStatus += "Changed: " + status.getChanged();
+            strStatus += "Changed:" + status.getChanged();
         }
         if (!status.getMissing().isEmpty()) {
-            strStatus += "deleted: " + status.getMissing();
+            strStatus += "deleted:" + status.getMissing();
         }
         if (!status.getModified().isEmpty()) {
-            strStatus += "Modified: " + status.getModified();
+            strStatus += "Modified:" + status.getModified();
         }
         if(!status.getRemoved().isEmpty()){
         	strStatus += "Removed:" + status.getRemoved();
         }
         if (!status.getUntracked().isEmpty()) {
-            strStatus += "Untracked: " + status.getUntracked();
+            strStatus += "Untracked:" + status.getUntracked();
         }
         System.out.println(strStatus);
         statusMessage = strStatus;

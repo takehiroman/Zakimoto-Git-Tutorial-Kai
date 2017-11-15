@@ -3,37 +3,44 @@
         {
             "number": "1",
             "comment": "README.mdを作成しましょう",
-            "status": "Untracked: [README.md]"
+            "status": "Untracked:[README.md]",
+            "file":"README.md"
         },
         {
             "number": "2",
             "comment": "README.mdをインデックスに登録しましょう。",
-            "status": "new file: [README.md]"
+            "status": "new file:[README.md]",
+            "file":"README.md"
         },
         {
             "number": "3",
             "comment": "インデックスにREADME.mdが登録されました。追加したファイルをリポジトリに保存するために,メッセージオプションを付けて登録しましょう。",
-            "status": ""
+            "status": "",
+            "file":"README.md"
         },
         {
             "number": "4",
             "comment": "リポジトリに新しいファイルを追加したという内容が登録されました。先ほど追加したREADME.mdの内容を`edit`コマンドで編集しましょう。",
-            "status": "Modified: [README.md]"
+            "status": "Modified:[README.md]",
+            "file":"README.md"
         },
         {
             "number": "5",
             "comment": "編集されたファイルをインデックスに登録しましょう",
-            "status": "Changed: [README.md]"
+            "status": "Changed:[README.md]",
+            "file":"README.md"
         },
         {
             "number": "6",
             "comment": "編集したファイルをリポジトリに登録しましょう。",
-            "status": ""
+            "status": "",
+            "file":"README.md"
         },
         {
             "number": "7",
             "comment": "変更したファイルも，同じ操作で登録することができます。次にREADMEファイルを`rm`コマンドで削除しましょう",
-            "status": "deleted: [README.md]"
+            "status": "deleted:[README.md]",
+            "file":"README.md"
         },
         {
             "number": "8",
