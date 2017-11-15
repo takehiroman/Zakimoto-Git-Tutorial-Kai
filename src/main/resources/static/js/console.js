@@ -402,10 +402,12 @@ function bar() {
 function onHandle(line, report) {
 	var input = $.trim(line);
 	var commit = new RegExp(/^git commit -m ".*"$'/);
+	var cats = new RegExp(/^cat /);
+	var rm = new RegExp(/^rm /);
 	var moge = "20"
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
-	data_input(line, report);
+	//data_input(line, report);
 	console.log(gitstatus[PageNumber - 1])
 	console.log(statusMessage)
 
@@ -440,14 +442,19 @@ function onHandle(line, report) {
 		ls()
 		report([{ msg: lsMessage, className: "jquery-console-message-type" }]);
 
-	} else if (input == 'cat README.md') {
-		cat()
-		console.log(catMessage)
-		if (!catMessage) {
+	} else if (input.match(cats)) {
+			ls();	
+		if(input.match(/README.md$/)){
+		if (!lsMessage) {
 			report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
 		} else {
+			cat()
 			report([{ msg: catMessage, className: "jquery-console-message-type" }]);
 		}
+		}else{
+			report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+		}
+		
 	}
 
 	//git add
@@ -486,8 +493,9 @@ function onHandle(line, report) {
 		}
 
 		//rm				   
-	} else if (input.match(/^rm README.md$/)) {
+	} else if (input.match(rm)) {
 		ls()
+		if(input.match(/README.md$/)){
 		if ("deleted:[README.md]" === gitstatus[PageNumber - 1] && statusMessage === "") {
 			doSomething()
 			deleted();
@@ -500,6 +508,9 @@ function onHandle(line, report) {
 			file_delete();
 			report();
 		}
+	}else{
+		report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+	}
 
 		//edit
 	} else if (input.match(/^edit$/)) {
@@ -509,6 +520,8 @@ function onHandle(line, report) {
 			edit_file();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 		} else {
+			edit();
+			edit_file();
 			report();
 		}
 		//git commit
