@@ -366,7 +366,6 @@ function HogeNum() {
 function story_get() {
 	$.getJSON("js/story1.json", function (json) {
 		console.log(json.story.length)
-
 	});
 }
 
@@ -443,18 +442,18 @@ function onHandle(line, report) {
 		report([{ msg: lsMessage, className: "jquery-console-message-type" }]);
 
 	} else if (input.match(cats)) {
-			ls();	
-		if(input.match(/README.md$/)){
-		if (!lsMessage) {
-			report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+		ls();
+		if (input.match(/README.md$/)) {
+			if (!lsMessage) {
+				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+			} else {
+				cat()
+				report([{ msg: catMessage, className: "jquery-console-message-type" }]);
+			}
 		} else {
-			cat()
-			report([{ msg: catMessage, className: "jquery-console-message-type" }]);
-		}
-		}else{
 			report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
 		}
-		
+
 	}
 
 	//git add
@@ -483,7 +482,7 @@ function onHandle(line, report) {
 			add_file();
 			file_add();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-		} else if(lsMessage === "README.md") {
+		} else if (lsMessage === "README.md") {
 			report();
 		} else {
 			make();
@@ -495,22 +494,22 @@ function onHandle(line, report) {
 		//rm				   
 	} else if (input.match(rm)) {
 		ls()
-		if(input.match(/README.md$/)){
-		if ("deleted:[README.md]" === gitstatus[PageNumber - 1] && statusMessage === "") {
-			doSomething()
-			deleted();
-			file_delete();
-			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-		} else if(lsMessage === "") {
+		if (input.match(/README.md$/)) {
+			if ("deleted:[README.md]" === gitstatus[PageNumber - 1] && statusMessage === "") {
+				doSomething()
+				deleted();
+				file_delete();
+				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+			} else if (lsMessage === "") {
+				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+			} else {
+				deleted();
+				file_delete();
+				report();
+			}
+		} else {
 			report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
-		} else{
-			deleted();
-			file_delete();
-			report();
 		}
-	}else{
-		report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
-	}
 
 		//edit
 	} else if (input.match(/^edit$/)) {
@@ -527,7 +526,7 @@ function onHandle(line, report) {
 		//git commit
 	} else if (input.match(/^git commit -m ".*"$/)) {
 		if ("" === gitstatus[PageNumber - 1]) {
-			 doSomething()
+			doSomething()
 			commit_repo(input);
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 

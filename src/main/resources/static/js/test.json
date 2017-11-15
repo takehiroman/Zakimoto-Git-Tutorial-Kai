@@ -1,0 +1,16 @@
+{
+    "test": [
+        {
+            "number": "1",
+            "comment": "フォルダの中身，状態を確認しながらリポジトリに登録しましょう",
+            "status": "",
+            "file":"README.md"
+        },
+        {
+            "number": "2",
+            "comment": "README.mdをインデックスに登録しましょう。",
+            "status": "",
+            "file":"README.md"
+        }
+    ]
+}
