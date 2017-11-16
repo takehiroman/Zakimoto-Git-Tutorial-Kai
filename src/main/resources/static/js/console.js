@@ -1,4 +1,10 @@
 var PageNumber = 0;
+var testNumber = 0;
+var TestStatus = 0;
+var TestType;
+var TestPage;
+var bargage1;
+var bargage2;
 barWidth = 0;
 var ip;
 var Dirname;
@@ -62,10 +68,21 @@ function edit_file() {
 	$(".preview").text(catMessage)
 }
 
+function addLink(){
+	$(".file").append('<a href="javascript:void(0);" onclick="OnLinkClick();">Exec2</a><br />')
+}
+
 function file_delete() {
 	$(".file").empty();
 	$(".filename").remove();
 	$(".preview").empty();
+}
+
+function delete_folder(){
+	$(".header").remove();
+	$(".directory").remove();
+	$(".progress-bar").remove();
+	$(".progress").remove();
 }
 
 function file_add() {
@@ -379,9 +396,32 @@ function doSomething() {
 		message.textContent = json.story[PageNumber - 1].comment
 		gitstatus.push(json.story[PageNumber - 1].status)
 		console.log('gitstatus:' + gitstatus)
-		var $pb = $('.progress-bar');
-		var bargage = PageNumber / json.story.length
-		$pb.attr({ 'style': 'width:' + Math.round(PageNumber / json.story.length * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / json.story.length * 100) + "% ");
+		var $pb1 = $('.progress-bar');
+		bargage1 = PageNumber / json.story.length
+		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / json.story.length * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / json.story.length * 100) + "% ");
+	});
+}
+
+function confTest() {
+	testNumber++;
+	delete_folder()
+	$.getJSON("js/test.json", function (json) {
+		message = document.getElementById("message");
+		message.textContent = json.test[testNumber-1].comment;
+		TestPage = json.test[testNumber-1].number;
+		TestStatus = json.test[testNumber-1].status;
+		TestType = json.test[testNumber-1].type;
+		console.log(json.test[testNumber].type)
+		if(TestType === "create"){
+			getIp();
+			setTimeout(function () {
+				make();
+			}, 1000);
+			}else if(TestType === "edit"){
+				edit()
+			}else if(TestType === "delete"){
+				deleted()
+		}
 	});
 }
 
@@ -465,6 +505,10 @@ function onHandle(line, report) {
 			doSomething()
 			remove();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+		} else if ("Removed:[README.md]" === TestStatus && statusMessage === "deleted:[README.md]") {
+			doSomething()
+			remove();
+			report();
 		} else if ("Untracked:[README.md]" === statusMessage && "new file:[README.md]" === gitstatus[PageNumber - 1]) {
 			doSomething()
 			add_repo();
@@ -530,6 +574,10 @@ function onHandle(line, report) {
 		if ("" === gitstatus[PageNumber - 1]) {
 			doSomething()
 			commit_repo(input);
+			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+		}else if(statusMessage === TestStatus){
+			commit_repo(input);
+			confTest();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 		}else if(statusMessage === "new file:[README.md]" || statusMessage === "Changed:[README.md]"){
 			commit_repo(input);

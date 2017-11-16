@@ -2,14 +2,28 @@
     "test": [
         {
             "number": "1",
-            "comment": "フォルダの中身，状態を確認しながらリポジトリに登録しましょう",
-            "status": "",
+            "comment": "問１\nフォルダの中身，リポジトリの状態を確認しながらリポジトリに登録しましょう",
+            "status": "new file:[README.md]",
+            "type":"create",
             "file":"README.md"
         },
         {
             "number": "2",
-            "comment": "README.mdをインデックスに登録しましょう。",
-            "status": "",
+            "comment": "問2\nフォルダの中身，リポジトリの状態を確認しながらリポジトリに登録しましょう",
+            "status": "Changed:[README.md]",
+            "type":"edit",
+            "file":"README.md"
+        },
+        {
+            "number": "3",
+            "comment": "問3\nフォルダの中身，リポジトリの状態を確認しながらリポジトリに登録しましょう",
+            "status": "Removed:[README.md]",
+            "type":"delete",
+            "file":"README.md"
+        },
+        {
+            "number": "4",
+            "comment": "全問正解！やったね！アンケートに答えてください",
             "file":"README.md"
         }
     ]
