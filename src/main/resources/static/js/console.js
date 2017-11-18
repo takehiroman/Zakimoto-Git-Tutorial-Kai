@@ -52,7 +52,6 @@ function getIp() {
 	$.getJSON("http://ip-api.com/json/?callback=?", function (data) {
 		console.log(ip);
 		init_repo();
-		add_filelist();
 	});
 }
 
@@ -82,7 +81,7 @@ function delete_folder(){
 	$(".header").remove();
 	$(".directory").remove();
 	$(".progress-bar").remove();
-	$(".progress").remove();
+	$(".progress-bar").remove();
 }
 
 function file_add() {
@@ -453,12 +452,17 @@ function onHandle(line, report) {
 
 
 	if (input == 'git init') {
+		if(PageNumber === 0){
 		getIp();
 		setTimeout(function () {
 			console.log(gHogeNum.getNum());
 		}, 3500);
 		doSomething()
+		add_filelist();
 		report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+		}else{
+		report([{msg:"Reinitialized existing Git repository in .git",className:"jquery-console-message-type"}]);
+	}
 
 	} else if (input == 'git diff') {
 		diff_repo();
@@ -538,15 +542,17 @@ function onHandle(line, report) {
 		//rm				   
 	} else if (input.match(rm)) {
 		ls()
-		if (input.match(/README.md$/)) {
+		if(input.match(/.git$/)){
+			report([{msg:".git cannot be deleted on this terminal",className:"jquery-console-message-type"}])
+		}else if (input.match(/README.md$/)) {
 			if ("deleted:[README.md]" === gitstatus[PageNumber - 1]) {
 				doSomething()
 				deleted();
 				file_delete();
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-			} else if (lsMessage === "") {
+			}else if (lsMessage === "") {
 				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
-			} else {
+			}else {
 				deleted();
 				file_delete();
 				report();
