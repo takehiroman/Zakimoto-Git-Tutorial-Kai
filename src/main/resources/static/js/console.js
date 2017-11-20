@@ -74,7 +74,7 @@ function addLink(){
 function file_delete() {
 	$(".file").empty();
 	$(".filename").remove();
-	$(".preview").empty();
+	$(".preview").remove();
 }
 
 function delete_folder(){
@@ -440,8 +440,8 @@ function bar() {
 function onHandle(line, report) {
 	var input = $.trim(line);
 	var commit = new RegExp(/^git commit -m ".*"$'/);
-	var cats = new RegExp(/^cat /);
-	var rm = new RegExp(/^rm /);
+	var cats = new RegExp(/^cat/);
+	var rm = new RegExp(/^rm/);
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
 	data_input(line, report);
@@ -486,7 +486,7 @@ function onHandle(line, report) {
 
 	} else if (input.match(cats)) {
 		ls();
-		if (input.match(/README.md$/)) {
+		if (input.match(/ README.md$/)) {
 			if (!lsMessage) {
 				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
 			} else {
@@ -530,8 +530,8 @@ function onHandle(line, report) {
 			add_file();
 			file_add();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-		} else if (lsMessage === "README.md") {
-			report();
+		} else if (PageNumber === 0) {
+			report([{msg:"Repository does not exist",className:"jquery-console-message-error"}]);
 		} else {
 			make();
 			add_file();
@@ -544,7 +544,7 @@ function onHandle(line, report) {
 		ls()
 		if(input.match(/.git$/)){
 			report([{msg:".git cannot be deleted on this terminal",className:"jquery-console-message-type"}])
-		}else if (input.match(/README.md$/)) {
+		}else if (input.match(/ README.md$/)) {
 			if ("deleted:[README.md]" === gitstatus[PageNumber - 1]) {
 				doSomething()
 				deleted();
