@@ -532,6 +532,8 @@ function onHandle(line, report) {
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 		} else if (PageNumber === 0) {
 			report([{msg:"Repository does not exist",className:"jquery-console-message-error"}]);
+		}else if(lsMessage === "README.md"){
+			report()
 		} else {
 			make();
 			add_file();
