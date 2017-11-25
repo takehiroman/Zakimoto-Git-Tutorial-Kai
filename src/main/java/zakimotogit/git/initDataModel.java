@@ -154,12 +154,14 @@ public class initDataModel {
 		Repository repo = this.createNewRepository();
 		//ファイルの書き換え
 		Path path = Paths.get(repo.getDirectory().getParent(),"README.md");
-			try(BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)){
-				writer.append("Modified time is " + formatter.format(time));
+			if(Files.exists(Paths.get(repo.getDirectory().getParent(),"README.md"))){
+				try(BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)){
+					writer.append("Modified time is " + formatter.format(time));
 					writer.newLine();
 				}	
-			catch(IOException e){
-				System.out.println(e);
+				catch(IOException e){
+					System.out.println(e);
+				}
 			}
 	}
 	

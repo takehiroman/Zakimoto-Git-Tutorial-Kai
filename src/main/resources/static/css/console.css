@@ -44,19 +44,20 @@ div.concole div.jquery-console-prompt-label {
 
 div.console1 div.jquery-console-message-error
        {
-	color:#ef0505; font-family: "Hiragino Kaku Gothic ProN","メイリオ"; font-weight:bold;
+	color:#ef0505; font-family: Consolas, 'Courier New', Courier, Monaco,monospace; 
+		 font-weight:bold;
          padding:0.1em; 
 }
 
 div.console1 div.jquery-console-message-value
        {
-	 color:#00ff00;font-family: "Hiragino Kaku Gothic ProN","メイリオ",sans-serif;
+	 color:#00ff00;font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
          padding:0.1em; 
 }
 
 div.console1 div.jquery-console-message-type
        {
-	 color:#fefefe; font-family: "Hiragino Kaku Gothic ProN","メイリオ",sans-serif;
+	 color:#fefefe; font-family:Consolas, 'Courier New', Courier, Monaco, monospace;
          padding:0.1em; 
 }
 div.console1 div.jquery-console-welcome

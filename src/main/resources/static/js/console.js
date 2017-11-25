@@ -1,10 +1,7 @@
 var PageNumber = 0;
 var testNumber = 0;
 var TestStatus = 0;
-var TestType;
-var TestPage;
-var bargage1;
-var bargage2;
+var TestMessage = '"test"';
 barWidth = 0;
 var ip;
 var Dirname;
@@ -67,7 +64,7 @@ function edit_file() {
 	$(".preview").text(catMessage)
 }
 
-function addLink(){
+function addLink() {
 	$(".file").append('<a href="javascript:void(0);" onclick="OnLinkClick();">Exec2</a><br />')
 }
 
@@ -77,7 +74,7 @@ function file_delete() {
 	$(".preview").remove();
 }
 
-function delete_folder(){
+function delete_folder() {
 	$(".header").remove();
 	$(".directory").remove();
 	$(".progress-bar").remove();
@@ -193,11 +190,11 @@ function status_repo() {
 function commit_repo(line) {
 	var hostUrl = 'commit'
 	var article5 = new Object();
-	var a = line.match(/".*"$/);
-	console.log(a);
+	var come = line.match(/".*"$/);
+	console.log(come);
 	article5.repositoryDir = Dirname;
 	article5.number = PageNumber;
-	article5.commitMessage = a[0];
+	article5.commitMessage = come[0];
 
 	$.ajax({
 		type: "POST",
@@ -401,25 +398,49 @@ function doSomething() {
 	});
 }
 
+function Type_create(){
+	getIp();
+	setTimeout(function () {
+		make();
+	}, 1000);
+}
+
+function Type_edit(){
+	getIp();
+	setTimeout(function () {
+		make();
+		add_repo()
+		commit_repo(TestMessage)
+		edit()
+	}, 1000);
+}
+
+function Type_delete(){
+	getIp();
+	setTimeout(function () {
+		make();
+		add_repo()
+		commit_repo(TestMessage)
+		deleted()
+	}, 1000);
+}
+
 function confTest() {
 	testNumber++;
 	delete_folder()
 	$.getJSON("js/test.json", function (json) {
 		message = document.getElementById("message");
-		message.textContent = json.test[testNumber-1].comment;
-		TestPage = json.test[testNumber-1].number;
-		TestStatus = json.test[testNumber-1].status;
-		TestType = json.test[testNumber-1].type;
+		message.textContent = json.test[testNumber - 1].comment;
+		TestPage = json.test[testNumber - 1].number;
+		TestStatus = json.test[testNumber - 1].status;
+		TestType = json.test[testNumber - 1].type;
 		console.log(json.test[testNumber].type)
-		if(TestType === "create"){
-			getIp();
-			setTimeout(function () {
-				make();
-			}, 1000);
-			}else if(TestType === "edit"){
-				edit()
-			}else if(TestType === "delete"){
-				deleted()
+		if (TestType === "create") {
+			Type_create()
+		} else if (TestType === "edit") {
+			Type_edit()
+		} else if (TestType === "delete") {
+			Type_delete()
 		}
 	});
 }
@@ -444,25 +465,26 @@ function onHandle(line, report) {
 	var rm = new RegExp(/^rm/);
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
-	data_input(line, report);
+	//data_input(line, report);
 	console.log(gitstatus[PageNumber - 1])
 	console.log(statusMessage)
+	console.log(input)
 
 
 
 
 	if (input == 'git init') {
-		if(PageNumber === 0){
-		getIp();
-		setTimeout(function () {
-			console.log(gHogeNum.getNum());
-		}, 3500);
-		doSomething()
-		add_filelist();
-		report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-		}else{
-		report([{msg:"Reinitialized existing Git repository in .git",className:"jquery-console-message-type"}]);
-	}
+		if (PageNumber === 0) {
+			getIp();
+			setTimeout(function () {
+				console.log(gHogeNum.getNum());
+			}, 3500);
+			doSomething()
+			add_filelist();
+			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+		} else {
+			report([{ msg: "Reinitialized existing Git repository in .git", className: "jquery-console-message-type" }]);
+		}
 
 	} else if (input == 'git diff') {
 		diff_repo();
@@ -500,26 +522,31 @@ function onHandle(line, report) {
 	}
 
 	//git add
-	else if (input.match(/^git add README.md$/) || input.match(/^git add .$/)) {
-		if ("Modified:[README.md]" === statusMessage && "Changed:[README.md]" === gitstatus[PageNumber - 1]) {
-			doSomething()
-			add_repo();
-			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-		} else if ("Removed:[README.md]" === gitstatus[PageNumber - 1] && statusMessage === "deleted:[README.md]") {
-			doSomething()
-			remove();
-			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-		} else if ("Removed:[README.md]" === TestStatus && statusMessage === "deleted:[README.md]") {
-			doSomething()
-			remove();
-			report();
-		} else if ("Untracked:[README.md]" === statusMessage && "new file:[README.md]" === gitstatus[PageNumber - 1]) {
-			doSomething()
-			add_repo();
-			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-		} else {
-			add_repo();
-			report();
+	else if (input.match(/^git add/)) {
+		if (input.match(/ README.md$/) || input.match(/ .$/)) {
+			if ("Modified:[README.md]" === statusMessage && "Changed:[README.md]" === gitstatus[PageNumber - 1]) {
+				doSomething()
+				add_repo();
+				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+			} else if ("Removed:[README.md]" === gitstatus[PageNumber - 1] && statusMessage === "deleted:[README.md]") {
+				doSomething()
+				remove();
+				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+			} else if ("Removed:[README.md]" === TestStatus && statusMessage === "deleted:[README.md]") {
+				doSomething()
+				remove();
+				report();
+			} else if ("Untracked:[README.md]" === statusMessage && "new file:[README.md]" === gitstatus[PageNumber - 1]) {
+				doSomething()
+				add_repo();
+				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+			} else {
+				add_repo();
+				report();
+			}
+		}
+		else {
+			report({ msg: "did not match any files", className: "jquery-console-message-error" })
 		}
 		//create
 	} else if (input.match(/^create$/)) {
@@ -531,8 +558,8 @@ function onHandle(line, report) {
 			file_add();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 		} else if (PageNumber === 0) {
-			report([{msg:"Repository does not exist",className:"jquery-console-message-error"}]);
-		}else if(lsMessage === "README.md"){
+			report([{ msg: "Repository does not exist", className: "jquery-console-message-error" }]);
+		} else if (lsMessage === "README.md") {
 			report()
 		} else {
 			make();
@@ -544,17 +571,17 @@ function onHandle(line, report) {
 		//rm				   
 	} else if (input.match(rm)) {
 		ls()
-		if(input.match(/.git$/)){
-			report([{msg:".git cannot be deleted on this terminal",className:"jquery-console-message-type"}])
-		}else if (input.match(/ README.md$/)) {
+		if (input.match(/.git$/)) {
+			report([{ msg: ".git cannot be deleted on this terminal", className: "jquery-console-message-type" }])
+		} else if (input.match(/ README.md$/)) {
 			if ("deleted:[README.md]" === gitstatus[PageNumber - 1]) {
 				doSomething()
 				deleted();
 				file_delete();
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-			}else if (lsMessage === "") {
+			} else if (lsMessage === "") {
 				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
-			}else {
+			} else {
 				deleted();
 				file_delete();
 				report();
@@ -583,12 +610,13 @@ function onHandle(line, report) {
 			doSomething()
 			commit_repo(input);
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-		}else if(statusMessage === TestStatus){
+		} else if (statusMessage === TestStatus) {
 			commit_repo(input);
 			confTest();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-		}else if(statusMessage === "new file:[README.md]" || statusMessage === "Changed:[README.md]"){
+		} else if (statusMessage === "new file:[README.md]" || statusMessage === "Changed:[README.md]") {
 			commit_repo(input);
+			report();
 		} else if (statusMessage === "") {
 			report([{ msg: "nothing to commit, working tree clean", className: "jquery-console-message-error" }]);
 		} else {
