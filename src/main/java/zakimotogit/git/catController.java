@@ -17,6 +17,7 @@ public class catController {
 	@RequestMapping(method=RequestMethod.POST,value="{repositoryDir}/cat")
 		public initDataModel cat(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException{
 		try{
+			data.setfileName(data.getfileName());
 			data.setrepositoryDir(data.getrepositoryDir());
 			data.setcatMessage(data.getcatMessage());
 			data.file_cat();

@@ -16,7 +16,7 @@ public class removeController {
 	@RequestMapping(method=RequestMethod.POST,value="{repositoryDir}/remove")
 	public initDataModel remove(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException, GitAPIException{
 			data.setrepositoryDir(data.getrepositoryDir());
-			
+			data.setfileName(data.getfileName());
 			data.remove();
 			data.setstatusMessage(data.getstatusMessage());
 			data.status();

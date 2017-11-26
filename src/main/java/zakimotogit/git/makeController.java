@@ -16,6 +16,7 @@ public class makeController {
 	public initDataModel create(@RequestBody initDataModel data) throws IOException{
 		
 		try {
+			data.setfileName(data.getfileName());
 			data.touch();
 			data.setstatusMessage(data.getstatusMessage());
 			data.status();

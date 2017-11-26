@@ -23,7 +23,11 @@ import javax.servlet.http.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
+import org.eclipse.jgit.api.errors.EmtpyCommitException;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoMessageException;
+import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
@@ -41,6 +45,7 @@ public class initDataModel {
 	private String lsMessage;
 	private String number;
 	private Git git;
+	private String fileName;
 	private static final DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 	private Date time = new Date();
 	
@@ -78,6 +83,15 @@ public class initDataModel {
 	
 	public void setNumber(String number){
 		this.number = number;
+	}
+	
+	public void setfileName(String fileName){
+		this.fileName = fileName;
+	}
+	
+	
+	public String getfileName(){
+		return fileName;
 	}
 	
 	
@@ -125,11 +139,14 @@ public class initDataModel {
 
         Repository repo = this.createNewRepository();        
         
-   
+        try{
      // ファイルを生成
-        File myfile = new File(repo.getDirectory().getParent(), "README.md");
+        File myfile = new File(repo.getDirectory().getParent(), fileName);
         if(!myfile.createNewFile()) {
             throw new IOException("Could not create file " + myfile);
+        }
+        }catch(IOException e){
+        	System.out.println(e);
         }
 
 
@@ -138,23 +155,29 @@ public class initDataModel {
 	public void add() throws IOException, GitAPIException {
 		Repository repo = this.createNewRepository();
 		git = new Git(repo);
-		git.add().addFilepattern("README.md").call();
+		git.add().addFilepattern(fileName).call();
 		
 	}
 	
-	public void commit() throws IOException, GitAPIException{
+	public void commit() throws Exception, GitAPIException{
 		Repository repo = this.createNewRepository();
 		git = new Git(repo);
+		try {
 		git.commit().setMessage(commitMessage).call();
-		
-		
-	}
+		} catch (EmtpyCommitException e) {
+			e.printStackTrace();
+		}catch( ConcurrentRefUpdateException e ){
+		      e.printStackTrace();
+		}catch( WrongRepositoryStateException e ){
+		      e.printStackTrace();
+		}
+    }
 	
 	public void file_edit() throws IOException {
 		Repository repo = this.createNewRepository();
 		//ファイルの書き換え
-		Path path = Paths.get(repo.getDirectory().getParent(),"README.md");
-			if(Files.exists(Paths.get(repo.getDirectory().getParent(),"README.md"))){
+		Path path = Paths.get(repo.getDirectory().getParent(),fileName);
+			if(Files.exists(Paths.get(repo.getDirectory().getParent(),fileName))){
 				try(BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)){
 					writer.append("Modified time is " + formatter.format(time));
 					writer.newLine();
@@ -169,7 +192,7 @@ public class initDataModel {
 		Repository repo = this.createNewRepository();
 		String strFile = "";
 		//ファイルの読み込み
-		Path path = Paths.get(repo.getDirectory().getParent(),"README.md");
+		Path path = Paths.get(repo.getDirectory().getParent(),fileName);
 		
 		try(BufferedReader reader = Files.newBufferedReader(path,StandardCharsets.UTF_8)){
 			for (String line;(line = reader.readLine()) != null;){
@@ -194,7 +217,6 @@ public class initDataModel {
 				System.out.println(item.getName());
 				filename += item.getName();
 			}
-			System.out.println("[12][" + myfile + "]はディレクトリでもファイルでもありません");
 		}
 		lsMessage = filename;
 	}
@@ -203,7 +225,7 @@ public class initDataModel {
 		Repository repo = this.createNewRepository();
 		//ファイルの削除
 //		
-		Path path = Paths.get(repo.getDirectory().getParent(),"README.md");
+		Path path = Paths.get(repo.getDirectory().getParent(),fileName);
 			try{
 			Files.delete(path);
 			}catch(IOException e){
@@ -217,7 +239,7 @@ public class initDataModel {
 		Repository repo = this.createNewRepository();
 		
 		git = new Git(repo);
-		git.rm().addFilepattern("README.md").call();
+		git.rm().addFilepattern(fileName).call();
 	}
 	 
 	public void diff() throws IOException, GitAPIException{
@@ -236,22 +258,22 @@ public class initDataModel {
 		Status status = git.status().call();
 		String strStatus = "";
         if (!status.getAdded().isEmpty()) {
-            strStatus += "new file:" + status.getAdded();
+            strStatus += "new file:" + status.getAdded() + "\n";
         }
         if (!status.getChanged().isEmpty()) {
-            strStatus += "Changed:" + status.getChanged();
+            strStatus += "Changed:" + status.getChanged() + "\n";
         }
         if (!status.getMissing().isEmpty()) {
-            strStatus += "deleted:" + status.getMissing();
+            strStatus += "deleted:" + status.getMissing() + "\n";
         }
         if (!status.getModified().isEmpty()) {
-            strStatus += "Modified:" + status.getModified();
+            strStatus += "Modified:" + status.getModified() + "\n";
         }
         if(!status.getRemoved().isEmpty()){
-        	strStatus += "Removed:" + status.getRemoved();
+        	strStatus += "Removed:" + status.getRemoved() + "\n";
         }
         if (!status.getUntracked().isEmpty()) {
-            strStatus += "Untracked:" + status.getUntracked();
+            strStatus += "Untracked:" + status.getUntracked() + "\n";
         }
         System.out.println(strStatus);
         statusMessage = strStatus;
@@ -267,6 +289,13 @@ public class initDataModel {
 
         return repo;
     }
+	/*
+	public void make_dir() throws IOException {
+		String hexString = DigestUtils.md5Hex(repositoryDir);
+		File newDir = new File("repos/"+hexString);
+		newDir.mkdir();
+	}
+	*/
 	
 	
 	@Override

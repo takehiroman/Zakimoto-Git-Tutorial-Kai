@@ -16,6 +16,7 @@ public class addController {
 	public initDataModel add(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException{
 		try{
 			data.setrepositoryDir(data.getrepositoryDir());
+			data.setfileName(data.getfileName());
 			data.add();
 			data.setstatusMessage(data.getstatusMessage());
 			data.status();

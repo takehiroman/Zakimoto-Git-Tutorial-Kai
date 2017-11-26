@@ -2,21 +2,47 @@ var PageNumber = 0;
 var testNumber = 0;
 var TestStatus = 0;
 var TestMessage = '"test"';
-barWidth = 0;
 var ip;
-var Dirname;
+var Dirname = $.now();
 var diffMessage;
 var statusMessage;
 var lsMessage;
 var catMessage;
-var gHogeNum = new HogeNum();
+var fileName;
 var sets;
 var gitstatus = [];
+var story = [];
 
 $.getJSON("http://ip-api.com/json/?callback=?", function (data) {
 	ip = data.query;
-	console.log(ip);
 });
+
+$.getJSON("js/story1.json", function (json) {
+	for (var i in json.story) {
+		if (json.story[i].status === "") {
+			gitstatus.push("\n")
+		} else {
+			gitstatus.push(json.story[i].status + "[" + json.file + "]" + "\n")
+		}
+		fileName = json.file
+	}
+	console.log(gitstatus)
+})
+
+
+function doSomething() {
+	PageNumber++;
+	$.getJSON("js/story1.json", function (json) {
+
+		var message = document.getElementById("message");
+
+		message.textContent = json.story[PageNumber].comment
+		console.log('gitstatus:' + gitstatus)
+		var $pb1 = $('.progress-bar');
+		bargage1 = PageNumber / json.story.length
+		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / json.story.length * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / json.story.length * 100) + "% ");
+	});
+}
 
 //ログを保存する
 function data_input(line, report) {
@@ -57,7 +83,7 @@ function add_filelist() {
 }
 
 function add_file() {
-	$(".file").append('<p><img src="./image/computer_document.png" width="20" height="20" th:src="@{/image/computer_document.png}"></img>README.md</p>')
+	$(".file").append('<p><img src="./image/computer_document.png" width="20" height="20" th:src="@{/image/computer_document.png}"></img>'+fileName+'</p>')
 }
 
 function edit_file() {
@@ -82,7 +108,7 @@ function delete_folder() {
 }
 
 function file_add() {
-	$(".file_preview").append('<p class="filename">README.md</p><div class="preview"><p></p></div>')
+	$(".file_preview").append('<p class="filename">'+fileName+'</p><div class="preview"><p></p></div>')
 }
 
 function init_repo() {
@@ -104,7 +130,6 @@ function init_repo() {
 		success: function (data) {
 			console.log(data);
 			statusMessage = data.statusMessage;
-			gHogeNum.setNum(statusMessage);
 			console.log('statusMessage:' + statusMessage)
 
 		},
@@ -115,10 +140,13 @@ function init_repo() {
 	})
 }
 
+
+
 function add_repo() {
 	var hostUrl = Dirname + '/add'
 	var article2 = new Object();
 	article2.repositoryDir = Dirname;
+	article2.fileName = fileName;
 
 	$.ajax({
 		type: "PUT",
@@ -129,7 +157,6 @@ function add_repo() {
 		success: function (data) {
 			console.log(data);
 			statusMessage = data.statusMessage;
-			gHogeNum.setNum(statusMessage);
 			console.log('statusMessage:' + statusMessage)
 		},
 		error: function (xhr, text, err) {
@@ -177,7 +204,7 @@ function status_repo() {
 		success: function (data) {
 			console.log(data)
 			console.log(data.statusMessage);
-			statusMessage = data.statusMessage;
+			statusMessage = data.statusMessage + "\n";
 		},
 		error: function (xhr, text, err) {
 			console.log('text: ', text);
@@ -205,7 +232,6 @@ function commit_repo(line) {
 		success: function (data) {
 			console.log(data);
 			statusMessage = data.statusMessage;
-			gHogeNum.setNum(statusMessage);
 			console.log('statusMessage:' + statusMessage)
 		},
 		error: function (xhr, text, err) {
@@ -219,6 +245,7 @@ function edit() {
 	var hostUrl = Dirname + '/edit'
 	var article6 = new Object();
 	article6.repositoryDir = Dirname;
+	article6.fileName = fileName;
 
 	$.ajax({
 		type: "POST",
@@ -229,7 +256,6 @@ function edit() {
 		success: function (data) {
 			console.log(data);
 			statusMessage = data.statusMessage;
-			gHogeNum.setNum(statusMessage);
 			console.log('statusMessage:' + statusMessage)
 		},
 		error: function (xhr, text, err) {
@@ -247,6 +273,7 @@ function cat() {
 	var hostUrl = Dirname + '/cat'
 	var article8 = new Object();
 	article8.repositoryDir = Dirname;
+	article8.fileName = fileName;
 
 	$.ajax({
 		type: "POST",
@@ -292,9 +319,10 @@ function deleted() {
 	var hostUrl = Dirname + '/delete'
 	var article7 = new Object();
 	article7.repositoryDir = Dirname;
+	article7.fileName = fileName;
 
 	$.ajax({
-		type: "POST",
+		type: "DELETE",
 		url: hostUrl,
 		contentType: 'application/json',
 		dataType: 'json',
@@ -302,7 +330,6 @@ function deleted() {
 		success: function (data) {
 			console.log(data);
 			statusMessage = data.statusMessage;
-			gHogeNum.setNum(statusMessage);
 			console.log('statusMessage:' + statusMessage)
 		},
 		error: function (xhr, text, err) {
@@ -316,6 +343,7 @@ function remove() {
 	var hostUrl = Dirname + '/remove'
 	var article10 = new Object();
 	article10.repositoryDir = Dirname;
+	article10.fileName = fileName;
 
 	$.ajax({
 		type: "POST",
@@ -326,7 +354,6 @@ function remove() {
 		success: function (data) {
 			console.log(data);
 			statusMessage = data.statusMessage;
-			gHogeNum.setNum(statusMessage);
 			console.log('statusMessage:' + statusMessage)
 		},
 		error: function (xhr, text, err) {
@@ -339,6 +366,8 @@ function remove() {
 function make() {
 	var hostUrl = '/make'
 	var article11 = new Object();
+	article11.repositoryId = ip;
+	article11.fileName = fileName;
 	article11.repositoryDir = Dirname;
 
 	$.ajax({
@@ -350,7 +379,6 @@ function make() {
 		success: function (data) {
 			console.log(data);
 			statusMessage = data.statusMessage;
-			gHogeNum.setNum(statusMessage);
 			console.log('statusMessage:' + statusMessage)
 		},
 		error: function (xhr, text, err) {
@@ -361,51 +389,20 @@ function make() {
 }
 
 
-function HogeNum() {
-	sets = gitstatus;
-	console.log(sets);
-
-	this.getNum = function () {
-		return gitstatus;
-	};
-
-	this.setNum = function (val) {
-		console.log(sets)
-		console.log(val)
-
-	};
-}
 
 function story_get() {
 	$.getJSON("js/story1.json", function (json) {
 		console.log(json.story.length)
 	});
 }
-
-function doSomething() {
-	PageNumber++;
-	$.getJSON("js/story1.json", function (json) {
-		console.log(json.story.length)
-		var message = document.getElementById("message");
-		//var number = json.story[i].number
-		console.log(number)
-		message.textContent = json.story[PageNumber - 1].comment
-		gitstatus.push(json.story[PageNumber - 1].status)
-		console.log('gitstatus:' + gitstatus)
-		var $pb1 = $('.progress-bar');
-		bargage1 = PageNumber / json.story.length
-		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / json.story.length * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / json.story.length * 100) + "% ");
-	});
-}
-
-function Type_create(){
+function Type_create() {
 	getIp();
 	setTimeout(function () {
 		make();
 	}, 1000);
 }
 
-function Type_edit(){
+function Type_edit() {
 	getIp();
 	setTimeout(function () {
 		make();
@@ -415,7 +412,7 @@ function Type_edit(){
 	}, 1000);
 }
 
-function Type_delete(){
+function Type_delete() {
 	getIp();
 	setTimeout(function () {
 		make();
@@ -460,14 +457,12 @@ function bar() {
 
 function onHandle(line, report) {
 	var input = $.trim(line);
-	var commit = new RegExp(/^git commit -m ".*"$'/);
+	var file = new RegExp(" " + fileName + "$");
 	var cats = new RegExp(/^cat/);
 	var rm = new RegExp(/^rm/);
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
-	//data_input(line, report);
-	console.log(gitstatus[PageNumber - 1])
-	console.log(statusMessage)
+	//data_input(line, report);ƒ
 	console.log(input)
 
 
@@ -476,10 +471,7 @@ function onHandle(line, report) {
 	if (input == 'git init') {
 		if (PageNumber === 0) {
 			getIp();
-			setTimeout(function () {
-				console.log(gHogeNum.getNum());
-			}, 3500);
-			doSomething()
+			doSomething();
 			add_filelist();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 		} else {
@@ -500,7 +492,7 @@ function onHandle(line, report) {
 		}]);
 
 	} else if (input == 'help') {
-		report([{ msg: "help - 各コマンドのヘルプを表示します\nls - フォルダ内のファイルリストを表示します\ncreate - フォルダにREADMEファイルを追加します\nedit - READMEファイルの内容を変更します\ncat FILENAME - 指定したファイル内のテキストを表示します\nrm FILENAME  - 指定したファイルを削除します\n git help - このターミナル上で使えるgitコマンドのリストを表示します", className: "jquery-console-message-type" }])
+		report([{ msg: "help - 各コマンドのヘルプを表示します\nls - フォルダ内のファイルリストを表示します\ncreate - フォルダに" + fileName + "ファイルを追加します\nedit - " + fileName + "ファイルの内容を変更します\ncat FILENAME - 指定したファイル内のテキストを表示します\nrm FILENAME  - 指定したファイルを削除します\n git help - このターミナル上で使えるgitコマンドのリストを表示します", className: "jquery-console-message-type" }])
 
 	} else if (input == 'ls') {
 		ls()
@@ -508,7 +500,7 @@ function onHandle(line, report) {
 
 	} else if (input.match(cats)) {
 		ls();
-		if (input.match(/ README.md$/)) {
+		if (input.match(file)) {
 			if (!lsMessage) {
 				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
 			} else {
@@ -523,12 +515,12 @@ function onHandle(line, report) {
 
 	//git add
 	else if (input.match(/^git add/)) {
-		if (input.match(/ README.md$/) || input.match(/ .$/)) {
-			if ("Modified:[README.md]" === statusMessage && "Changed:[README.md]" === gitstatus[PageNumber - 1]) {
+		if (input.match(file) || input.match(/ .$/)) {
+			add_repo();
+			if ("Changed:["+fileName+"]\n" === gitstatus[PageNumber]) {
 				doSomething()
-				add_repo();
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-			} else if ("Removed:[README.md]" === gitstatus[PageNumber - 1] && statusMessage === "deleted:[README.md]") {
+			} else if ("deleted:["+fileName+"]\n" === statusMessage) {
 				doSomething()
 				remove();
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
@@ -536,9 +528,9 @@ function onHandle(line, report) {
 				doSomething()
 				remove();
 				report();
-			} else if ("Untracked:[README.md]" === statusMessage && "new file:[README.md]" === gitstatus[PageNumber - 1]) {
+			} else if (statusMessage == gitstatus[PageNumber]) {
 				doSomething()
-				add_repo();
+				//add_repo();
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 			} else {
 				add_repo();
@@ -548,21 +540,22 @@ function onHandle(line, report) {
 		else {
 			report({ msg: "did not match any files", className: "jquery-console-message-error" })
 		}
+
 		//create
 	} else if (input.match(/^create$/)) {
-		ls()
-		if ("" === statusMessage && "Untracked:[README.md]" === gitstatus[PageNumber - 1]) {
-			doSomething()
-			make();
+		make();
+		ls();
+		if (statusMessage === gitstatus[PageNumber]) {
+			//make();
+			doSomething();
 			add_file();
 			file_add();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 		} else if (PageNumber === 0) {
 			report([{ msg: "Repository does not exist", className: "jquery-console-message-error" }]);
-		} else if (lsMessage === "README.md") {
+		} else if (lsMessage === fileName) {
 			report()
 		} else {
-			make();
 			add_file();
 			file_add();
 			report();
@@ -573,16 +566,15 @@ function onHandle(line, report) {
 		ls()
 		if (input.match(/.git$/)) {
 			report([{ msg: ".git cannot be deleted on this terminal", className: "jquery-console-message-type" }])
-		} else if (input.match(/ README.md$/)) {
-			if ("deleted:[README.md]" === gitstatus[PageNumber - 1]) {
+		} else if (input.match(file)) {
+			deleted()
+			if (statusMessage === gitstatus[PageNumber]) {
 				doSomething()
-				deleted();
 				file_delete();
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 			} else if (lsMessage === "") {
 				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
 			} else {
-				deleted();
 				file_delete();
 				report();
 			}
@@ -592,31 +584,29 @@ function onHandle(line, report) {
 
 		//edit
 	} else if (input.match(/^edit$/)) {
-		if ("Modified:[README.md]" === gitstatus[PageNumber - 1] && statusMessage === "") {
+		edit();
+		if (gitstatus[PageNumber] === statusMessage) {
 			doSomething()
-			edit();
 			cat();
 			edit_file();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 		} else {
-			edit();
 			cat();
 			edit_file();
 			report();
 		}
+
 		//git commit
 	} else if (input.match(/^git commit -m ".*"$/)) {
-		if ("" === gitstatus[PageNumber - 1]) {
+		commit_repo(input);
+		status_repo();
+		console.log(gitstatus)
+		if (statusMessage === gitstatus[PageNumber]) {
 			doSomething()
-			commit_repo(input);
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 		} else if (statusMessage === TestStatus) {
-			commit_repo(input);
 			confTest();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-		} else if (statusMessage === "new file:[README.md]" || statusMessage === "Changed:[README.md]") {
-			commit_repo(input);
-			report();
 		} else if (statusMessage === "") {
 			report([{ msg: "nothing to commit, working tree clean", className: "jquery-console-message-error" }]);
 		} else {
@@ -638,13 +628,18 @@ function onHandle(line, report) {
 		console.log('statusMessage:' + statusMessage)
 		console3CancelFlag = false;
 	}
-	HogeNum();
 }
 
 $(document).ready(function () {
 	var console1 = $('<div class="console1">');
 	var error = false
 	$('#console').append(console1);
+	var comment1 = $('<p id="message">');
+	$('.comment').append(comment1);
+	$.getJSON("js/story1.json", function (json) {
+		var message = document.getElementById("message");
+		message.textContent = json.story[PageNumber].comment
+	});
 	var controller1 = console1.console({
 		promptLabel: '$ ',
 		commandValidate: function (line) {

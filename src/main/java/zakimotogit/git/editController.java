@@ -16,7 +16,7 @@ public class editController {
 	@RequestMapping(method=RequestMethod.POST,value="{repositoryDir}/edit")
 	public initDataModel edit(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException, GitAPIException{
 			data.setrepositoryDir(data.getrepositoryDir());
-			
+			data.setfileName(data.getfileName());
 			data.file_edit();
 			data.setstatusMessage(data.getstatusMessage());
 			data.status();

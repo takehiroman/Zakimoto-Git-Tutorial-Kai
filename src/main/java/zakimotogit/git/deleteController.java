@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @EnableAutoConfiguration
 public class deleteController {
-	@RequestMapping(method=RequestMethod.POST,value="{repositoryDir}/delete")
+	@RequestMapping(method=RequestMethod.DELETE,value="{repositoryDir}/delete")
 	public initDataModel delete(@PathVariable String repositoryDir,@RequestBody initDataModel data) throws IOException, GitAPIException{
 			data.setrepositoryDir(data.getrepositoryDir());
-			
+			data.setfileName(data.getfileName());
 			data.file_delete();
 			data.setstatusMessage(data.getstatusMessage());
 			data.status();
