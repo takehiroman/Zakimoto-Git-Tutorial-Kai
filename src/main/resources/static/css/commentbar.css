@@ -44,3 +44,15 @@
   height: 200px;
   margin: auto;
 }
+.btn-link{
+  position: relative;
+  width: 600px;
+  height: 35px;
+  margin: auto;
+}
+.form-link{
+  position: relative;
+  width: 600px;
+  height: 35px;
+  margin: auto;
+}

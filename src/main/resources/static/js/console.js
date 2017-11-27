@@ -11,13 +11,13 @@ var catMessage;
 var fileName;
 var sets;
 var gitstatus = [];
-var story = [];
+var test = [];
 
 $.getJSON("http://ip-api.com/json/?callback=?", function (data) {
 	ip = data.query;
 });
 
-$.getJSON("js/story1.json", function (json) {
+$.getJSON("js/story2.json", function (json) {
 	for (var i in json.story) {
 		if (json.story[i].status === "") {
 			gitstatus.push("\n")
@@ -29,10 +29,9 @@ $.getJSON("js/story1.json", function (json) {
 	console.log(gitstatus)
 })
 
-
 function doSomething() {
 	PageNumber++;
-	$.getJSON("js/story1.json", function (json) {
+	$.getJSON("js/story2.json", function (json) {
 
 		var message = document.getElementById("message");
 
@@ -40,7 +39,17 @@ function doSomething() {
 		console.log('gitstatus:' + gitstatus)
 		var $pb1 = $('.progress-bar');
 		bargage1 = PageNumber / json.story.length
-		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / json.story.length * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / json.story.length * 100) + "% ");
+		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / (json.story.length+1) * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / (json.story.length+1) * 100) + "% ");
+	});
+}
+
+function story_get() {
+	$.getJSON("js/test.json", function (json) {
+		for (var i in json.story) {
+			if (json.test[i].status === "") {
+				test.push("\n")
+			}
+		}
 	});
 }
 
@@ -104,7 +113,7 @@ function delete_folder() {
 	$(".header").remove();
 	$(".directory").remove();
 	$(".progress-bar").remove();
-	$(".progress-bar").remove();
+	$(".progress").remove();
 }
 
 function file_add() {
@@ -114,7 +123,6 @@ function file_add() {
 function init_repo() {
 	var hostUrl = 'init';
 	var article1 = new Object();
-	Dirname = $.now();
 	article1.repositoryId = ip;
 	article1.repositoryDir = Dirname;
 	var loc = window.location.pathname;
@@ -390,12 +398,9 @@ function make() {
 
 
 
-function story_get() {
-	$.getJSON("js/story1.json", function (json) {
-		console.log(json.story.length)
-	});
-}
+
 function Type_create() {
+	Dirname = $.now();
 	getIp();
 	setTimeout(function () {
 		make();
@@ -403,6 +408,7 @@ function Type_create() {
 }
 
 function Type_edit() {
+	Dirname = $.now();
 	getIp();
 	setTimeout(function () {
 		make();
@@ -413,6 +419,7 @@ function Type_edit() {
 }
 
 function Type_delete() {
+	Dirname = $.now();
 	getIp();
 	setTimeout(function () {
 		make();
@@ -427,6 +434,7 @@ function confTest() {
 	delete_folder()
 	$.getJSON("js/test.json", function (json) {
 		message = document.getElementById("message");
+		fileName = json.file
 		message.textContent = json.test[testNumber - 1].comment;
 		TestPage = json.test[testNumber - 1].number;
 		TestStatus = json.test[testNumber - 1].status;
@@ -464,6 +472,8 @@ function onHandle(line, report) {
 	input = input.replace(/\'/g, "\"");
 	//data_input(line, report);ƒ
 	console.log(input)
+	console.log(file)
+	console.log(gitstatus[PageNumber])
 
 
 
@@ -520,17 +530,15 @@ function onHandle(line, report) {
 			if ("Changed:["+fileName+"]\n" === gitstatus[PageNumber]) {
 				doSomething()
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-			} else if ("deleted:["+fileName+"]\n" === statusMessage) {
+			} else if ("Removed:["+fileName+"]\n" === gitstatus[PageNumber]) {
 				doSomething()
 				remove();
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-			} else if ("Removed:[README.md]" === TestStatus && statusMessage === "deleted:[README.md]") {
-				doSomething()
+			} else if ("deleted:["+fileName+"]\n" === statusMessage) {
 				remove();
 				report();
 			} else if (statusMessage == gitstatus[PageNumber]) {
 				doSomething()
-				//add_repo();
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 			} else {
 				add_repo();
@@ -598,20 +606,23 @@ function onHandle(line, report) {
 
 		//git commit
 	} else if (input.match(/^git commit -m ".*"$/)) {
-		commit_repo(input);
 		status_repo();
-		console.log(gitstatus)
-		if (statusMessage === gitstatus[PageNumber]) {
-			doSomething()
-			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-		} else if (statusMessage === TestStatus) {
-			confTest();
-			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-		} else if (statusMessage === "") {
+		if(statusMessage === "\n"){
 			report([{ msg: "nothing to commit, working tree clean", className: "jquery-console-message-error" }]);
-		} else {
+		}else{
+			commit_repo(input);
 			status_repo();
-			report([{ msg: statusMessage, className: "jquery-console-message-error" }]);
+			console.log(gitstatus)
+			if (statusMessage === gitstatus[PageNumber]) {
+				doSomething()
+				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+			} else if (statusMessage === "\n") {
+				confTest();
+				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+			}  else {
+				status_repo();
+				report([{ msg: statusMessage, className: "jquery-console-message-error" }]);
+			}
 		}
 	} else if (input == 'git help' || input == 'git -h') {
 		report([{
