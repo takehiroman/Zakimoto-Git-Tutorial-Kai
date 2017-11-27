@@ -9,7 +9,6 @@ var statusMessage;
 var lsMessage;
 var catMessage;
 var fileName;
-var sets;
 var gitstatus = [];
 var test = [];
 
@@ -39,7 +38,7 @@ function doSomething() {
 		console.log('gitstatus:' + gitstatus)
 		var $pb1 = $('.progress-bar');
 		bargage1 = PageNumber / json.story.length
-		$pb1.attr({ 'style': 'width:' + Math.round((PageNumber+1) / json.story.length * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round((PageNumber+1) / json.story.length * 100) + "% ");
+		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / json.story.length * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / json.story.length * 100) + "% ");
 	});
 }
 
@@ -428,9 +427,18 @@ function Type_delete() {
 		deleted()
 	}, 1000);
 }
-
+/*
+function road_test(){
+	$.getJSON("js/test.json", function (json) {
+		message = document.getElementById("message");
+		fileName = json.file
+	}
+}
+*/
 function confTest() {
-	testNumber++;
+	if(testNumber===0){
+		testNumber++
+	}
 	gitstatus = []
 	delete_folder()
 	$.getJSON("js/test.json", function (json) {
@@ -618,6 +626,7 @@ function onHandle(line, report) {
 				doSomething()
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 			} else if (statusMessage === "\n") {
+				testNumber++;
 				confTest();
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 			}  else {
