@@ -479,7 +479,7 @@ function onHandle(line, report) {
 	var rm = new RegExp(/^rm/);
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
-	//data_input(line, report);ƒ
+	data_input(line, report);
 	console.log(input)
 	console.log(file)
 	console.log(gitstatus[PageNumber])
@@ -546,7 +546,7 @@ function onHandle(line, report) {
 			} else if ("deleted:["+fileName+"]\n" === statusMessage) {
 				remove();
 				report();
-			} else if (statusMessage == gitstatus[PageNumber]) {
+			} else if ("new file:["+fileName+"]\n" === gitstatus[PageNumber]) {
 				doSomething()
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 			} else {
@@ -562,7 +562,7 @@ function onHandle(line, report) {
 	} else if (input.match(/^create$/)) {
 		make();
 		ls();
-		if (statusMessage === gitstatus[PageNumber]) {
+		if ("Untracked:["+fileName+"]\n" === gitstatus[PageNumber]) {
 			//make();
 			doSomething();
 			add_file();
