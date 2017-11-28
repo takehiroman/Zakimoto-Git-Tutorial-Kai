@@ -3,7 +3,7 @@ var testNumber = 0;
 var TestStatus = 0;
 var TestMessage = '"test"';
 var ip;
-var Dirname = $.now();
+var Dirname
 var diffMessage;
 var statusMessage;
 var lsMessage;
@@ -11,6 +11,7 @@ var catMessage;
 var fileName;
 var gitstatus = [];
 var test = [];
+var file_img = false
 
 $.getJSON("http://ip-api.com/json/?callback=?", function (data) {
 	ip = data.query;
@@ -38,7 +39,7 @@ function doSomething() {
 		console.log('gitstatus:' + gitstatus)
 		var $pb1 = $('.progress-bar');
 		bargage1 = PageNumber / json.story.length
-		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / json.story.length * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / json.story.length * 100) + "% ");
+		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / (json.story.length-1) * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber /(json.story.length-1) * 100) + "% ");
 	});
 }
 
@@ -86,28 +87,6 @@ function getIp() {
 	});
 }
 
-function add_filelist() {
-	$(".folder").append('<p><img src="./image/computer_folder.png" width="20" height="20" th:src="@{/image/computer_folder.png}"></img>.git</p>')
-}
-
-function add_file() {
-	$(".file").append('<p><img src="./image/computer_document.png" width="20" height="20" th:src="@{/image/computer_document.png}"></img>'+fileName+'</p>')
-}
-
-function edit_file() {
-	$(".preview").text(catMessage)
-}
-
-function addLink() {
-	$(".file").append('<a href="javascript:void(0);" onclick="OnLinkClick();">Exec2</a><br />')
-}
-
-function file_delete() {
-	$(".file").empty();
-	$(".filename").remove();
-	$(".preview").remove();
-}
-
 function delete_folder() {
 	$(".header").remove();
 	$(".directory").remove();
@@ -115,11 +94,10 @@ function delete_folder() {
 	$(".progress").remove();
 }
 
-function file_add() {
-	$(".file_preview").append('<p class="filename">'+fileName+'</p><div class="preview"><p></p></div>')
-}
-
 function init_repo() {
+	if(!Dirname){
+		Dirname = $.now();
+	}
 	var hostUrl = 'init';
 	var article1 = new Object();
 	article1.repositoryId = ip;
@@ -427,14 +405,7 @@ function Type_delete() {
 		deleted()
 	}, 1000);
 }
-/*
-function road_test(){
-	$.getJSON("js/test.json", function (json) {
-		message = document.getElementById("message");
-		fileName = json.file
-	}
-}
-*/
+
 function confTest() {
 	if(testNumber===0){
 		testNumber++
@@ -472,6 +443,28 @@ function bar() {
 	$pb.attr({ 'style': 'width:' + barWidth + '%;', 'class': 'progress-bar' }).html(" " + barWidth + "% ");
 }
 
+function edit_file() {
+	$(".preview").text(catMessage)
+}
+
+function add_filelist() {
+	$(".folder").html('<p><img src="./image/computer_folder.png" width="20" height="20" th:src="@{/image/computer_folder.png}"></img>.git</p>')
+}
+
+function add_file() {
+	$(".file").html('<p><img src="./image/computer_document.png" width="20" height="20" th:src="@{/image/computer_document.png}"></img>'+fileName+'</p>')
+}
+
+function file_add() {
+	$(".filename").text(fileName)
+}
+
+function file_delete() {
+	$(".file").empty();
+	$(".filename").empty();
+	$(".preview").empty();
+}
+
 function onHandle(line, report) {
 	var input = $.trim(line);
 	var file = new RegExp(" " + fileName + "$");
@@ -479,12 +472,12 @@ function onHandle(line, report) {
 	var rm = new RegExp(/^rm/);
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
-	data_input(line, report);
+	//data_input(line, report);
 	console.log(input)
 	console.log(file)
 	console.log(gitstatus[PageNumber])
-
-
+	console.log(file_img);
+	status_repo();
 
 
 	if (input == 'git init') {
@@ -563,18 +556,15 @@ function onHandle(line, report) {
 		make();
 		ls();
 		if ("Untracked:["+fileName+"]\n" === gitstatus[PageNumber]) {
-			//make();
 			doSomething();
-			add_file();
-			file_add();
+			file_img = true
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 		} else if (PageNumber === 0) {
 			report([{ msg: "Repository does not exist", className: "jquery-console-message-error" }]);
 		} else if (lsMessage === fileName) {
+			file_img = true
 			report()
 		} else {
-			add_file();
-			file_add();
 			report();
 		}
 
@@ -587,12 +577,10 @@ function onHandle(line, report) {
 			deleted()
 			if (statusMessage === gitstatus[PageNumber]) {
 				doSomething()
-				file_delete();
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 			} else if (lsMessage === "") {
 				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
 			} else {
-				file_delete();
 				report();
 			}
 		} else {
@@ -648,6 +636,13 @@ function onHandle(line, report) {
 		console.log('gitstatus1:' + gitstatus)
 		console.log('statusMessage:' + statusMessage)
 		console3CancelFlag = false;
+	}
+	ls();
+	if(lsMessage===fileName){
+		add_file();
+		file_add();
+	}else{
+		file_delete()
 	}
 }
 

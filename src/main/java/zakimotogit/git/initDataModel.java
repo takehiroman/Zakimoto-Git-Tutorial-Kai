@@ -139,7 +139,7 @@ public class initDataModel {
 
         Repository repo = this.createNewRepository();        
         
-        try{
+        try(Git git = new Git(repo)){
      // ファイルを生成
         File myfile = new File(repo.getDirectory().getParent(), fileName);
         if(!myfile.createNewFile()) {
@@ -152,10 +152,13 @@ public class initDataModel {
 
     }
 	
-	public void add() throws IOException, GitAPIException {
+	public void add() throws Exception, GitAPIException {
 		Repository repo = this.createNewRepository();
-		git = new Git(repo);
-		git.add().addFilepattern(fileName).call();
+		try(Git git = new Git(repo)){
+			if(git != null){
+			git.add().addFilepattern(fileName).call();
+			}
+		}
 		
 	}
 	
@@ -276,6 +279,7 @@ public class initDataModel {
             strStatus += "Untracked:" + status.getUntracked() + "\n";
         }
         System.out.println(strStatus);
+        System.out.println(status.toString());
         statusMessage = strStatus;
 		
 	}
