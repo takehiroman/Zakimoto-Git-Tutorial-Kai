@@ -480,7 +480,7 @@ function onHandle(line, report) {
 	var rm = new RegExp(/^rm/);
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
-	//data_input(line, report);
+	data_input(line, report);
 	console.log(input)
 	console.log(file)
 	console.log(gitstatus[PageNumber])
