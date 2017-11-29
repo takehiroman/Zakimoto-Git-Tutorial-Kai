@@ -29,6 +29,10 @@ $.getJSON("js/story2.json", function (json) {
 	console.log(gitstatus)
 })
 
+function Button_Click() {
+	window.location.reload();
+}
+
 function doSomething() {
 	PageNumber++;
 	$.getJSON("js/story2.json", function (json) {
@@ -459,7 +463,7 @@ function add_file() {
 
 function change_button() {
 	$('#lock-btn').remove();
-	$(".btn-link").html('<input type="button" class="btn btn-primary btn-lg" value="確認テスト" onClick="confTest()" ></input>')
+	$(".btn-link").html('<input type="button" id="tutorial-btn" class="btn btn-success btn-lg" onclick="Button_Click()" value="チュートリアルをはじめから" ></input>\n<input type="button" class="btn btn-primary btn-lg" value="確認テスト" onClick="confTest()" ></input>')
 }
 
 function file_add() {
@@ -477,6 +481,7 @@ function onHandle(line, report) {
 	var file = new RegExp(" " + fileName + "$");
 	var cats = new RegExp(/^cat/);
 	var rm = new RegExp(/^rm/);
+	var commit = new RegExp(/^git commit -m/)
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
 	//data_input(line, report);
@@ -625,7 +630,9 @@ function onHandle(line, report) {
 			report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
 		} else {
 			status_repo();
-			if (statusMessage === "\n") {
+			if(input.match(/""$/)){
+				report([{ msg: "Aborting commit due to empty commit message.", className: "jquery-console-message-error" }]);
+			}else if (statusMessage === "\n") {
 				report([{ msg: "nothing to commit, working tree clean", className: "jquery-console-message-error" }]);
 			} else {
 				commit_repo(input);
