@@ -29,6 +29,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 
@@ -260,6 +261,7 @@ public class initDataModel {
 		git = new Git(repo);
 		Status status = git.status().call();
 		String strStatus = "";
+		if(git != null){
         if (!status.getAdded().isEmpty()) {
             strStatus += "new file:" + status.getAdded() + "\n";
         }
@@ -278,6 +280,9 @@ public class initDataModel {
         if (!status.getUntracked().isEmpty()) {
             strStatus += "Untracked:" + status.getUntracked() + "\n";
         }
+		}else{
+			strStatus += "not repository\n";
+		}
         System.out.println(strStatus);
         System.out.println(status.toString());
         statusMessage = strStatus;
@@ -287,11 +292,15 @@ public class initDataModel {
 	public Repository createNewRepository() throws IOException {
 		
 		String hexString = DigestUtils.md5Hex(repositoryDir);
+		try{
 		Repository repo = new FileRepositoryBuilder()
 	            .setGitDir(new File("repos/" + hexString + "/.git"))
 	            .build();
 
         return repo;
+		}catch(RepositoryNotFoundException e){
+			return null;
+		}
     }
 	/*
 	public void make_dir() throws IOException {

@@ -40,6 +40,9 @@ function doSomething() {
 		var $pb1 = $('.progress-bar');
 		bargage1 = PageNumber / json.story.length
 		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / (json.story.length-1) * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber /(json.story.length-1) * 100) + "% ");
+		if(PageNumber == json.story.length-1){
+			change_button();
+		}
 	});
 }
 
@@ -455,6 +458,11 @@ function add_file() {
 	$(".file").html('<p><img src="./image/computer_document.png" width="20" height="20" th:src="@{/image/computer_document.png}"></img>'+fileName+'</p>')
 }
 
+function change_button(){
+	$('#lock-btn').remove();
+	$(".btn-link").html('<input type="button" class="btn btn-primary btn-lg" value="確認テスト" onClick="confTest()" ></input>')
+}
+
 function file_add() {
 	$(".filename").text(fileName)
 }
@@ -472,7 +480,7 @@ function onHandle(line, report) {
 	var rm = new RegExp(/^rm/);
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
-	data_input(line, report);
+	//data_input(line, report);
 	console.log(input)
 	console.log(file)
 	console.log(gitstatus[PageNumber])
