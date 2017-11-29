@@ -39,8 +39,8 @@ function doSomething() {
 		console.log('gitstatus:' + gitstatus)
 		var $pb1 = $('.progress-bar');
 		bargage1 = PageNumber / json.story.length
-		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / (json.story.length-1) * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber /(json.story.length-1) * 100) + "% ");
-		if(PageNumber == json.story.length-1){
+		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / (json.story.length - 1) * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / (json.story.length - 1) * 100) + "% ");
+		if (PageNumber == json.story.length - 1) {
 			change_button();
 		}
 	});
@@ -98,7 +98,7 @@ function delete_folder() {
 }
 
 function init_repo() {
-	if(!Dirname){
+	if (!Dirname) {
 		Dirname = $.now();
 	}
 	var hostUrl = 'init';
@@ -119,7 +119,6 @@ function init_repo() {
 			console.log(data);
 			statusMessage = data.statusMessage;
 			console.log('statusMessage:' + statusMessage)
-
 		},
 		error: function (xhr, text, err) {
 			console.log('text: ', text);
@@ -410,7 +409,7 @@ function Type_delete() {
 }
 
 function confTest() {
-	if(testNumber===0){
+	if (testNumber === 0) {
 		testNumber++
 	}
 	gitstatus = []
@@ -455,10 +454,10 @@ function add_filelist() {
 }
 
 function add_file() {
-	$(".file").html('<p><img src="./image/computer_document.png" width="20" height="20" th:src="@{/image/computer_document.png}"></img>'+fileName+'</p>')
+	$(".file").html('<p><img src="./image/computer_document.png" width="20" height="20" th:src="@{/image/computer_document.png}"></img>' + fileName + '</p>')
 }
 
-function change_button(){
+function change_button() {
 	$('#lock-btn').remove();
 	$(".btn-link").html('<input type="button" class="btn btn-primary btn-lg" value="確認テスト" onClick="confTest()" ></input>')
 }
@@ -480,12 +479,7 @@ function onHandle(line, report) {
 	var rm = new RegExp(/^rm/);
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
-	data_input(line, report);
-	console.log(input)
-	console.log(file)
-	console.log(gitstatus[PageNumber])
-	console.log(file_img);
-	status_repo();
+	//data_input(line, report);
 
 
 	if (input == 'git init') {
@@ -500,16 +494,25 @@ function onHandle(line, report) {
 
 	} else if (input == 'git diff') {
 		diff_repo();
-		report([{
-			msg: diffMessage,
-			className: "jquery-console-message-type"
-		}]);
+		if (!Dirname) {
+			report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
+		} else {
+			report([{
+				msg: diffMessage,
+				className: "jquery-console-message-type"
+			}]);
+		}
+
 	} else if (input == 'git status') {
 		status_repo();
-		report([{
-			msg: statusMessage,
-			className: "jquery-console-message-type"
-		}]);
+		if (!Dirname) {
+			report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
+		} else {
+			report([{
+				msg: statusMessage,
+				className: "jquery-console-message-type"
+			}]);
+		}
 
 	} else if (input == 'help') {
 		report([{ msg: "help - 各コマンドのヘルプを表示します\nls - フォルダ内のファイルリストを表示します\ncreate - フォルダに" + fileName + "ファイルを追加します\nedit - " + fileName + "ファイルの内容を変更します\ncat FILENAME - 指定したファイル内のテキストを表示します\nrm FILENAME  - 指定したファイルを削除します\n git help - このターミナル上で使えるgitコマンドのリストを表示します", className: "jquery-console-message-type" }])
@@ -535,35 +538,39 @@ function onHandle(line, report) {
 
 	//git add
 	else if (input.match(/^git add/)) {
-		if (input.match(file) || input.match(/ .$/)) {
-			add_repo();
-			if ("Changed:["+fileName+"]\n" === gitstatus[PageNumber] && statusMessage === gitstatus[PageNumber]) {
-				doSomething()
-				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-			} else if ("Removed:["+fileName+"]\n" === gitstatus[PageNumber]) {
-				doSomething()
-				remove();
-				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-			} else if ("deleted:["+fileName+"]\n" === statusMessage) {
-				remove();
-				report();
-			} else if ("new file:["+fileName+"]\n" === gitstatus[PageNumber] && statusMessage === gitstatus[PageNumber]) {
-				doSomething()
-				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-			} else {
+		if (!Dirname) {
+			report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
+		} else {
+			if (input.match(file) || input.match(/ .$/)) {
 				add_repo();
-				report();
+				if ("Changed:[" + fileName + "]\n" === gitstatus[PageNumber] && statusMessage === gitstatus[PageNumber]) {
+					doSomething()
+					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+				} else if ("Removed:[" + fileName + "]\n" === gitstatus[PageNumber]) {
+					doSomething()
+					remove();
+					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+				} else if ("deleted:[" + fileName + "]\n" === statusMessage) {
+					remove();
+					report();
+				} else if ("new file:[" + fileName + "]\n" === gitstatus[PageNumber] && statusMessage === gitstatus[PageNumber]) {
+					doSomething()
+					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+				} else {
+					add_repo();
+					report();
+				}
 			}
-		}
-		else {
-			report({ msg: "did not match any files", className: "jquery-console-message-error" })
+			else {
+				report({ msg: "did not match any files", className: "jquery-console-message-error" })
+			}
 		}
 
 		//create
 	} else if (input.match(/^create$/)) {
 		make();
 		ls();
-		if ("Untracked:["+fileName+"]\n" === gitstatus[PageNumber]) {
+		if ("Untracked:[" + fileName + "]\n" === gitstatus[PageNumber]) {
 			doSomething();
 			file_img = true
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
@@ -579,7 +586,10 @@ function onHandle(line, report) {
 		//rm				   
 	} else if (input.match(rm)) {
 		ls()
-		if (input.match(/.git$/)) {
+		if (!Dirname) {
+			report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+
+		} else if (input.match(/.git$/)) {
 			report([{ msg: ".git cannot be deleted on this terminal", className: "jquery-console-message-type" }])
 		} else if (input.match(file)) {
 			deleted()
@@ -611,23 +621,24 @@ function onHandle(line, report) {
 
 		//git commit
 	} else if (input.match(/^git commit -m ".*"$/)) {
-		status_repo();
-		if(statusMessage === "\n"){
-			report([{ msg: "nothing to commit, working tree clean", className: "jquery-console-message-error" }]);
-		}else{
-			commit_repo(input);
+		if (!Dirname) {
+			report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
+		} else {
 			status_repo();
-			console.log(gitstatus)
-			if ("\n" === gitstatus[PageNumber]) {
-				doSomething()
-				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-			} else if (statusMessage === "\n") {
-				testNumber++;
-				confTest();
-				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-			}  else {
-				status_repo();
-				report([{ msg: statusMessage, className: "jquery-console-message-error" }]);
+			if (statusMessage === "\n") {
+				report([{ msg: "nothing to commit, working tree clean", className: "jquery-console-message-error" }]);
+			} else {
+				commit_repo(input);
+				if ("\n" === gitstatus[PageNumber]) {
+					doSomething()
+					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+				} else if (statusMessage === "\n") {
+					testNumber++;
+					confTest();
+					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+				} else {
+					report([{ msg: statusMessage, className: "jquery-console-message-error" }]);
+				}
 			}
 		}
 	} else if (input == 'git help' || input == 'git -h') {
@@ -638,7 +649,7 @@ function onHandle(line, report) {
 
 	} else {
 		report([{
-			msg: "command not found\nType `help` to see what all commands are available",
+			msg: "command can not be used\nType `help` to see what all commands are available",
 			className: "jquery-console-message-error"
 		}]);
 		console.log('gitstatus1:' + gitstatus)
@@ -646,10 +657,10 @@ function onHandle(line, report) {
 		console3CancelFlag = false;
 	}
 	ls();
-	if(lsMessage===fileName){
+	if (lsMessage === fileName) {
 		add_file();
 		file_add();
-	}else{
+	} else {
 		file_delete()
 	}
 }

@@ -259,7 +259,7 @@ public class initDataModel {
 	public void status() throws IOException, GitAPIException{
 		Repository repo = this.createNewRepository();
 		git = new Git(repo);
-		Status status = git.status().call();
+		Status status = git.status().call();System.out.println(git.toString());
 		String strStatus = "";
 		if(git != null){
         if (!status.getAdded().isEmpty()) {
@@ -281,7 +281,7 @@ public class initDataModel {
             strStatus += "Untracked:" + status.getUntracked() + "\n";
         }
 		}else{
-			strStatus += "not repository\n";
+			strStatus += "Not a git repository\n";
 		}
         System.out.println(strStatus);
         System.out.println(status.toString());
