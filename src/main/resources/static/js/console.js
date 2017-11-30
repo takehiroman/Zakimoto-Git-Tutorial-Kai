@@ -29,6 +29,15 @@ $.getJSON("js/story2.json", function (json) {
 	console.log(gitstatus)
 })
 
+$.getJSON("js/test.json", function (json) {
+	for (var i in json.test) {
+		if (json.test[i].status === "") {
+			test.push("\n")
+		}
+	}
+	console.log(test)
+});
+
 function Button_Click() {
 	window.location.reload();
 }
@@ -50,15 +59,6 @@ function doSomething() {
 	});
 }
 
-function story_get() {
-	$.getJSON("js/test.json", function (json) {
-		for (var i in json.story) {
-			if (json.test[i].status === "") {
-				test.push("\n")
-			}
-		}
-	});
-}
 
 //ログを保存する
 function data_input(line, report) {
@@ -610,6 +610,33 @@ function onHandle(line, report) {
 			report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
 		}
 
+	//git rm
+	}else if (input.match(/^git rm/)){
+		if (!Dirname) {
+			report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
+		}else{
+			if(input.match(/ .$/)){
+				report([{ msg: "'.'  not removing", className: "jquery-console-message-error" }])
+			} else if (input.match(/.git$/)) {
+				report([{ msg: ".git cannot be deleted on this terminal", className: "jquery-console-message-type" }])
+			} else if(input.match(file)){
+				ls();
+				remove();
+				if (statusMessage === gitstatus[PageNumber]) {
+					doSomething()
+					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+					}else if(statusMessage === "Untracked:[" + fileName + "]\n"){
+						report([{ msg: "did not match any files", className: "jquery-console-message-error" }]);  
+					}else {
+						report();
+					}
+			} else {
+				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+			}
+
+		}
+	
+
 		//edit
 	} else if (input.match(/^edit$/)) {
 		edit();
@@ -636,10 +663,10 @@ function onHandle(line, report) {
 				report([{ msg: "nothing to commit, working tree clean", className: "jquery-console-message-error" }]);
 			} else {
 				commit_repo(input);
-				if ("\n" === gitstatus[PageNumber]) {
+				if ("\n" === gitstatus[PageNumber] && statusMessage === "") {
 					doSomething()
 					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-				} else if (statusMessage === "\n") {
+				} else if (test[testNumber-1] === "\n" && statusMessage === "") {
 					testNumber++;
 					confTest();
 					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
