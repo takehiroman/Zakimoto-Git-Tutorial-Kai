@@ -484,7 +484,7 @@ function onHandle(line, report) {
 	var commit = new RegExp(/^git commit -m/)
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
-	//data_input(line, report);
+	data_input(line, report);
 
 
 	if (input == 'git init') {
