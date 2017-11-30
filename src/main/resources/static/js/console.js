@@ -16,7 +16,7 @@ var file_img = false
 $.getJSON("http://ip-api.com/json/?callback=?", function (data) {
 	ip = data.query;
 });
-
+function tuto_status(){
 $.getJSON("js/story2.json", function (json) {
 	for (var i in json.story) {
 		if (json.story[i].status === "") {
@@ -26,30 +26,32 @@ $.getJSON("js/story2.json", function (json) {
 		}
 		fileName = json.file
 	}
-	console.log(gitstatus)
 })
+}
+tuto_status();
 
+function test_status(){
 $.getJSON("js/test.json", function (json) {
 	for (var i in json.test) {
 		if (json.test[i].status === "") {
 			test.push("\n")
 		}
 	}
-	console.log(test)
 });
+}
+test_status();
 
 function Button_Click() {
 	window.location.reload();
 }
 
-function doSomething() {
+function up_Bar() {
 	PageNumber++;
 	$.getJSON("js/story2.json", function (json) {
 
 		var message = document.getElementById("message");
 
 		message.textContent = json.story[PageNumber].comment
-		console.log('gitstatus:' + gitstatus)
 		var $pb1 = $('.progress-bar');
 		bargage1 = PageNumber / json.story.length
 		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / (json.story.length - 1) * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / (json.story.length - 1) * 100) + "% ");
@@ -75,7 +77,6 @@ function data_input(line, report) {
 		contentType: 'application/json',
 		dataType: 'json',
 		success: function (data) {
-			console.log(data);
 		},
 		error: function (xhr, text, err) {
 			console.log('text: ', text);
@@ -95,23 +96,35 @@ function getIp() {
 }
 
 function delete_folder() {
-	$(".header").remove();
-	$(".directory").remove();
-	$(".progress-bar").remove();
-	$(".progress").remove();
+	$(".header").hide();
+	$(".directory").hide();
+	$(".progress-bar").hide();
+	$(".progress").hide();
+}
+
+function open_tuto() {
+	$(".header").show();
+	$(".directory").show();
+	$(".progress-bar").show();
+	$(".progress").show();
+	tuto_status();
+	lsMessage = undefined;
+	Dirname = undefined;
+	test = [];
+	PageNumber = -1;	
+	up_Bar();
+	file_delete();
+	$(".folder").empty();
 }
 
 function init_repo() {
-	if (!Dirname) {
-		Dirname = $.now();
-	}
+	Dirname = $.now();
 	var hostUrl = 'init';
 	var article1 = new Object();
 	article1.repositoryId = ip;
 	article1.repositoryDir = Dirname;
 	var loc = window.location.pathname;
 	var dirname = loc.substring(0, loc.lastIndexOf("\\") + 1);
-	console.log(dirname);
 
 	$.ajax({
 		type: "POST",
@@ -120,9 +133,7 @@ function init_repo() {
 		dataType: 'json',
 		data: JSON.stringify(article1),
 		success: function (data) {
-			console.log(data);
 			statusMessage = data.statusMessage;
-			console.log('statusMessage:' + statusMessage)
 		},
 		error: function (xhr, text, err) {
 			console.log('text: ', text);
@@ -130,8 +141,6 @@ function init_repo() {
 		}
 	})
 }
-
-
 
 function add_repo() {
 	var hostUrl = Dirname + '/add'
@@ -146,9 +155,7 @@ function add_repo() {
 		dataType: 'json',
 		data: JSON.stringify(article2),
 		success: function (data) {
-			console.log(data);
 			statusMessage = data.statusMessage;
-			console.log('statusMessage:' + statusMessage)
 		},
 		error: function (xhr, text, err) {
 			console.log('text: ', text);
@@ -169,9 +176,7 @@ function diff_repo() {
 		dataType: 'json',
 		data: JSON.stringify(article3),
 		success: function (data) {
-			console.log(data.diffMessage);
 			diffMessage = data.diffMessage;
-			console.log(diffMessage);
 
 		},
 		error: function (xhr, text, err) {
@@ -193,8 +198,6 @@ function status_repo() {
 		dataType: 'json',
 		data: JSON.stringify(article4),
 		success: function (data) {
-			console.log(data)
-			console.log(data.statusMessage);
 			statusMessage = data.statusMessage + "\n";
 		},
 		error: function (xhr, text, err) {
@@ -221,9 +224,7 @@ function commit_repo(line) {
 		dataType: 'json',
 		data: JSON.stringify(article5),
 		success: function (data) {
-			console.log(data);
 			statusMessage = data.statusMessage;
-			console.log('statusMessage:' + statusMessage)
 		},
 		error: function (xhr, text, err) {
 			console.log('text: ', text);
@@ -245,7 +246,6 @@ function edit() {
 		dataType: 'json',
 		data: JSON.stringify(article6),
 		success: function (data) {
-			console.log(data);
 			statusMessage = data.statusMessage;
 			console.log('statusMessage:' + statusMessage)
 		},
@@ -255,10 +255,6 @@ function edit() {
 		}
 	})
 }
-
-
-
-
 
 function cat() {
 	var hostUrl = Dirname + '/cat'
@@ -273,7 +269,6 @@ function cat() {
 		dataType: 'json',
 		data: JSON.stringify(article8),
 		success: function (data) {
-			console.log(data);
 			catMessage = data.catMessage;
 
 		},
@@ -296,7 +291,6 @@ function ls() {
 		dataType: 'json',
 		data: JSON.stringify(article9),
 		success: function (data) {
-			console.log(data);
 			lsMessage = data.lsMessage;
 		},
 		error: function (xhr, text, err) {
@@ -319,7 +313,6 @@ function deleted() {
 		dataType: 'json',
 		data: JSON.stringify(article7),
 		success: function (data) {
-			console.log(data);
 			statusMessage = data.statusMessage;
 			console.log('statusMessage:' + statusMessage)
 		},
@@ -343,7 +336,6 @@ function remove() {
 		dataType: 'json',
 		data: JSON.stringify(article10),
 		success: function (data) {
-			console.log(data);
 			statusMessage = data.statusMessage;
 			console.log('statusMessage:' + statusMessage)
 		},
@@ -368,7 +360,6 @@ function make() {
 		dataType: 'json',
 		data: JSON.stringify(article11),
 		success: function (data) {
-			console.log(data);
 			statusMessage = data.statusMessage;
 			console.log('statusMessage:' + statusMessage)
 		},
@@ -417,6 +408,7 @@ function confTest() {
 		testNumber++
 	}
 	gitstatus = []
+	test_status();
 	delete_folder()
 	$.getJSON("js/test.json", function (json) {
 		message = document.getElementById("message");
@@ -463,7 +455,7 @@ function add_file() {
 
 function change_button() {
 	$('#lock-btn').remove();
-	$(".btn-link").html('<input type="button" id="tutorial-btn" class="btn btn-success btn-lg" onclick="Button_Click()" value="チュートリアルをはじめから" ></input>\n<input type="button" class="btn btn-primary btn-lg" value="確認テスト" onClick="confTest()" ></input>')
+	$(".btn-link").html('<input type="button" id="tutorial-btn" class="btn btn-success btn-lg" onclick="open_tuto()" value="チュートリアルをはじめから" ></input>\n<input type="button" class="btn btn-primary btn-lg" value="確認テスト" onClick="confTest()" ></input>')
 }
 
 function file_add() {
@@ -490,7 +482,7 @@ function onHandle(line, report) {
 	if (input == 'git init') {
 		if (PageNumber === 0) {
 			getIp();
-			doSomething();
+			up_Bar();
 			add_filelist();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 		} else {
@@ -546,20 +538,20 @@ function onHandle(line, report) {
 		if (!Dirname) {
 			report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
 		} else {
-			if (input.match(file) || input.match(/ .$/)) {
+			if (input.match(file) || input.match(/[\.\*\$]/)) {
 				add_repo();
 				if ("Changed:[" + fileName + "]\n" === gitstatus[PageNumber] && statusMessage === gitstatus[PageNumber]) {
-					doSomething()
+					up_Bar()
 					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 				} else if ("Removed:[" + fileName + "]\n" === gitstatus[PageNumber]) {
-					doSomething()
+					up_Bar();
 					remove();
 					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-				} else if ("deleted:[" + fileName + "]\n" === statusMessage) {
+				} else if (statusMessage.match(/deleted:/)) {
 					remove();
 					report();
 				} else if ("new file:[" + fileName + "]\n" === gitstatus[PageNumber] && statusMessage === gitstatus[PageNumber]) {
-					doSomething()
+					up_Bar();
 					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 				} else {
 					add_repo();
@@ -576,14 +568,14 @@ function onHandle(line, report) {
 		make();
 		ls();
 		if ("Untracked:[" + fileName + "]\n" === gitstatus[PageNumber]) {
-			doSomething();
+			up_Bar();
 			file_img = true
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 		} else if (PageNumber === 0) {
 			report([{ msg: "Repository does not exist", className: "jquery-console-message-error" }]);
 		} else if (lsMessage === fileName) {
 			file_img = true
-			report()
+			report();
 		} else {
 			report();
 		}
@@ -597,9 +589,9 @@ function onHandle(line, report) {
 		} else if (input.match(/.git$/)) {
 			report([{ msg: ".git cannot be deleted on this terminal", className: "jquery-console-message-type" }])
 		} else if (input.match(file)) {
-			deleted()
+			deleted();
 			if (statusMessage === gitstatus[PageNumber]) {
-				doSomething()
+				up_Bar()
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 			} else if (lsMessage === "") {
 				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
@@ -610,38 +602,38 @@ function onHandle(line, report) {
 			report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
 		}
 
-	//git rm
-	}else if (input.match(/^git rm/)){
+		//git rm
+	} else if (input.match(/^git rm/)) {
 		if (!Dirname) {
 			report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
-		}else{
-			if(input.match(/ .$/)){
+		} else {
+			if (input.match(/ .$/)) {
 				report([{ msg: "'.'  not removing", className: "jquery-console-message-error" }])
 			} else if (input.match(/.git$/)) {
 				report([{ msg: ".git cannot be deleted on this terminal", className: "jquery-console-message-type" }])
-			} else if(input.match(file)){
+			} else if (input.match(file)) {
 				ls();
 				remove();
 				if (statusMessage === gitstatus[PageNumber]) {
-					doSomething()
+					up_Bar();
 					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-					}else if(statusMessage === "Untracked:[" + fileName + "]\n"){
-						report([{ msg: "did not match any files", className: "jquery-console-message-error" }]);  
-					}else {
-						report();
-					}
+				} else if (statusMessage === "Untracked:[" + fileName + "]\n") {
+					report([{ msg: "did not match any files", className: "jquery-console-message-error" }]);
+				} else {
+					report();
+				}
 			} else {
 				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
 			}
 
 		}
-	
+
 
 		//edit
 	} else if (input.match(/^edit$/)) {
 		edit();
 		if (gitstatus[PageNumber] === statusMessage) {
-			doSomething()
+			up_Bar()
 			cat();
 			edit_file();
 			report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
@@ -657,16 +649,16 @@ function onHandle(line, report) {
 			report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
 		} else {
 			status_repo();
-			if(input.match(/""$/)){
-				report([{ msg: "Aborting commit due to empty commit message.", className: "jquery-console-message-error" }]);
-			}else if (statusMessage === "\n") {
+			if (statusMessage === "\n") {
 				report([{ msg: "nothing to commit, working tree clean", className: "jquery-console-message-error" }]);
+			} else if (input.match(/""$/)) {
+				report([{ msg: "Aborting commit due to empty commit message.", className: "jquery-console-message-error" }]);
 			} else {
 				commit_repo(input);
 				if ("\n" === gitstatus[PageNumber] && statusMessage === "") {
-					doSomething()
+					up_Bar()
 					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-				} else if (test[testNumber-1] === "\n" && statusMessage === "") {
+				} else if (test[testNumber - 1] === "\n" && statusMessage === "") {
 					testNumber++;
 					confTest();
 					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
@@ -690,7 +682,9 @@ function onHandle(line, report) {
 		console.log('statusMessage:' + statusMessage)
 		console3CancelFlag = false;
 	}
-	ls();
+	if (Dirname) {
+		ls()
+	}
 	if (lsMessage === fileName) {
 		add_file();
 		file_add();
@@ -698,6 +692,7 @@ function onHandle(line, report) {
 		file_delete()
 	}
 }
+
 
 $(document).ready(function () {
 	var console1 = $('<div class="console1">');
@@ -725,8 +720,8 @@ $(document).ready(function () {
 			}
 			else
 				$(".err").remove();
-				number.readOnly = true;
-				$(".form-color").css('color','#d3d3d3')
+			number.readOnly = true;
+			$(".form-color").css('color', '#d3d3d3')
 			error = false;
 			return true;
 		},
