@@ -714,6 +714,7 @@ $(document).ready(function () {
 		promptLabel: '$ ',
 		commandValidate: function (line) {
 			document.form1.number.value = document.form1.number.value.replace(/ +/g, "");
+			document.form1.number.value = document.form1.number.value.replace(/　+/g, "");
 			if (line == "") return false;
 			else if (document.form1.number.value == "") {
 				if (!error) {
