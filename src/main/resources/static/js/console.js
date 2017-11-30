@@ -677,7 +677,7 @@ function onHandle(line, report) {
 		}
 	} else if (input == 'git help' || input == 'git -h') {
 		report([{
-			msg: "git init - Gitのリポジトリを作成します\n git add FILENAME - 指定したファイルをインデックスに追加します\n git commit -m 'MESSAGE' - 変更した内容をリポジトリに登録します\n git status - 現在のリポジトリの状態を表示します\n git diff - 現在のリポジトリの状態と最後にコミットした状態の差分を表示します\n",
+			msg: "git init - Gitのリポジトリを作成します\n git add FILENAME - 指定したファイルをインデックスに追加します\n git commit -m 'MESSAGE' - 変更した内容をリポジトリに登録します\n git status - 現在のリポジトリの状態を表示します\n git diff - 現在のリポジトリの状態と最後にコミットした状態の差分を表示します\n git rm FILENAME - 指定したファイルをバージョン管理の対象から外して削除します\n",
 			className: "jquery-console-message-type"
 		}])
 
@@ -702,6 +702,7 @@ function onHandle(line, report) {
 $(document).ready(function () {
 	var console1 = $('<div class="console1">');
 	var error = false
+	var number = document.getElementById("number");
 	$('#console').append(console1);
 	var comment1 = $('<p id="message">');
 	$('.comment').append(comment1);
@@ -712,6 +713,7 @@ $(document).ready(function () {
 	var controller1 = console1.console({
 		promptLabel: '$ ',
 		commandValidate: function (line) {
+			document.form1.number.value = document.form1.number.value.replace(/ +/g, "");
 			if (line == "") return false;
 			else if (document.form1.number.value == "") {
 				if (!error) {
@@ -722,6 +724,8 @@ $(document).ready(function () {
 			}
 			else
 				$(".err").remove();
+				number.readOnly = true;
+				$(".form-color").css('color','#d3d3d3')
 			error = false;
 			return true;
 		},
