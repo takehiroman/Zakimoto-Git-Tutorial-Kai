@@ -35,5 +35,16 @@
             "comment": "ファイルを削除したという変更内容が保存されました。\nこれでファイルの追加，編集，削除をした時のそれぞれのバージョン管理をする方法を学べたと思います。\n次にターミナル右上にある確認テストをクリックして，チュートリアルの復習をしてみましょう"
         }
     ],
-    "file":"README.md"
+    "file":"README.md",
+    "link":[
+        {
+            "name":"ワークツリー",
+            "url":"<a href='https://www.backlog.jp/git-guide/intro/intro1_4.html' target='blank'>ワークツリー</a>"
+        },
+        {
+            "name":"インデックス",
+            "url":"<a href='https://www.backlog.jp/git-guide/intro/intro1_4.html' target='blank'>インデックス</a>"
+        }
+
+    ]
 }

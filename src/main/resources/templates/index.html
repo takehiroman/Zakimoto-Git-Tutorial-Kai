@@ -16,18 +16,22 @@
 </head>
 
 <body>
+    <ul class = "foo">
+    <div align="left" class="site-name">
     <h1>Zakimoto Git Tutorial Kai</h1>
+    </div>
+    <div align="right" class="btn-link" style="float:right;">
+            <input type="button" id="tutorial-btn" class="btn btn-success btn-lg" onclick="open_tuto()" value="チュートリアルをはじめから" ></input>
+            <input type="button" id="lock-btn" class="btn btn-info btn-lg" value="確認テスト" disabled="disabled"></input>
+    </div>
     <form method="post" action="/" name="form1">
         <span>学生証番号</span>
         <input type="text" class="form-color" id="number" name="number" size="20"  ></input>
         <input type="text" name="dummy" size="20" style="display:none;"></input>
         <div class="err"></div>
     </form>
+    </ul>
     <h4 align="center">チュートリアル中に，いくつかの専門用語が登場します。<br />サルでもわかるGit入門の<a href="https://www.backlog.jp/git-guide/intro/intro1_1.html" target="_blank">Gitの基本</a>の項目を読んでからチュートリアルを始めてください</h4>
-    <div align="right" class="btn-link">
-    <input type="button" id="tutorial-btn" class="btn btn-success btn-lg" onclick="open_tuto()" value="チュートリアルをはじめから" ></input>
-    <input type="button" id="lock-btn" class="btn btn-info btn-lg" value="確認テスト" disabled="disabled"></input>
-    </div>
     <div class="progress">
         <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     </div>

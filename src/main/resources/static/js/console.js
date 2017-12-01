@@ -56,7 +56,10 @@ function up_Bar() {
 
 		var message = document.getElementById("message");
 
-		message.textContent = json.story[PageNumber].comment
+		message.innerHTML = "<p>"+json.story[PageNumber].comment+"</p>";
+		for(let i in json.link){
+		message.innerHTML = message.innerHTML.replace(json.link[i].name,json.link[i].url)
+		}
 		var $pb1 = $('.progress-bar');
 		bargage1 = PageNumber / json.story.length
 		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / (json.story.length - 1) * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / (json.story.length - 1) * 100) + "% ");
@@ -483,7 +486,7 @@ function onHandle(line, report) {
 	var commit = new RegExp(/^git commit -m/)
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
-	//data_input(line, report);
+	data_input(line, report);
 	get_ip();
 	setTimeout(function () {
 	if (!ip) {
@@ -713,19 +716,19 @@ function onHandle(line, report) {
 	ip = undefined;
 
 }
-
-
-
 $(document).ready(function () {
 	var console1 = $('<div class="console1">');
 	var error = false
 	var number = document.getElementById("number");
 	$('#console').append(console1);
-	var comment1 = $('<p id="message">');
+	var comment1 = $('<div id="message">');
 	$('.comment').append(comment1);
 	$.getJSON("js/story2.json", function (json) {
 		var message = document.getElementById("message");
 		message.textContent = json.story[PageNumber].comment
+		for(let i in json.link){
+			message.innerHTML = message.innerHTML.replace(json.link[i].name,json.link[i].url)
+		}
 	});
 	var controller1 = console1.console({
 		promptLabel: '$ ',
