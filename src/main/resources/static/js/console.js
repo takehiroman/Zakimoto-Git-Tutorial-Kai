@@ -256,7 +256,6 @@ function edit() {
 		data: JSON.stringify(article6),
 		success: function (data) {
 			statusMessage = data.statusMessage;
-			console.log('statusMessage:' + statusMessage)
 		},
 		error: function (xhr, text, err) {
 			console.log('text: ', text);
@@ -323,7 +322,6 @@ function deleted() {
 		data: JSON.stringify(article7),
 		success: function (data) {
 			statusMessage = data.statusMessage;
-			console.log('statusMessage:' + statusMessage)
 		},
 		error: function (xhr, text, err) {
 			console.log('text: ', text);
@@ -346,7 +344,6 @@ function remove() {
 		data: JSON.stringify(article10),
 		success: function (data) {
 			statusMessage = data.statusMessage;
-			console.log('statusMessage:' + statusMessage)
 		},
 		error: function (xhr, text, err) {
 			console.log('text: ', text);
@@ -370,7 +367,6 @@ function make() {
 		data: JSON.stringify(article11),
 		success: function (data) {
 			statusMessage = data.statusMessage;
-			console.log('statusMessage:' + statusMessage)
 		},
 		error: function (xhr, text, err) {
 			console.log('text: ', text);
@@ -484,6 +480,7 @@ function onHandle(line, report) {
 	var cats = new RegExp(/^cat/);
 	var rm = new RegExp(/^rm/);
 	var commit = new RegExp(/^git commit -m/)
+	var status = statusMessage;
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
 	data_input(line, report);
@@ -560,17 +557,17 @@ function onHandle(line, report) {
 			} else {
 				if (input.match(file) || input.match(/[\.\*\$]/)) {
 					add_repo();
-					if ("Changed:[" + fileName + "]\n" === gitstatus[PageNumber] && statusMessage === gitstatus[PageNumber]) {
+					if ("Modified:[" + fileName + "]\n" === gitstatus[PageNumber]) {
 						up_Bar()
 						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-					} else if ("Removed:[" + fileName + "]\n" === gitstatus[PageNumber]) {
+					} else if ("deleted:[" + fileName + "]\n" === gitstatus[PageNumber]) {
 						up_Bar();
 						remove();
 						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 					} else if (statusMessage.match(/deleted:/)) {
 						remove();
 						report();
-					} else if ("new file:[" + fileName + "]\n" === gitstatus[PageNumber] && statusMessage === gitstatus[PageNumber]) {
+					} else if ("Untracked:[" + fileName + "]\n" === gitstatus[PageNumber]) {
 						up_Bar();
 						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 					} else {
@@ -587,7 +584,7 @@ function onHandle(line, report) {
 		} else if (input.match(/^create$/)) {
 			make();
 			ls();
-			if ("Untracked:[" + fileName + "]\n" === gitstatus[PageNumber]) {
+			if ("\n" === gitstatus[PageNumber] && statusMessage === "Untracked:[" + fileName + "]\n") {
 				up_Bar();
 				file_img = true
 				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
@@ -610,7 +607,7 @@ function onHandle(line, report) {
 				report([{ msg: ".git cannot be deleted on this terminal", className: "jquery-console-message-type" }])
 			} else if (input.match(file)) {
 				deleted();
-				if (statusMessage === gitstatus[PageNumber]) {
+				if ("\n" === gitstatus[PageNumber] && gitstatus[PageNumber+1] === "deleted:[" + fileName + "]\n") {
 					up_Bar()
 					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 				} else if (lsMessage === "") {
@@ -634,7 +631,7 @@ function onHandle(line, report) {
 				} else if (input.match(file)) {
 					ls();
 					remove();
-					if (statusMessage === gitstatus[PageNumber]) {
+					if ("\n" === gitstatus[PageNumber] && "Removed:[" + fileName + "]\n" === gitstatus[PageNumber+1]) {
 						up_Bar();
 						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 					} else if (statusMessage === "Untracked:[" + fileName + "]\n") {
@@ -652,7 +649,7 @@ function onHandle(line, report) {
 			//edit
 		} else if (input.match(/^edit$/)) {
 			edit();
-			if (gitstatus[PageNumber] === statusMessage) {
+			if ("\n" === gitstatus[PageNumber] && gitstatus[PageNumber+1] === "Modified:[" + fileName + "]\n") {
 				up_Bar()
 				cat();
 				edit_file();
@@ -675,10 +672,16 @@ function onHandle(line, report) {
 					report([{ msg: "Aborting commit due to empty commit message.", className: "jquery-console-message-error" }]);
 				} else {
 					commit_repo(input);
-					if ("\n" === gitstatus[PageNumber] && statusMessage === "") {
+					if ("Changed:[" + fileName + "]\n" === gitstatus[PageNumber] && "Changed:[" + fileName + "]\n" === status) {
 						up_Bar()
 						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-					} else if (test[testNumber - 1] === "\n" && statusMessage === "") {
+					}else if ("new file:[" + fileName + "]\n" === gitstatus[PageNumber] && "new file:[" + fileName + "]\n" === status) {
+						up_Bar()
+						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+					}else if ("Removed:[" + fileName + "]\n" === gitstatus[PageNumber] && "Removed:[" + fileName + "]\n" === status) {
+						up_Bar()
+						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+					}else if (test[testNumber - 1] === "\n" && statusMessage === "") {
 						testNumber++;
 						confTest();
 						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
@@ -698,8 +701,6 @@ function onHandle(line, report) {
 				msg: "command can not be used\nType `help` to see what all commands are available",
 				className: "jquery-console-message-error"
 			}]);
-			console.log('gitstatus1:' + gitstatus)
-			console.log('statusMessage:' + statusMessage)
 			console3CancelFlag = false;
 		}
 		if (Dirname) {

@@ -8,27 +8,27 @@
         {
             "number": "1",
             "comment": "ワークツリーの中にリポジトリが作成されました。次にバージョン管理を行うためにワークツリーの中にファイルを作成します。\nターミナルに'create'コマンドを入力して，README.mdファイルを作成しましょう。",
-            "status": "Untracked:"
+            "status": ""
         },
         {
             "number": "2",
             "comment": "ワークツリーの中にREADME.mdというファイルが作成されました。\n次にREADME.mdをインデックスと呼ばれるワークツリーに追加したファイルをコミットするための場所に登録しましょう。\n'git add ファイル名'でインデックスに登録できます",
-            "status": "new file:"
+            "status": "Untracked:"
         },
         {
             "number": "3",
             "comment": "インデックスにREADME.mdが登録されました。\nインデックスに登録されたファイルの状態を記録するために,git commit -m 'メッセージ'と入力してみましょう。\ncommitのあとに-mというメッセージオプションをつけると，1行のメッセージで記録できます。今回はファイルを追加したので，'add README.d'などのメッセージを記入しましょう。\n",
-            "status": ""
+            "status": "new file:"
         },
         {
             "number": "4",
             "comment": "リポジトリに変更内容が保存されました。次に'edit'コマンドを使ってREADME.mdファイルの内容を変更しましょう。\n次はあなた自身で考えてコマンドを入力しながらcommitまで完了してみましょう。\n'help'や'git help'コマンドを使うと，このターミナルで使えるコマンドが確認できます。",
-            "status": ""
+            "status": "Changed:"
         },
         {
             "number": "5",
             "comment": "編集したファイルの変更内容が保存されました。次はgit rmコマンドを使って，README.mdファイルを削除しましょう\n先ほどと同じようにあなた自身でcommitまで進めてみてください。",
-            "status": ""
+            "status": "Removed:"
         },
         {
             "number": "6",
