@@ -480,6 +480,9 @@ function onHandle(line, report) {
 	var cats = new RegExp(/^cat/);
 	var rm = new RegExp(/^rm/);
 	var commit = new RegExp(/^git commit -m/)
+	var newfile = new RegExp(/new file:/)
+	var change = new RegExp(/Changed:/)
+	var removed = new RegExp(/Removed:/)
 	var status = statusMessage;
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
@@ -672,13 +675,13 @@ function onHandle(line, report) {
 					report([{ msg: "Aborting commit due to empty commit message.", className: "jquery-console-message-error" }]);
 				} else {
 					commit_repo(input);
-					if ("Changed:[" + fileName + "]\n" === gitstatus[PageNumber] && "Changed:[" + fileName + "]\n" === status) {
+					if ("Changed:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(change) ) {
 						up_Bar()
 						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-					}else if ("new file:[" + fileName + "]\n" === gitstatus[PageNumber] && "new file:[" + fileName + "]\n" === status) {
+					}else if ("new file:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(newfile)) {
 						up_Bar()
 						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-					}else if ("Removed:[" + fileName + "]\n" === gitstatus[PageNumber] && "Removed:[" + fileName + "]\n" === status) {
+					}else if ("Removed:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(removed) ) {
 						up_Bar()
 						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 					}else if (test[testNumber - 1] === "\n" && statusMessage === "") {
