@@ -1,5 +1,6 @@
 var PageNumber = 0;
 var testNumber = 0;
+var testNumberLimit;
 var TestStatus = 0;
 var TestMessage = '"test"';
 var ip;
@@ -18,7 +19,6 @@ function get_ip() {
 	$.getJSON("http://ip-api.com/json/?callback=?", function (data) {
 		ip = data.query;
 	})
-
 }
 
 function tuto_status() {
@@ -42,6 +42,8 @@ function test_status() {
 				test.push("\n")
 			}
 		}
+		testNumberLimit = json.test.length;
+		console.log(testNumberLimit);
 	});
 }
 test_status();
@@ -56,9 +58,9 @@ function up_Bar() {
 
 		var message = document.getElementById("message");
 
-		message.innerHTML = "<p>"+json.story[PageNumber].comment+"</p>";
-		for(let i in json.link){
-		message.innerHTML = message.innerHTML.replace(json.link[i].name,json.link[i].url)
+		message.innerHTML = "<p>" + json.story[PageNumber].comment + "</p>";
+		for (let i in json.link) {
+			message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
 		}
 		var $pb1 = $('.progress-bar');
 		bargage1 = PageNumber / json.story.length
@@ -110,7 +112,7 @@ function delete_folder() {
 	$(".progress").hide();
 }
 
-function open_tuto() {
+function reset_tuto() {
 	$(".header").show();
 	$(".directory").show();
 	$(".progress-bar").show();
@@ -124,6 +126,19 @@ function open_tuto() {
 	up_Bar();
 	file_delete();
 	$(".folder").empty();
+}
+
+function open_tuto() {
+	if (0 < testNumber && testNumber < testNumberLimit) {
+		var message = confirm("チュートリアルに戻ると，確認テストのリポジトリが問" + testNumber + "の最初の状態に戻ります。よろしいですか？");
+		if (message) {
+			reset_tuto();
+		} else {
+
+		}
+	} else {
+		reset_tuto();
+	}
 }
 
 function init_repo() {
@@ -215,7 +230,6 @@ function status_repo() {
 		}
 	})
 }
-
 
 function commit_repo(line) {
 	var hostUrl = 'commit'
@@ -379,7 +393,6 @@ function make() {
 
 
 function Type_create() {
-	Dirname = $.now();
 	getIp();
 	setTimeout(function () {
 		make();
@@ -387,7 +400,6 @@ function Type_create() {
 }
 
 function Type_edit() {
-	Dirname = $.now();
 	getIp();
 	setTimeout(function () {
 		make();
@@ -398,7 +410,6 @@ function Type_edit() {
 }
 
 function Type_delete() {
-	Dirname = $.now();
 	getIp();
 	setTimeout(function () {
 		make();
@@ -415,7 +426,7 @@ function confTest() {
 	PageNumber = 1;
 	gitstatus = []
 	test_status();
-	delete_folder()
+	delete_folder();
 	$.getJSON("js/test.json", function (json) {
 		message = document.getElementById("message");
 		fileName = json.file
@@ -423,7 +434,6 @@ function confTest() {
 		TestPage = json.test[testNumber - 1].number;
 		TestStatus = json.test[testNumber - 1].status;
 		TestType = json.test[testNumber - 1].type;
-		console.log(json.test[testNumber].type)
 		if (TestType === "create") {
 			Type_create()
 		} else if (TestType === "edit") {
@@ -489,156 +499,132 @@ function onHandle(line, report) {
 	data_input(line, report);
 	get_ip();
 	setTimeout(function () {
-	if (!ip) {
-		report([{
-			msg: "Network Error",
-			className: "jquery-console-message-type"
-		}]);
-	} else {
+		if (!ip) {
+			report([{
+				msg: "Network Error",
+				className: "jquery-console-message-type"
+			}]);
+		} else {
 
 
-		if (input == 'git init') {
+			if (input == 'git init') {
 
-			if (PageNumber === 0) {
-				getIp();
-				up_Bar();
-				add_filelist();
-				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-			} else {
-				report([{ msg: "Reinitialized existing Git repository in .git", className: "jquery-console-message-type" }]);
-			}
-
-
-		} else if (input == 'git diff') {
-			diff_repo();
-			if (!Dirname) {
-				report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
-			} else {
-				report([{
-					msg: diffMessage,
-					className: "jquery-console-message-type"
-				}]);
-			}
-
-		} else if (input == 'git status') {
-			status_repo();
-			if (!Dirname) {
-				report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
-			} else {
-				report([{
-					msg: statusMessage,
-					className: "jquery-console-message-type"
-				}]);
-			}
-
-		} else if (input == 'help') {
-			report([{ msg: "help - 各コマンドのヘルプを表示します\nls - フォルダ内のファイルリストを表示します\ncreate - フォルダに" + fileName + "ファイルを追加します\nedit - " + fileName + "ファイルの内容を変更します\ncat FILENAME - 指定したファイル内のテキストを表示します\nrm FILENAME  - 指定したファイルを削除します\n git help - このターミナル上で使えるgitコマンドのリストを表示します", className: "jquery-console-message-type" }])
-
-		} else if (input == 'ls') {
-			ls()
-			report([{ msg: lsMessage, className: "jquery-console-message-type" }]);
-
-		} else if (input.match(cats)) {
-			ls();
-			if (input.match(file)) {
-				if (!lsMessage) {
-					report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+				if (PageNumber === 0) {
+					getIp();
+					up_Bar();
+					add_filelist();
+					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 				} else {
-					cat()
-					report([{ msg: catMessage, className: "jquery-console-message-type" }]);
+					report([{ msg: "Reinitialized existing Git repository in .git", className: "jquery-console-message-type" }]);
 				}
-			} else {
-				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+
+
+			} else if (input == 'git diff') {
+				diff_repo();
+				if (!Dirname) {
+					report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
+				} else {
+					report([{
+						msg: diffMessage,
+						className: "jquery-console-message-type"
+					}]);
+				}
+
+			} else if (input == 'git status') {
+				status_repo();
+				if (!Dirname) {
+					report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
+				} else {
+					report([{
+						msg: statusMessage,
+						className: "jquery-console-message-type"
+					}]);
+				}
+
+			} else if (input == 'help') {
+				report([{ msg: "help - 各コマンドのヘルプを表示します\nls - フォルダ内のファイルリストを表示します\ncreate - フォルダに" + fileName + "ファイルを追加します\nedit - " + fileName + "ファイルの内容を変更します\ncat FILENAME - 指定したファイル内のテキストを表示します\nrm FILENAME  - 指定したファイルを削除します\n git help - このターミナル上で使えるgitコマンドのリストを表示します", className: "jquery-console-message-type" }])
+
+			} else if (input == 'ls') {
+				ls()
+				report([{ msg: lsMessage, className: "jquery-console-message-type" }]);
+
+			} else if (input.match(cats)) {
+				ls();
+				if (input.match(file)) {
+					if (!lsMessage) {
+						report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+					} else {
+						cat()
+						report([{ msg: catMessage, className: "jquery-console-message-type" }]);
+					}
+				} else {
+					report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+				}
+
 			}
 
-		}
-
-		//git add
-		else if (input.match(/^git add/)) {
-			if (!Dirname) {
-				report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
-			} else {
-				if (input.match(file) || input.match(/[\.\*\$]/)) {
-					add_repo();
-					if ("Modified:[" + fileName + "]\n" === gitstatus[PageNumber]) {
-						up_Bar()
-						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-					} else if ("deleted:[" + fileName + "]\n" === gitstatus[PageNumber]) {
-						up_Bar();
-						remove();
-						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-					} else if (statusMessage.match(/deleted:/)) {
-						remove();
-						report();
-					} else if ("Untracked:[" + fileName + "]\n" === gitstatus[PageNumber]) {
-						up_Bar();
-						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-					} else {
+			//git add
+			else if (input.match(/^git add/)) {
+				if (!Dirname) {
+					report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
+				} else {
+					if (input.match(file) || input.match(/[\.\*\$]/)) {
 						add_repo();
-						report();
+						if ("Modified:[" + fileName + "]\n" === gitstatus[PageNumber]) {
+							up_Bar()
+							report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+						} else if ("deleted:[" + fileName + "]\n" === gitstatus[PageNumber]) {
+							up_Bar();
+							remove();
+							report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+						} else if (statusMessage.match(/deleted:/)) {
+							remove();
+							report();
+						} else if ("Untracked:[" + fileName + "]\n" === gitstatus[PageNumber]) {
+							up_Bar();
+							report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+						} else {
+							add_repo();
+							report();
+						}
+					}
+					else {
+						report({ msg: "did not match any files", className: "jquery-console-message-error" })
 					}
 				}
-				else {
-					report({ msg: "did not match any files", className: "jquery-console-message-error" })
-				}
-			}
 
-			//create
-		} else if (input.match(/^create$/)) {
-			make();
-			ls();
-			if ("\n" === gitstatus[PageNumber] && statusMessage === "Untracked:[" + fileName + "]\n") {
-				up_Bar();
-				file_img = true
-				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-			} else if (PageNumber === 0) {
-				report([{ msg: "Repository does not exist", className: "jquery-console-message-error" }]);
-			} else if (lsMessage === fileName) {
-				file_img = true
-				report();
-			} else {
-				report();
-			}
-
-			//rm				   
-		} else if (input.match(rm)) {
-			ls()
-			if (!Dirname) {
-				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
-
-			} else if (input.match(/.git$/)) {
-				report([{ msg: ".git cannot be deleted on this terminal", className: "jquery-console-message-type" }])
-			} else if (input.match(file)) {
-				deleted();
-				if ("\n" === gitstatus[PageNumber] && gitstatus[PageNumber+1] === "deleted:[" + fileName + "]\n") {
-					up_Bar()
+				//create
+			} else if (input.match(/^create$/)) {
+				make();
+				ls();
+				if ("\n" === gitstatus[PageNumber] && statusMessage === "Untracked:[" + fileName + "]\n") {
+					up_Bar();
+					file_img = true
 					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-				} else if (lsMessage === "") {
-					report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+				} else if (PageNumber === 0) {
+					report([{ msg: "Repository does not exist", className: "jquery-console-message-error" }]);
+				} else if (lsMessage === fileName) {
+					file_img = true
+					report();
 				} else {
 					report();
 				}
-			} else {
-				report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
-			}
 
-			//git rm
-		} else if (input.match(/^git rm/)) {
-			if (!Dirname) {
-				report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
-			} else {
-				if (input.match(/ .$/)) {
-					report([{ msg: "'.'  not removing", className: "jquery-console-message-error" }])
+				//rm				   
+			} else if (input.match(rm)) {
+				ls()
+				if (!Dirname) {
+					report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+
 				} else if (input.match(/.git$/)) {
 					report([{ msg: ".git cannot be deleted on this terminal", className: "jquery-console-message-type" }])
 				} else if (input.match(file)) {
-					ls();
-					remove();
-					if ("\n" === gitstatus[PageNumber] && "Removed:[" + fileName + "]\n" === gitstatus[PageNumber+1]) {
-						up_Bar();
+					deleted();
+					if ("\n" === gitstatus[PageNumber] && gitstatus[PageNumber + 1] === "deleted:[" + fileName + "]\n") {
+						up_Bar()
 						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-					} else if (statusMessage === "Untracked:[" + fileName + "]\n") {
-						report([{ msg: "did not match any files", className: "jquery-console-message-error" }]);
+					} else if (lsMessage === "") {
+						report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
 					} else {
 						report();
 					}
@@ -646,77 +632,101 @@ function onHandle(line, report) {
 					report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
 				}
 
-			}
-
-
-			//edit
-		} else if (input.match(/^edit$/)) {
-			edit();
-			if ("\n" === gitstatus[PageNumber] && gitstatus[PageNumber+1] === "Modified:[" + fileName + "]\n") {
-				up_Bar()
-				cat();
-				edit_file();
-				report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-			} else {
-				cat();
-				edit_file();
-				report();
-			}
-
-			//git commit
-		} else if (input.match(/^git commit -m ".*"$/)) {
-			if (!Dirname) {
-				report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
-			} else {
-				status_repo();
-				if (statusMessage === "\n") {
-					report([{ msg: "nothing to commit, working tree clean", className: "jquery-console-message-error" }]);
-				} else if (input.match(/""$/)) {
-					report([{ msg: "Aborting commit due to empty commit message.", className: "jquery-console-message-error" }]);
+				//git rm
+			} else if (input.match(/^git rm/)) {
+				if (!Dirname) {
+					report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
 				} else {
-					commit_repo(input);
-					if ("Changed:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(change) ) {
-						up_Bar()
-						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-					}else if ("new file:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(newfile)) {
-						up_Bar()
-						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-					}else if ("Removed:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(removed) ) {
-						up_Bar()
-						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-					}else if (test[testNumber - 1] === "\n" && statusMessage === "") {
-						testNumber++;
-						confTest();
-						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+					if (input.match(/ .$/)) {
+						report([{ msg: "'.'  not removing", className: "jquery-console-message-error" }])
+					} else if (input.match(/.git$/)) {
+						report([{ msg: ".git cannot be deleted on this terminal", className: "jquery-console-message-type" }])
+					} else if (input.match(file)) {
+						ls();
+						remove();
+						if ("\n" === gitstatus[PageNumber] && "Removed:[" + fileName + "]\n" === gitstatus[PageNumber + 1]) {
+							up_Bar();
+							report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+						} else if (statusMessage === "Untracked:[" + fileName + "]\n") {
+							report([{ msg: "did not match any files", className: "jquery-console-message-error" }]);
+						} else {
+							report();
+						}
 					} else {
-						report([{ msg: statusMessage, className: "jquery-console-message-error" }]);
+						report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
+					}
+
+				}
+
+
+				//edit
+			} else if (input.match(/^edit$/)) {
+				edit();
+				if ("\n" === gitstatus[PageNumber] && gitstatus[PageNumber + 1] === "Modified:[" + fileName + "]\n") {
+					up_Bar()
+					cat();
+					edit_file();
+					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+				} else {
+					cat();
+					edit_file();
+					report();
+				}
+
+				//git commit
+			} else if (input.match(/^git commit -m ".*"$/)) {
+				if (!Dirname) {
+					report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
+				} else {
+					status_repo();
+					if (statusMessage === "\n") {
+						report([{ msg: "nothing to commit, working tree clean", className: "jquery-console-message-error" }]);
+					} else if (input.match(/""$/)) {
+						report([{ msg: "Aborting commit due to empty commit message.", className: "jquery-console-message-error" }]);
+					} else {
+						commit_repo(input);
+						if ("Changed:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(change)) {
+							up_Bar()
+							report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+						} else if ("new file:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(newfile)) {
+							up_Bar()
+							report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+						} else if ("Removed:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(removed)) {
+							up_Bar()
+							report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+						} else if (test[testNumber - 1] === "\n" && statusMessage === "") {
+							testNumber++;
+							confTest();
+							report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+						} else {
+							report([{ msg: statusMessage, className: "jquery-console-message-error" }]);
+						}
 					}
 				}
-			}
-		} else if (input == 'git help' || input == 'git -h') {
-			report([{
-				msg: "git init - Gitのリポジトリを作成します\n git add FILENAME - 指定したファイルをインデックスに追加します\n git commit -m 'MESSAGE' - 変更した内容をリポジトリに登録します\n git status - 現在のリポジトリの状態を表示します\n git diff - 現在のリポジトリの状態と最後にコミットした状態の差分を表示します\n git rm FILENAME - 指定したファイルをバージョン管理の対象から外して削除します\n",
-				className: "jquery-console-message-type"
-			}])
+			} else if (input == 'git help' || input == 'git -h') {
+				report([{
+					msg: "git init - Gitのリポジトリを作成します\n git add FILENAME - 指定したファイルをインデックスに追加します\n git commit -m 'MESSAGE' - 変更した内容をリポジトリに登録します\n git status - 現在のリポジトリの状態を表示します\n git diff - 現在のリポジトリの状態と最後にコミットした状態の差分を表示します\n git rm FILENAME - 指定したファイルをバージョン管理の対象から外して削除します\n",
+					className: "jquery-console-message-type"
+				}])
 
-		} else {
-			report([{
-				msg: "command can not be used\nType `help` to see what all commands are available",
-				className: "jquery-console-message-error"
-			}]);
-			console3CancelFlag = false;
+			} else {
+				report([{
+					msg: "command can not be used\nType `help` to see what all commands are available",
+					className: "jquery-console-message-error"
+				}]);
+				console3CancelFlag = false;
+			}
+			if (Dirname) {
+				ls()
+			}
+			if (lsMessage === fileName) {
+				add_file();
+				file_add();
+			} else {
+				file_delete()
+			}
 		}
-		if (Dirname) {
-			ls()
-		}
-		if (lsMessage === fileName) {
-			add_file();
-			file_add();
-		} else {
-			file_delete()
-		}
-	}
-},500);
+	}, 500);
 	ip = undefined;
 
 }
@@ -730,8 +740,8 @@ $(document).ready(function () {
 	$.getJSON("js/story2.json", function (json) {
 		var message = document.getElementById("message");
 		message.textContent = json.story[PageNumber].comment
-		for(let i in json.link){
-			message.innerHTML = message.innerHTML.replace(json.link[i].name,json.link[i].url)
+		for (let i in json.link) {
+			message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
 		}
 	});
 	var controller1 = console1.console({
