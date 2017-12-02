@@ -5,6 +5,7 @@ var TestStatus = 0;
 var TestMessage = '"test"';
 var ip;
 var Dirname
+var testrepo;
 var diffMessage;
 var statusMessage;
 var lsMessage;
@@ -13,6 +14,7 @@ var fileName;
 var gitstatus = [];
 var test = [];
 var file_img = false
+var test_clear = false
 
 function get_ip() {
 
@@ -131,6 +133,7 @@ function reset_tuto() {
 }
 
 function open_tuto() {
+	/*
 	if (0 < testNumber && testNumber < testNumberLimit) {
 		var message = confirm("チュートリアルに戻ると，確認テストのリポジトリが問" + testNumber + "の最初の状態に戻ります。よろしいですか？");
 		if (message) {
@@ -141,6 +144,8 @@ function open_tuto() {
 	} else {
 		reset_tuto();
 	}
+	*/
+	reset_tuto()
 }
 
 function init_repo() {
@@ -395,35 +400,40 @@ function make() {
 
 
 function Type_create() {
-	getIp();
-	setTimeout(function () {
+	console.log(test_clear)
+	console.log(Dirname)
+	Dirname = testrepo;
+	console.log(Dirname)
+	if (test_clear) {
 		make();
-	}, 1000);
+		test_clear = false
+	}
 }
 
 function Type_edit() {
-	getIp();
-	setTimeout(function () {
-		make();
-		add_repo()
-		commit_repo(TestMessage)
+	console.log(test_clear)
+	Dirname = testrepo;
+	if (test_clear) {
 		edit()
-	}, 1000);
+		test_clear = false
+	}
 }
 
 function Type_delete() {
-	getIp();
-	setTimeout(function () {
-		make();
-		add_repo()
-		commit_repo(TestMessage)
+	console.log(test_clear)
+	Dirname = testrepo;
+	if (test_clear) {
 		deleted()
-	}, 1000);
+		test_clear = false
+	}
 }
 
 function confTest() {
 	if (testNumber === 0) {
+		getIp();
+		testrepo = Dirname;
 		testNumber++
+		test_clear = true
 	}
 	PageNumber = 1;
 	gitstatus = []
@@ -436,14 +446,21 @@ function confTest() {
 		TestPage = json.test[testNumber - 1].number;
 		TestStatus = json.test[testNumber - 1].status;
 		TestType = json.test[testNumber - 1].type;
-		if (TestType === "create") {
-			Type_create()
-		} else if (TestType === "edit") {
-			Type_edit()
-		} else if (TestType === "delete") {
-			Type_delete()
-		}
+		setTimeout(function () {
+			if (TestType === "create") {
+				Type_create()
+			} else if (TestType === "edit") {
+				Type_edit()
+			} else if (TestType === "delete") {
+				Type_delete()
+			} else {
+				Dirname = testrepo;
+			}
+		}, 500);
 	});
+	var size = $('div.jquery-console-prompt-box').length;
+	console.log(size)
+	$('.jquery-console-prompt-box').eq(size-1).before('<div class="jquery-console-message jquery-console-message-type" style="">現在は確認テストのリポジトリです</div>');
 }
 
 //チュートリアルメッセージを置換する
@@ -698,6 +715,7 @@ function onHandle(line, report) {
 							report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 						} else if (test[testNumber - 1] === "\n" && statusMessage === "") {
 							testNumber++;
+							test_clear = true;
 							confTest();
 							report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 						} else {
