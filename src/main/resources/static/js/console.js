@@ -42,10 +42,11 @@ function test_status() {
 		for (var i in json.test) {
 			if (json.test[i].status === "") {
 				test.push("\n")
+			}else {
+				test.push(json.test[i].status + "[" + json.file + "]" + "\n")
 			}
 		}
 		testNumberLimit = json.test.length;
-		console.log(testNumberLimit);
 	});
 }
 test_status();
@@ -104,7 +105,6 @@ function data_input(line, report) {
 function getIp() {
 	$.ajaxSetup({ async: false });
 	$.getJSON("http://ip-api.com/json/?callback=?", function (data) {
-		console.log(ip);
 		init_repo();
 	});
 }
@@ -122,9 +122,9 @@ function reset_tuto() {
 	$(".progress-bar").show();
 	$(".progress").show();
 	tuto_status();
-	if(PageNumber == 1){
+	if (PageNumber == 1) {
 		var size = $('div.jquery-console-prompt-box').length;
-		$('.jquery-console-prompt-box').eq(size-1).before('<div class="jquery-console-message jquery-console-message-type" style="">チュートリアルの最初の状態です</div>');
+		$('.jquery-console-prompt-box').eq(size - 1).before('<div class="jquery-console-message jquery-console-message-type" style="">チュートリアルの最初の状態です</div>');
 	}
 	ip = undefined;
 	lsMessage = undefined;
@@ -404,10 +404,7 @@ function make() {
 
 
 function Type_create() {
-	console.log(test_clear)
-	console.log(Dirname)
 	Dirname = testrepo;
-	console.log(Dirname)
 	if (test_clear) {
 		make();
 		test_clear = false
@@ -415,7 +412,6 @@ function Type_create() {
 }
 
 function Type_edit() {
-	console.log(test_clear)
 	Dirname = testrepo;
 	if (test_clear) {
 		edit()
@@ -424,7 +420,6 @@ function Type_edit() {
 }
 
 function Type_delete() {
-	console.log(test_clear)
 	Dirname = testrepo;
 	if (test_clear) {
 		deleted()
@@ -439,8 +434,8 @@ function confTest() {
 		testNumber++
 		test_clear = true
 	}
-		var size = $('div.jquery-console-prompt-box').length;
-		$('.jquery-console-prompt-box').eq(size-1).before('<div class="jquery-console-message jquery-console-message-type" style="">現在は確認テストのリポジトリです</div>');
+	var size = $('div.jquery-console-prompt-box').length;
+	$('.jquery-console-prompt-box').eq(size - 1).before('<div class="jquery-console-message jquery-console-message-type" style="">確認テストのリポジトリに切り替わりました</div>');
 	PageNumber = 1;
 	gitstatus = []
 	test_status();
@@ -469,7 +464,6 @@ function confTest() {
 //チュートリアルメッセージを置換する
 function nextMessage() {
 	var message = document.getElementById("message");
-	console.log(message);
 	message.textContent = comments[PageNumber - 1];
 }
 
@@ -716,7 +710,17 @@ function onHandle(line, report) {
 						} else if ("Removed:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(removed)) {
 							up_Bar()
 							report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-						} else if (test[testNumber - 1] === "\n" && statusMessage === "") {
+						}else if (test[testNumber - 1] === "Changed:[" + fileName + "]\n"  &&status.match(change)) {
+							testNumber++;
+							test_clear = true;
+							confTest();
+							report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+						}else if (test[testNumber - 1] === "new file:[" + fileName + "]\n"  && status.match(newfile)) {
+							testNumber++;
+							test_clear = true;
+							confTest();
+							report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+						}else if (test[testNumber - 1] === "Removed:[" + fileName + "]\n"  && status.match(removed)) {
 							testNumber++;
 							test_clear = true;
 							confTest();

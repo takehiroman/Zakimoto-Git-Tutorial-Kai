@@ -14,6 +14,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +50,9 @@ public class initDataModel {
 	private Git git;
 	private String fileName;
 	private static final DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-	private Date time = new Date();
+	private ZonedDateTime now = ZonedDateTime.now();
+	private Date time = Date.from(now.toInstant());
+	
 	
 	public initDataModel(){
 		super();
@@ -183,6 +187,7 @@ public class initDataModel {
 		Path path = Paths.get(repo.getDirectory().getParent(),fileName);
 			if(Files.exists(Paths.get(repo.getDirectory().getParent(),fileName))){
 				try(BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)){
+					
 					writer.append("Modified time is " + formatter.format(time));
 					writer.newLine();
 				}	

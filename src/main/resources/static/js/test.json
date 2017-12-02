@@ -3,19 +3,19 @@
         {
             "number": "1",
             "comment": "問１\n 現在フォルダの中には，README.mdとgitリポジトリがあります。lsコマンドを使ってワークツリー内を確認してみましょう。\nまた，README.mdファイルは追加した状態です。こちらはgit statusでインデックスの状態を確認できます。\nこのリポジトリをコミットしてください。",
-            "status": "",
+            "status": "new file:",
             "type":"create"
         },
         {
             "number": "2",
             "comment": "問2\n 現在フォルダの中には，README.mdとgitリポジトリがあります。\n最後にコミットしたあとに，ファイルの内容を書き換えました。git diffで変更した差分が確認できます。このリポジトリをコミットしてください。",
-            "status": "",
+            "status": "Changed:",
             "type":"edit"
         },
         {
             "number": "3",
             "comment": "問3\n 現在フォルダの中には，gitリポジトリしかありません。先ほどまであったREADME.mdファイルを削除しました。\nこのリポジトリをコミットしてください",
-            "status": "",
+            "status": "Removed:",
             "type":"delete"
         },
         {
