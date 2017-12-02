@@ -122,6 +122,10 @@ function reset_tuto() {
 	$(".progress-bar").show();
 	$(".progress").show();
 	tuto_status();
+	if(PageNumber == 1){
+		var size = $('div.jquery-console-prompt-box').length;
+		$('.jquery-console-prompt-box').eq(size-1).before('<div class="jquery-console-message jquery-console-message-type" style="">チュートリアルの最初の状態です</div>');
+	}
 	ip = undefined;
 	lsMessage = undefined;
 	Dirname = undefined;
@@ -435,6 +439,8 @@ function confTest() {
 		testNumber++
 		test_clear = true
 	}
+		var size = $('div.jquery-console-prompt-box').length;
+		$('.jquery-console-prompt-box').eq(size-1).before('<div class="jquery-console-message jquery-console-message-type" style="">現在は確認テストのリポジトリです</div>');
 	PageNumber = 1;
 	gitstatus = []
 	test_status();
@@ -458,9 +464,6 @@ function confTest() {
 			}
 		}, 500);
 	});
-	var size = $('div.jquery-console-prompt-box').length;
-	console.log(size)
-	$('.jquery-console-prompt-box').eq(size-1).before('<div class="jquery-console-message jquery-console-message-type" style="">現在は確認テストのリポジトリです</div>');
 }
 
 //チュートリアルメッセージを置換する
