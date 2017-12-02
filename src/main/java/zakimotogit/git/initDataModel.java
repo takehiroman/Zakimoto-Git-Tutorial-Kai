@@ -19,6 +19,7 @@ import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -50,9 +51,8 @@ public class initDataModel {
 	private String number;
 	private Git git;
 	private String fileName;
-	private static final DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-	private ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
-	private Date time = Date.from(now.toInstant());
+	private DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+
 	
 	
 	public initDataModel(){
@@ -188,8 +188,10 @@ public class initDataModel {
 		Path path = Paths.get(repo.getDirectory().getParent(),fileName);
 			if(Files.exists(Paths.get(repo.getDirectory().getParent(),fileName))){
 				try(BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)){
-					
-					writer.append("Modified time is " + formatter.format(time));
+					TimeZone.setDefault(TimeZone.getTimeZone("JST")); 
+					SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss"); 
+					String dateStr = sdf.format(new Date());
+					writer.append("Modified time is " + dateStr);
 					writer.newLine();
 				}	
 				catch(IOException e){
