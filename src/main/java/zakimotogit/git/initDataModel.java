@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,7 +51,7 @@ public class initDataModel {
 	private Git git;
 	private String fileName;
 	private static final DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-	private ZonedDateTime now = ZonedDateTime.now();
+	private ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
 	private Date time = Date.from(now.toInstant());
 	
 	
