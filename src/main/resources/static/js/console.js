@@ -77,6 +77,8 @@ function data_input(line, report) {
 	var hostUrl = 'store';
 	var article = new Object();
 	article.number = $('#number').val();
+	article.tutoNumber = PageNumber
+	article.testNumber = testNumber
 	article.command = $.trim(line);
 	article.address = ip
 

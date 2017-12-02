@@ -13,6 +13,8 @@ public class LogData {
 	
 	private static final DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
 	private String number;
+	private String tutoNumber;
+	private String testNumber;
 	private String command;
 	private String address;
 	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss.SSS")
@@ -24,6 +26,14 @@ public class LogData {
 	
 	public void setId(String id){
 		this.id = id;
+	}
+	
+	public void settutoNumber(String tutoNumber){
+		this.tutoNumber = tutoNumber;
+	}
+	
+	public void settestNumber(String testNumber){
+		this.testNumber = testNumber;
 	}
 	
 	public void setNumber(String number){
@@ -46,6 +56,14 @@ public class LogData {
 		return number;
 	}
 	
+	public String gettutoNumber(){
+		return tutoNumber;
+	}
+	
+	public String gettestNumber(){
+		return testNumber;
+	}
+	
 	public String getCommand(){
 		return command;
 	}
@@ -61,8 +79,8 @@ public class LogData {
 	@Override
     public String toString() {
         return String.format(
-                "LogData[id=%s, number='%s', command='%s',logDate='%d',address='%s']",
-                id, number, command,formatter.format(logDate),address);
+                "LogData[id=%s, number='%s', tutoNumber='%s', testNumber='%s', command='%s',logDate='%d',address='%s']",
+                id, number,tutoNumber,testNumber, command,formatter.format(logDate),address);
     }
 
 }
