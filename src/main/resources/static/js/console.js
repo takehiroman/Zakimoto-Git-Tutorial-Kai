@@ -615,7 +615,7 @@ function onHandle(line, report) {
 								up_Bar();
 								report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 							} else if (lsMessage == "" && statusMessage === "") {
-								report([{ msg: "did not match any files", className: "jquery-console-message-error" }])
+								report([{ msg: fileName+":did not match any files", className: "jquery-console-message-error" }])
 							} else {
 								report();
 							}
@@ -625,7 +625,7 @@ function onHandle(line, report) {
 					}
 					//git rm
 				} else if (input.match(/^git rm$/)) {
-					report([{ msg: "Nothing specified, nothing added.", className: "jquery-console-message-error" }])
+					report([{ msg: "usage: git rm FILENAME", className: "jquery-console-message-type" }])
 
 				} else if (input.match(/^git rm /)) {
 					if (!Dirname) {
@@ -642,9 +642,9 @@ function onHandle(line, report) {
 								up_Bar();
 								report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 							} else if (statusMessage === "Untracked:[" + fileName + "]\n") {
-								report([{ msg: "did not match any files", className: "jquery-console-message-error" }]);
+								report([{ msg: fileName+":did not match any files", className: "jquery-console-message-error" }]);
 							} else if (lsMessage == "" && statusMessage === "") {
-								report([{ msg: "did not match any files", className: "jquery-console-message-error" }])
+								report([{ msg: fileName+":did not match any files", className: "jquery-console-message-error" }])
 							} else {
 								report();
 							}
