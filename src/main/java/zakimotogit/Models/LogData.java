@@ -19,6 +19,8 @@ public class LogData {
 	private String address;
 	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss.SSS")
 	private Date logDate = new Date();
+	
+	
 
 	public LogData(){
 		super();
