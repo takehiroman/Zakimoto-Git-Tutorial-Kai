@@ -232,7 +232,6 @@ function commit_repo(line) {
 	var hostUrl = 'commit'
 	var article5 = new Object();
 	var come = line.match(/".*"$/);
-	console.log(come);
 	article5.repositoryDir = Dirname;
 	article5.number = PageNumber;
 	article5.commitMessage = come[0];
@@ -487,14 +486,11 @@ function onHandle(line, report) {
 	var change = new RegExp(/Changed:/)
 	var removed = new RegExp(/Removed:/)
 	var ss = line.split(" ");
-	console.log(ss)
 	ss.splice(0, 2);
-	console.log(ss)
 	if (ss.indexOf(fileName) >= 0) {
 		addfile = fileName
 	}
 
-	console.log(file)
 	var file = ss.indexOf(fileName)
 	if (file >= 0) {
 		ss.splice(file, 1);
@@ -510,9 +506,7 @@ function onHandle(line, report) {
 
 
 
-	console.log(ss)
 	var status = statusMessage;
-	console.log(status);
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
 	data_input(line, report);
@@ -607,8 +601,6 @@ function onHandle(line, report) {
 						else if (fileName == addfile || input.match(/[\.\*]$/)) {
 							add_repo();
 							ls();
-							console.log(statusMessage);
-							console.log(lsMessage);
 							if ("Modified:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(/^Modified:/)) {
 								up_Bar()
 								report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
