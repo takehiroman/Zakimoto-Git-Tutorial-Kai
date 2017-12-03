@@ -2,7 +2,7 @@ var PageNumber = 0;
 var testNumber = 0;
 var testNumberLimit;
 var TestStatus = 0;
-var TestMessage = '"test"';
+var addfile;
 var ip;
 var Dirname
 var testrepo;
@@ -412,7 +412,7 @@ function Type_delete() {
 }
 
 //ボタン押した時
-function clear_test(){
+function clear_test() {
 	test_json();
 }
 //成功した時
@@ -423,10 +423,10 @@ function click_Test() {
 		testNumber++
 		test_clear = true
 	}
-	if(test_click){
-	var size = $('div.jquery-console-prompt-box').length;
-	$('.jquery-console-prompt-box').eq(size - 1).before('<div class="jquery-console-message jquery-console-message-type" style="">確認テストのリポジトリに切り替わりました</div>');
-	test_click = false
+	if (test_click) {
+		var size = $('div.jquery-console-prompt-box').length;
+		$('.jquery-console-prompt-box').eq(size - 1).before('<div class="jquery-console-message jquery-console-message-type" style="">確認テストのリポジトリに切り替わりました</div>');
+		test_click = false
 	}
 	PageNumber = 1;
 	gitstatus = []
@@ -435,7 +435,7 @@ function click_Test() {
 	test_json();
 }
 //json読み込み
-function test_json(){
+function test_json() {
 	$.getJSON("js/test.json", function (json) {
 		message = document.getElementById("message");
 		fileName = json.file
@@ -454,7 +454,7 @@ function test_json(){
 				Dirname = testrepo;
 			}
 		}, 500);
-	});	
+	});
 }
 
 //チュートリアルメッセージを置換する
@@ -477,17 +477,40 @@ function add_file() {
 	$(".file").html('<p><img src="./image/computer_document.png" width="20" height="20" th:src="@{/image/computer_document.png}"></img>' + fileName + '</p>')
 }
 
-
-
 function onHandle(line, report) {
 	var input = $.trim(line);
-	var file = new RegExp(" " + fileName + "$");
+	var files = new RegExp(" " + fileName + "$");
 	var cats = new RegExp(/^cat/);
 	var rm = new RegExp(/^rm/);
 	var commit = new RegExp(/^git commit -m/)
 	var newfile = new RegExp(/new file:/)
 	var change = new RegExp(/Changed:/)
 	var removed = new RegExp(/Removed:/)
+	var ss = line.split(" ");
+	console.log(ss)
+	ss.splice(0, 2);
+	console.log(ss)
+	if (ss.indexOf(fileName) >= 0) {
+		addfile = fileName
+	}
+
+	console.log(file)
+	var file = ss.indexOf(fileName)
+	if (file >= 0) {
+		ss.splice(file, 1);
+	}
+	var dot = ss.indexOf(".")
+	if (dot >= 0) {
+		ss.splice(dot, 1);
+	}
+	var ast = ss.indexOf("*")
+	if (ast >= 0) {
+		ss.splice(ast, 1);
+	}
+
+
+
+	console.log(ss)
 	var status = statusMessage;
 	console.log(status);
 	input = input.replace(/ +/g, " ");
@@ -523,13 +546,15 @@ function onHandle(line, report) {
 
 			} else if (input.match(cats)) {
 				ls();
-				if (input.match(file)) {
+				if (input.match(files)) {
 					if (!lsMessage) {
 						report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
 					} else {
 						cat()
 						report([{ msg: catMessage, className: "jquery-console-message-type" }]);
 					}
+				} else if (input.match(/.git$/)) {
+					report([{ msg: ".git is a directory", className: "jquery-console-message-type" }]);
 				} else if (input.match(/^cat$/)) {
 					report([{ msg: "usage:cat FILENAME", className: "jquery-console-message-type" }]);
 				} else {
@@ -576,9 +601,14 @@ function onHandle(line, report) {
 					if (!Dirname) {
 						report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
 					} else {
-						if (input.match(file) || input.match(/[\.\*\$]/)) {
+						if (ss.length > 0) {
+							report([{ msg: ss + ":did not match any files", className: "jquery-console-message-error" }])
+						}
+						else if (fileName == addfile || input.match(/[\.\*]$/)) {
 							add_repo();
 							ls();
+							console.log(statusMessage);
+							console.log(lsMessage);
 							if ("Modified:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(/^Modified:/)) {
 								up_Bar()
 								report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
@@ -592,16 +622,19 @@ function onHandle(line, report) {
 							} else if ("Untracked:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(/^Untracked:/)) {
 								up_Bar();
 								report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+							} else if (lsMessage == "" && statusMessage === "") {
+								report([{ msg: "did not match any files", className: "jquery-console-message-error" }])
 							} else {
-								add_repo();
 								report();
 							}
-						}
-						else {
-							report({ msg: "did not match any files", className: "jquery-console-message-error" })
+						} else {
+							report([{ msg: "did not match any files", className: "jquery-console-message-error" }])
 						}
 					}
 					//git rm
+				} else if (input.match(/^git rm$/)) {
+					report([{ msg: "Nothing specified, nothing added.", className: "jquery-console-message-error" }])
+
 				} else if (input.match(/^git rm /)) {
 					if (!Dirname) {
 						report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
@@ -610,7 +643,7 @@ function onHandle(line, report) {
 							report([{ msg: "'.'  not removing", className: "jquery-console-message-error" }])
 						} else if (input.match(/.git$/)) {
 							report([{ msg: ".git cannot be deleted on this terminal", className: "jquery-console-message-type" }])
-						} else if (input.match(file)) {
+						} else if (input.match(files)) {
 							ls();
 							remove();
 							if ("\n" === gitstatus[PageNumber] && "Removed:[" + fileName + "]\n" === gitstatus[PageNumber + 1]) {
@@ -618,6 +651,8 @@ function onHandle(line, report) {
 								report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 							} else if (statusMessage === "Untracked:[" + fileName + "]\n") {
 								report([{ msg: "did not match any files", className: "jquery-console-message-error" }]);
+							} else if (lsMessage == "" && statusMessage === "") {
+								report([{ msg: "did not match any files", className: "jquery-console-message-error" }])
 							} else {
 								report();
 							}
@@ -690,7 +725,8 @@ function onHandle(line, report) {
 				} else {
 					report();
 				}
-
+			} else if (input.match(/^create /)) {
+				report([{ msg: "usage:create", className: "jquery-console-message-type" }]);
 				//rm				   
 			} else if (input.match(rm)) {
 				ls()
@@ -700,7 +736,7 @@ function onHandle(line, report) {
 					report([{ msg: "usage:rm FILENAME", className: "jquery-console-message-type" }]);
 				} else if (input.match(/.git$/)) {
 					report([{ msg: ".git cannot be deleted on this terminal", className: "jquery-console-message-type" }])
-				} else if (input.match(file)) {
+				} else if (input.match(files)) {
 					deleted();
 					if ("\n" === gitstatus[PageNumber] && gitstatus[PageNumber + 1] === "deleted:[" + fileName + "]\n") {
 						up_Bar()
@@ -733,7 +769,8 @@ function onHandle(line, report) {
 						report();
 					}
 				}
-
+			} else if (input.match(/^edit /)) {
+				report([{ msg: "usage:edit", className: "jquery-console-message-type" }]);
 			} else {
 				report([{
 					msg: "command can not be used\nType `help` to see what all commands are available",
