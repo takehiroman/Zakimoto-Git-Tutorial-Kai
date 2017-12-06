@@ -2,7 +2,7 @@
     "story": [
         {
             "number": "0",
-            "comment": "これから，上の画面に表示されているターミナルに，gitコマンドを入力して進めていくチュートリアルを始めてもらいます。\n画面左上のフォームへの学生証番号の入力が完了したら，ターミナルに'git init'と入力し，ワークツリーと呼ばれるディレクトリにリポジトリを作ってください。"
+            "comment": "これはめちゃむずチュートリアルだよ。ほんまだよ"
 
         },
         {
@@ -37,14 +37,6 @@
     ],
     "file":"README.md",
     "link":[
-        {
-            "name":"リポジトリ",
-            "url":"<a href='https://www.backlog.jp/git-guide/intro/intro1_2.html' target='blank'>リポジトリ</a>"
-        },
-        {
-            "name":"コミット",
-            "url":"<a href='https://www.backlog.jp/git-guide/intro/intro1_3.html' target='blank'>コミット</a>"
-        },
         {
             "name":"ワークツリー",
             "url":"<a href='https://www.backlog.jp/git-guide/intro/intro1_4.html' target='blank'>ワークツリー</a>"

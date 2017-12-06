@@ -15,9 +15,17 @@ function add_filelist() {
 	$(".folder").html('<p><img src="./image/computer_folder.png" width="20" height="20" th:src="@{/image/computer_folder.png}"></img>.git</p>')
 }
 
-function delete_folder() {
-	$(".header").hide();
-	$(".directory").hide();
-	$(".progress-bar").hide();
-	$(".progress").hide();
+
+function open_work(){
+	if (document.getElementById("work_tree").checked) {
+		$(".header").show();
+		$(".directory").show();
+		$(".progress-bar").show();
+		$(".progress").show();
+	  } else {
+		$(".header").hide();
+		$(".directory").hide();
+		$(".progress-bar").hide();
+		$(".progress").hide();
+	  }
 }

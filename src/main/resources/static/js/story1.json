@@ -2,58 +2,72 @@
     "story": [
         {
             "number": "0",
-            "comment": "これからこのターミナルを使ってgitコマンドを入力していきましょう",
-            "status": ""
+            "comment": "これから，上の画面に表示されているターミナルに，gitコマンドを入力して進めていくチュートリアルを始めてもらいます。\n画面左上のフォームへの学生証番号の入力が完了したら，ターミナルに'git init'と入力し，ワークツリーと呼ばれるディレクトリにリポジトリを作ってください。"
+
         },
         {
             "number": "1",
-            "comment": "'create'コマンドを使って，README.mdを作成しましょう。",
-            "status": "Untracked:"
+            "comment": "ワークツリーの中にリポジトリが作成されました。次にバージョン管理を行うためにワークツリーの中にファイルを作成します。\nターミナルに'create'コマンドを入力して，README.mdファイルを作成しましょう。",
+            "status": ""
         },
         {
             "number": "2",
-            "comment": "README.mdをインデックスに登録しましょう。",
-            "status": "new file:"
+            "comment": "ワークツリーの中にREADME.mdというファイルが作成されました。\n次にREADME.mdをインデックスと呼ばれるワークツリーに追加したファイルをコミットするための場所に登録しましょう。\n'git add ファイル名'でインデックスに登録できます",
+            "status": "Untracked:"
         },
         {
             "number": "3",
-            "comment": "インデックスにREADME.mdが登録されました。追加したファイルをリポジトリに保存するために,メッセージオプションを付けて登録しましょう。",
-            "status": ""
+            "comment": "インデックスにREADME.mdが登録されました。\nインデックスに登録されたファイルの状態を記録するために,git commit -m 'メッセージ'と入力してみましょう。\ncommitのあとに-mというメッセージオプションをつけると，1行のメッセージで記録できます。今回はファイルを追加したので，'add README.md'などのメッセージを記入しましょう。\n",
+            "status": "new file:"
         },
         {
             "number": "4",
             "comment": "リポジトリに新しいファイルを追加したという内容が登録されました。先ほど追加したREADME.mdの内容を`edit`コマンドで編集しましょう。",
-            "status": "Modified:"
+            "status": ""
         },
         {
             "number": "5",
             "comment": "編集されたファイルをインデックスに登録しましょう",
-            "status": "Changed:"
+            "status": "Modified:"
         },
         {
             "number": "6",
-            "comment": "編集したファイルをリポジトリに登録しましょう。",
-            "status": ""
+            "comment": "編集したファイルがインデックスに登録されました。次に，編集したファイルをリポジトリにコミットしましょう。\n今回はファイルを編集したので，'edit README.md'などのメッセージを記入しましょう。\n",
+            "status": "Changed:"
         },
         {
             "number": "7",
-            "comment": "変更したファイルも，同じ操作で登録することができます。次にREADMEファイルをrmコマンドで削除しましょう",
-            "status": "deleted:"
+            "comment": "変更したファイルも，同じ操作でリポジトリにコミットすることができます。次はREADME.mdファイルを削除しましょう。git rmコマンドを使うと，ファイルを削除してインデックスに登録されます。",
+            "status": ""
         },
         {
             "number": "8",
-            "comment": "次に，リポジトリの中のREADME.mdを削除しました。削除したファイルをインデックスに登録しましょう。",
+            "comment": "削除したファイルをリポジトリにコミットしましょう。今回はファイルを削除したので，'remove README.md'などのメッセージを記入しましょう。\n",
             "status": "Removed:"
         },
         {
             "number": "9",
-            "comment": "ファイルを削除した場合でも，同じ操作で登録することができます。削除したファイルをリポジトリに登録しましょう。",
-            "status": ""
-        },
-        {
-            "number": "10",
-            "comment": "ファイルを削除したことが新しくリポジトリに登録されました。リポジトリ内での変更した内容は，全て同じ操作で行うことができます。確認テストで復習してみましょう"
+            "comment": "ファイルを削除したことが新しくリポジトリに登録されました。以上でチュートリアルは終了です。"
         }
     ],
-    "file":"README.md"
+    "file":"README.md",
+    "link":[
+        {
+            "name":"リポジトリ",
+            "url":"<a href='https://www.backlog.jp/git-guide/intro/intro1_2.html' target='blank'>リポジトリ</a>"
+        },
+        {
+            "name":"コミット",
+            "url":"<a href='https://www.backlog.jp/git-guide/intro/intro1_3.html' target='blank'>コミット</a>"
+        },
+        {
+            "name":"ワークツリー",
+            "url":"<a href='https://www.backlog.jp/git-guide/intro/intro1_4.html' target='blank'>ワークツリー</a>"
+        },
+        {
+            "name":"インデックス",
+            "url":"<a href='https://www.backlog.jp/git-guide/intro/intro1_4.html' target='blank'>インデックス</a>"
+        }
+
+    ]
 }

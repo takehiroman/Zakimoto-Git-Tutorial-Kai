@@ -3,8 +3,14 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css}"></link>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js}"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"></link>
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"></link>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js}"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../static/js/jquery.console.js" th:src="@{/js/jquery.console.js}"></script>
     <script type="text/javascript" src="../static/js/console.js" th:src="@{/js/console.js}"></script>
     <script type="text/javascript" src="../static/js/dom.js" th:src="@{/js/dom.js}"></script>
@@ -23,7 +29,16 @@
     </div>
     <div align="right" class="btn-link" style="float:right;">
             <input type="button" id="tutorial-btn" class="btn btn-success btn-lg" onclick="open_tuto()" value="チュートリアルをはじめから" ></input>
-            <input type="button" id="lock-btn" class="btn btn-info btn-lg" value="確認テスト" disabled="disabled"></input>
+            <div class="dropdown">
+                <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
+                    チュートリアル
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li role="presentation"><a href="#"  id="1" onclick="select_tuto();">チュートリアル１</a></li>
+                    <li role="presentation"><a href="#"  id="2" onclick="select_tuto();">チュートリアル２</a></li>
+                </ul>
+            </div>
     </div>
     <form method="post" action="/" name="form1">
         <span>学生証番号</span>
@@ -40,6 +55,11 @@
         <div id="consolebar">
         </div>
     </div>
+    <div class="tu_button" align="center">
+            <button id="comment-btn" class="btn btn-default" onclick="back_tuto()"><span class="glyphicon glyphicon-chevron-left"></span>1つ前の説明を見る</button>
+            <button id="comment-btn" class="btn btn-default" onclick="front_tuto()" ><span class="glyphicon glyphicon-chevron-right"></span>元の説明に戻る</button>
+    </div>
+    <!--
     <p class="header" style="text-align:center;">your directory</p>
     <div class="directory" style="display:table;">
         <div style="display:table-cell; width:50%;" class="file_list">
@@ -57,7 +77,7 @@
                 </div>
         </div>
     </div>
-    <br />
+-->
     <div class="comment">
     </div>
     <div align="right" class="img-link">
