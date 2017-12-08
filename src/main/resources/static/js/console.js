@@ -72,7 +72,6 @@ function tuto_status() {
 			}
 			fileName = json.file
 		}
-		console.log(gitstatus);
 	})
 }
 function up_Bar() {
@@ -91,8 +90,6 @@ function up_Bar() {
 		var $pb1 = $('.progress-bar');
 		bargage1 = PageNumber / json.story.length
 		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / (json.story.length - 1) * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / (json.story.length - 1) * 100) + "% ");
-		console.log(PageNumber)
-		console.log(json.story.length-1)
 		if(PageNumber == json.story.length-1){
 			$("#1").prop("disabled", false);
 			$("#2").prop("disabled", false);
@@ -507,7 +504,6 @@ function remove() {
 }
 
 function make() {
-	console.log(fileName);
 	var hostUrl = '/make'
 	var article11 = new Object();
 	article11.repositoryId = ip;
