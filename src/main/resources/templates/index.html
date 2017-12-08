@@ -26,7 +26,9 @@
     <ul class = "foo">
     <div align="left" class="site-name">
     <h1>Zakimoto Git Tutorial Kai</h1>
+    <button class="btn btn-default btn-lg" onclick="delete_number();">学生証番号をリセット</button>
     </div>
+    <!--
     <div align="right" class="btn-link" style="float:right;">
             <input type="button" id="tutorial-btn" class="btn btn-success btn-lg" onclick="open_tuto()" value="チュートリアルをはじめから" ></input>
             <div class="dropdown">
@@ -39,13 +41,19 @@
                     <li role="presentation"><a href="#"  id="2" onclick="select_tuto();">チュートリアル２</a></li>
                 </ul>
             </div>
+            
     </div>
+-->
+        <!--
     <form method="post" action="/" name="form1">
-        <span>学生証番号</span>
+        <span>学生証番号:</span>
+        <div id="numbers"></div>
         <input type="text" class="form-color" id="number" name="number" size="20"  ></input>
         <input type="text" name="dummy" size="20" style="display:none;"></input>
         <div class="err"></div>
+        
     </form>
+    -->
     </ul>
     <h4 align="center">チュートリアル中に，いくつかの専門用語が登場します。<br />サルでもわかるGit入門の<a href="https://www.backlog.jp/git-guide/intro/intro1_1.html" target="_blank">Gitの基本</a>の項目を読んでからチュートリアルを始めてください</h4>
     <div class="progress">
@@ -55,9 +63,13 @@
         <div id="consolebar">
         </div>
     </div>
+    <div class="tu_select" align="center">
+            <button class="btn btn-success btn-lg" id="1" onclick="select_tuto();" disabled="disabled">チュートリアル1</button>
+            <button  class="btn btn-success btn-lg" id="2" onclick="select_tuto();" disabled="disabled">チュートリアル2</button>
+    </div>
     <div class="tu_button" align="center">
-            <button id="comment-btn" class="btn btn-default" onclick="back_tuto()"><span class="glyphicon glyphicon-chevron-left"></span>1つ前の説明を見る</button>
-            <button id="comment-btn" class="btn btn-default" onclick="front_tuto()" ><span class="glyphicon glyphicon-chevron-right"></span>元の説明に戻る</button>
+            <button id="back-btn" class="btn-default" onclick="back_tuto()"><span class="glyphicon glyphicon-chevron-left"></span>前の説明を見る</button>
+            <button id="front-btn" class="btn-default" onclick="front_tuto()" ><span class="glyphicon glyphicon-chevron-right"></span>元の説明に戻る</button>
     </div>
     <!--
     <p class="header" style="text-align:center;">your directory</p>
@@ -84,7 +96,7 @@
         <p>
             <img src="../static/image/zakimoto.jpg" width="200" height="200" alt="zakimoto" class="img-pos" th:src="@{/image/zakimoto.jpg}"
                 align="left"></img>
-            Girに関する参考リンク
+            Gitに関する参考リンク
             <br/>
             <a href="http://www.backlog.jp/git-guide/" target="_blank">サルでもわかるGit入門</a>
             <br/>

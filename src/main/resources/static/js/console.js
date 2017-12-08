@@ -24,6 +24,7 @@ var save_number;
 var save_sts;
 var StrNum;
 var Strjson;
+var back;
 var tuto_change = false;
 var back_number = false;
 
@@ -41,9 +42,27 @@ function delete_folder() {
 }
 delete_folder();
 
+function input_name() {
+	var input_number = prompt("あなたの\t学生証番号\tを入力して下さい");
+	if(input_number === null || input_number === ""){
+		window.alert('番号が入力されていません');
+		input_name()
+	}else{
+		localStorage.setItem("student_number",input_number);
+		console.log(input_number)  
+	}
+
+}
+if(localStorage.getItem("student_number") === null){
+input_name();
+}
+
+function delete_number(){
+	localStorage.removeItem("student_number");
+	input_name();
+}
 
 function tuto_status() {
-	console.log(tuto_number);
 	$.getJSON("js/story" + tuto_number + ".json", function (json) {
 		for (var i in json.story) {
 			if (json.story[i].status === "") {
@@ -56,10 +75,10 @@ function tuto_status() {
 		console.log(gitstatus);
 	})
 }
-tuto_status();
 function up_Bar() {
 	if (!tuto_change) {
 		PageNumber++
+		back = PageNumber;
 	}
 	$.getJSON("js/story" + tuto_number + ".json", function (json) {
 
@@ -72,43 +91,57 @@ function up_Bar() {
 		var $pb1 = $('.progress-bar');
 		bargage1 = PageNumber / json.story.length
 		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / (json.story.length - 1) * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / (json.story.length - 1) * 100) + "% ");
+		console.log(PageNumber)
+		console.log(json.story.length-1)
+		if(PageNumber == json.story.length-1){
+			$("#1").prop("disabled", false);
+			$("#2").prop("disabled", false);
+			Dirname = sessionStorage.removeItem(pid + "Dir")
+			console.log(Dirname);
+			StrNum = sessionStorage.removeItem(pid + "Num")
+			console.log(StrNum);
+			PageNumber = parseInt(StrNum);
+			Strjson = sessionStorage.removeItem(pid + "Sts");
+		}
 	});
 }
 
-function back_tuto(){
-	if(PageNumber > 0){
-	back_number = true;
-	$.getJSON("js/story" + tuto_number + ".json", function (json) {
-		
-				var message = document.getElementById("message");
-				message.innerHTML = "<p>" + json.story[PageNumber-1].comment + "</p>";
-				for (let i in json.link) {
-					message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
-				}
-	});
+function back_tuto() {
+	if (PageNumber > 0) {
+		back_number = true;
+		$.getJSON("js/story" + tuto_number + ".json", function (json) {
+
+			var message = document.getElementById("message");
+			message.innerHTML = "<p>" + json.story[back - 1].comment + "</p>";
+			back = back -1;
+			for (let i in json.link) {
+				message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
+			}
+		});
 	}
 }
 
-function front_tuto(){
-	if(back_number){
-	$.getJSON("js/story" + tuto_number + ".json", function (json) {
-		
-				var message = document.getElementById("message");
-				message.innerHTML = "<p>" + json.story[PageNumber].comment + "</p>";
-				for (let i in json.link) {
-					message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
-				}
-	});
+function front_tuto() {
+	if (back < PageNumber) {
+		//back = PageNumber;
+		$.getJSON("js/story" + tuto_number + ".json", function (json) {
+
+			var message = document.getElementById("message");
+			message.innerHTML = "<p>" + json.story[back + 1].comment + "</p>";
+			back = back + 1;
+			for (let i in json.link) {
+				message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
+			}
+		});
 	}
+	/*
+	if(PageNumber === back){
+	var front = document.getElementById("front-btn");
+	front.innerHTML = "<p>" + json.story[back - 1].comment + "</p>";
+	}
+	*/
 	back_number = false;
 }
-
-$(function () {
-	$("a").click(function () {
-		pid = $(this).attr("id");
-		console.log(pid)
-	})
-});
 
 function save_tuto() {
 	save_Dir = Dirname;
@@ -133,6 +166,14 @@ function load_tuto() {
 	console.log(gitstatus);
 }
 
+
+$(function () {
+	$("button").click(function () {
+		pid = $(this).attr("id");
+		console.log(pid)
+	})
+});
+
 function select_tuto() {
 	if (Dirname) {
 		save_tuto();
@@ -154,6 +195,9 @@ function select_tuto() {
 			console.log(gitstatus);
 			console.log("NG");
 		} else {
+			$.getJSON("js/story" + tuto_number + ".json", function (json) {
+			fileName = json.file
+			})
 			load_tuto();
 			tuto_change = true;
 			console.log("OK")
@@ -175,7 +219,9 @@ function Button_Click() {
 function data_input(line, report) {
 	var hostUrl = 'store';
 	var article = new Object();
-	article.number = $('#number').val();
+	var stname = localStorage.getItem("student_number");
+
+	article.number = stname;
 	article.tutoNumber = PageNumber
 	article.testNumber = testNumber
 	article.command = $.trim(line);
@@ -461,6 +507,7 @@ function remove() {
 }
 
 function make() {
+	console.log(fileName);
 	var hostUrl = '/make'
 	var article11 = new Object();
 	article11.repositoryId = ip;
@@ -702,10 +749,10 @@ function onHandle(line, report) {
 								up_Bar()
 								report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 							} else if ("\n" === gitstatus[PageNumber] && "Removed:[" + fileName + "]\n" === gitstatus[PageNumber + 1]) {
-								if (status.match(/^deleted:/)){
-										up_Bar();
-										remove();
-										report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+								if (status.match(/^deleted:/)) {
+									up_Bar();
+									remove();
+									report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
 								}
 							} else if (statusMessage.match(/deleted:/)) {
 								remove();
@@ -728,7 +775,7 @@ function onHandle(line, report) {
 
 				} else if (input.match(/^git rm /)) {
 					console.log(gitstatus[PageNumber])
-					console.log(gitstatus[PageNumber+1])
+					console.log(gitstatus[PageNumber + 1])
 					if (!Dirname) {
 						report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
 					} else {
@@ -748,7 +795,7 @@ function onHandle(line, report) {
 								report([{ msg: fileName + ":did not match any files", className: "jquery-console-message-error" }])
 							} else {
 								console.log(gitstatus[PageNumber])
-								console.log(gitstatus[PageNumber+1])
+								console.log(gitstatus[PageNumber + 1])
 								report();
 							}
 						} else {
@@ -793,7 +840,7 @@ function onHandle(line, report) {
 			} else if (input.match(/^create$/)) {
 				make();
 				ls();
-				if ("\n" === gitstatus[PageNumber] && gitstatus[PageNumber+1] === "Untracked:[" + fileName + "]\n") {
+				if ("\n" === gitstatus[PageNumber] && gitstatus[PageNumber + 1] === "Untracked:[" + fileName + "]\n") {
 					up_Bar();
 					file_img = true
 					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
@@ -882,30 +929,20 @@ $(document).ready(function () {
 	var comment1 = $('<div id="message">');
 	$('.comment').append(comment1);
 	var message = document.getElementById("message");
-	message.innerHTML = "右上のチュートリアルボタンからチュートリアルを選択してください<br /><br />チュートリアル1:毎回次に入力するコマンドを確認しながらチュートリアルを進めていきます<br />チュートリアル2:途中からこちらの指定した状態になったコミットになるまで，自分で入力してもらいます。<br /><br />どちらも覚えるコマンドのフローは同じです";
-	$.getJSON("js/story1.json", function (json) {
-				for (let i in json.link) {
-					message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
-				}
-	});
+	//message.innerHTML = "右上のチュートリアルボタンからチュートリアルを選択してください<br /><br />チュートリアル1:毎回次に入力するコマンドを確認しながらチュートリアルを進めていきます<br />チュートリアル2:途中からこちらの指定した状態になったコミットになるまで，自分で入力してもらいます。<br /><br />どちらも覚えるコマンドのフローは同じです";
+	/*$.getJSON("js/story1.json", function (json) {
+		for (let i in json.link) {
+
+			message.innerHTML = "<p>"+json.story[PageNumber].comment+"<p>";
+			message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
+		}
+	});*/
+	pid = 1;
+	select_tuto();
 	var controller1 = console1.console({
 		promptLabel: '$ ',
 		commandValidate: function (line) {
-			document.form1.number.value = document.form1.number.value.replace(/ +/g, "");
-			document.form1.number.value = document.form1.number.value.replace(/　+/g, "");
 			if (line == "") return false;
-			else if (document.form1.number.value == "") {
-				if (!error) {
-					error = true;
-					$(".err").text('学生証番号が未入力です');
-				}
-				return false;
-			}
-			else
-				$(".err").remove();
-			number.readOnly = true;
-			$(".form-color").css('color', '#d3d3d3')
-			error = false;
 			return true;
 		},
 		commandHandle: function (line, report) {
