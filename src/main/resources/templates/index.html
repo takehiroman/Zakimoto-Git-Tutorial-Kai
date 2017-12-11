@@ -27,10 +27,13 @@
     <div align="left" class="site-name">
     <h1>Zakimoto Git Tutorial Kai</h1>
     <button class="btn btn-default btn-lg" onclick="delete_number();">学生証番号をリセット</button>
+    <span>学生証番号:</span>
+    <div id="numbers"></div>
     </div>
-    <!--
     <div align="right" class="btn-link" style="float:right;">
             <input type="button" id="tutorial-btn" class="btn btn-success btn-lg" onclick="open_tuto()" value="チュートリアルをはじめから" ></input>
+    </div>
+    <!--
             <div class="dropdown">
                 <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
                     チュートリアル
@@ -45,9 +48,6 @@
     </div>
 -->
         <!--
-    <form method="post" action="/" name="form1">
-        <span>学生証番号:</span>
-        <div id="numbers"></div>
         <input type="text" class="form-color" id="number" name="number" size="20"  ></input>
         <input type="text" name="dummy" size="20" style="display:none;"></input>
         <div class="err"></div>
@@ -68,7 +68,7 @@
             <button  class="btn btn-success btn-lg" id="2" onclick="select_tuto();" disabled="disabled">チュートリアル2</button>
     </div>
     <div class="tu_button" align="center">
-            <button id="back-btn" class="btn-default" onclick="back_tuto()"><span class="glyphicon glyphicon-chevron-left"></span>前の説明を見る</button>
+            <button id="back-btn" class="btn-default" onclick="back_tuto()"><span class="glyphicon glyphicon-chevron-left" disabled="disabled"></span>前の説明を見る</button>
             <button id="front-btn" class="btn-default" onclick="front_tuto()" ><span class="glyphicon glyphicon-chevron-right"></span>元の説明に戻る</button>
     </div>
     <!--

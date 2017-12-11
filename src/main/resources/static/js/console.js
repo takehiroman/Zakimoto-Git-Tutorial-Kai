@@ -50,6 +50,7 @@ function input_name() {
 	}else{
 		localStorage.setItem("student_number",input_number);
 		console.log(input_number)  
+		setTimeout(function () { open_stdnumber() },500);
 	}
 
 }
@@ -60,6 +61,13 @@ input_name();
 function delete_number(){
 	localStorage.removeItem("student_number");
 	input_name();
+}
+
+function open_stdnumber(){
+	var number = document.getElementById("numbers");
+	var num = localStorage.getItem("student_number")
+	console.log(localStorage.getItem("student_number"))
+	number.innerHTML = "<p>"+ num +"</p>";
 }
 
 function tuto_status() {
@@ -101,6 +109,9 @@ function up_Bar() {
 			Strjson = sessionStorage.removeItem(pid + "Sts");
 		}
 	});
+	if(PageNumber > 0){
+	$("#back-btn").prop("disabled", false);
+	}
 }
 
 function back_tuto() {
@@ -115,6 +126,9 @@ function back_tuto() {
 				message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
 			}
 		});
+		if(back <= 0){
+			$("#back-btn").prop("disabled", true);
+		}
 	}
 }
 
@@ -130,6 +144,9 @@ function front_tuto() {
 				message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
 			}
 		});
+		if(back > 0){
+			$("#back-btn").prop("disabled", false);
+		}
 	}
 	/*
 	if(PageNumber === back){
@@ -165,7 +182,13 @@ function load_tuto() {
 
 
 $(function () {
-	$("button").click(function () {
+	$("#1").click(function () {
+		pid = $(this).attr("id");
+		console.log(pid)
+	})
+});
+$(function () {
+	$("#2").click(function () {
 		pid = $(this).attr("id");
 		console.log(pid)
 	})
@@ -177,19 +200,16 @@ function select_tuto() {
 	}
 	setTimeout(function () {
 		tuto_number = pid
-		console.log(pid + "Num");
 		back_number = false;
 		var size = $('div.jquery-console-prompt-box').length;
 		$('.jquery-console-prompt-box').eq(size - 1).before('<div class="jquery-console-message jquery-console-message-type" style="">チュートリアル' + tuto_number + '</div>');
 		var pages = sessionStorage.getItem(pid + "Num");
+		open_stdnumber();
 		if (pages == null) {
 			PageNumber = -1;
 			Dirname = undefined;
 			gitstatus = [];
-			console.log(gitstatus);
-			console.log(tuto_number);
 			tuto_status();
-			console.log(gitstatus);
 			console.log("NG");
 		} else {
 			$.getJSON("js/story" + tuto_number + ".json", function (json) {
@@ -277,6 +297,7 @@ function open_tuto() {
 	console.log(pid + "Sts")
 	sessionStorage.removeItem(pid + "Sts");
 	select_tuto();
+	$("#back-btn").prop("disabled", false);
 }
 
 function init_repo() {
@@ -672,7 +693,7 @@ function onHandle(line, report) {
 				}
 
 			} else if (input == 'help') {
-				report([{ msg: "help - 各コマンドのヘルプを表示します\nls - フォルダ内のファイルリストを表示します\ncreate - フォルダに" + fileName + "ファイルを追加します\nedit - " + fileName + "ファイルの内容を変更します\ncat FILENAME - 指定したファイル内のテキストを表示します\nrm FILENAME  - 指定したファイルを削除します\n git help - このターミナル上で使えるgitコマンドのリストを表示します", className: "jquery-console-message-type" }])
+				report([{ msg: "help - 各コマンドのヘルプを表示します\nls - フォルダ内のファイルリストを表示します\ncreate - フォルダに" + fileName + "ファイルを追加します\nedit - " + fileName + "ファイルの内容を変更します\ncat FILENAME - 指定したファイル内のテキストを表示します\nrm FILENAME  - 指定したファイルを削除します\n git help - このターミナル上で使えるgitコマンドのリストを表示します\n git status help - git statusの状態それぞれの意味を表示します, className: jquery-console-message-type" }])
 
 			} else if (input == 'ls') {
 				ls()
@@ -698,6 +719,11 @@ function onHandle(line, report) {
 			} else if (input == 'git help' || input == 'git -h') {
 				report([{
 					msg: "git init - Gitのリポジトリを作成します\n git add FILENAME - 指定したファイルをインデックスに追加します\n git commit -m 'MESSAGE' - 変更した内容をリポジトリに登録します\n git status - 現在のリポジトリの状態を表示します\n git diff - 現在のリポジトリの状態と最後にコミットした状態の差分を表示します\n git rm FILENAME - 指定したファイルをバージョン管理の対象から外して削除します\n",
+					className: "jquery-console-message-type"
+				}])
+			} else if (input == 'git status help' || input == 'git -h') {
+				report([{
+					msg: "Untracked:[FILENAME] - 追加したファイルがインデックスに登録されていません\n new file:[FILENAME] - 追加したファイルがインデックスに登録されています\n Modified:[FILENAME] - 編集したファイルがインデックスに登録されていません\n Changed:[FILENAME] - 編集したファイルがインデックスに登録されています\n deleted:[FILENAME] - 削除したファイルがインデックスに登録されていません\n Removed:[FILENAME] - 削除したファイルがインデックスに登録されています\n",
 					className: "jquery-console-message-type"
 				}])
 
