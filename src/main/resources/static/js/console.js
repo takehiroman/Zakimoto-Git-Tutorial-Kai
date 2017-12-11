@@ -86,6 +86,7 @@ function up_Bar() {
 	if (!tuto_change) {
 		PageNumber++
 		back = PageNumber;
+		$("#tutorial-btn").prop("disabled", false);
 	}
 	$.getJSON("js/story" + tuto_number + ".json", function (json) {
 
@@ -296,7 +297,10 @@ function open_tuto() {
 	sessionStorage.removeItem(pid + "Num");
 	console.log(pid + "Sts")
 	sessionStorage.removeItem(pid + "Sts");
+	$("#tutorial-btn").prop("disabled", true);
+	if(!Dirname){
 	select_tuto();
+	}
 	$("#back-btn").prop("disabled", false);
 }
 
