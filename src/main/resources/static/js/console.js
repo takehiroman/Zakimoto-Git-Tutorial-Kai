@@ -693,7 +693,7 @@ function onHandle(line, report) {
 				}
 
 			} else if (input == 'help') {
-				report([{ msg: "help - 各コマンドのヘルプを表示します\nls - フォルダ内のファイルリストを表示します\ncreate - フォルダに" + fileName + "ファイルを追加します\nedit - " + fileName + "ファイルの内容を変更します\ncat FILENAME - 指定したファイル内のテキストを表示します\nrm FILENAME  - 指定したファイルを削除します\n git help - このターミナル上で使えるgitコマンドのリストを表示します\n git status help - git statusの状態それぞれの意味を表示します, className: jquery-console-message-type" }])
+				report([{ msg: "help - 各コマンドのヘルプを表示します\nls - フォルダ内のファイルリストを表示します\ncreate - フォルダに" + fileName + "ファイルを追加します\nedit - " + fileName + "ファイルの内容を変更します\ncat FILENAME - 指定したファイル内のテキストを表示します\nrm FILENAME  - 指定したファイルを削除します\n git help - このターミナル上で使えるgitコマンドのリストを表示します\n git status help - git statusの状態それぞれの意味を表示します", className: "jquery-console-message-type" }])
 
 			} else if (input == 'ls') {
 				ls()
