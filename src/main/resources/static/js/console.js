@@ -14,7 +14,6 @@ var fileName;
 var gitstatus = [];
 var test = [];
 var file_img = false
-var test_clear = false
 var test_click = true;
 var tuto_number;
 var pid;
@@ -26,6 +25,7 @@ var StrNum;
 var Strjson;
 var back;
 var tuto_change = false;
+var up_tuto = false;
 var back_number = false;
 
 function get_ip() {
@@ -34,40 +34,44 @@ function get_ip() {
 		ip = data.query;
 	})
 }
-function delete_folder() {
-	$(".header").hide();
-	$(".directory").hide();
-	$(".progress-bar").hide();
-	$(".progress").hide();
-}
-delete_folder();
 
 function input_name() {
 	var input_number = prompt("あなたの\t学生証番号\tを入力して下さい");
-	if(input_number === null || input_number === ""){
+	if (input_number === null || input_number === "") {
 		window.alert('番号が入力されていません');
 		input_name()
-	}else{
-		localStorage.setItem("student_number",input_number);
-		console.log(input_number)  
-		setTimeout(function () { open_stdnumber() },500);
+	} else {
+		localStorage.setItem("student_number", input_number);
+		console.log(input_number)
+		setTimeout(function () { open_stdnumber() }, 500);
 	}
 
 }
-if(localStorage.getItem("student_number") === null){
-input_name();
-}
 
-function delete_number(){
-	localStorage.removeItem("student_number");
+if (localStorage.getItem("student_number") === null) {
 	input_name();
 }
 
-function open_stdnumber(){
+function delete_number() {
+	var input_number = prompt("あなたの\t学生証番号\tを入力して下さい");
+	if (input_number === "") {
+		window.alert('番号が入力されていません');
+		delete_number()
+	} else if (input_number === null) {
+		console.log(input_number)
+	} else {
+		localStorage.removeItem("student_number");
+		localStorage.setItem("student_number", input_number);
+		console.log(input_number)
+		setTimeout(function () { open_stdnumber() }, 500);
+	}
+}
+
+function open_stdnumber() {
 	var number = document.getElementById("numbers");
 	var num = localStorage.getItem("student_number")
 	console.log(localStorage.getItem("student_number"))
-	number.innerHTML = "<p>"+ num +"</p>";
+	number.innerHTML = "<p>" + num + "</p>";
 }
 
 function tuto_status() {
@@ -82,6 +86,7 @@ function tuto_status() {
 		}
 	})
 }
+
 function up_Bar() {
 	if (!tuto_change) {
 		PageNumber++
@@ -99,7 +104,7 @@ function up_Bar() {
 		var $pb1 = $('.progress-bar');
 		bargage1 = PageNumber / json.story.length
 		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / (json.story.length - 1) * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / (json.story.length - 1) * 100) + "% ");
-		if(PageNumber == json.story.length-1){
+		if (PageNumber == json.story.length - 1) {
 			$("#1").prop("disabled", false);
 			$("#2").prop("disabled", false);
 			Dirname = sessionStorage.removeItem(pid + "Dir")
@@ -110,8 +115,33 @@ function up_Bar() {
 			Strjson = sessionStorage.removeItem(pid + "Sts");
 		}
 	});
-	if(PageNumber > 0){
-	$("#back-btn").prop("disabled", false);
+	console.log(PageNumber)
+	if (PageNumber > 0) {
+		$("#top-btn").prop("disabled", false);
+		$("#back-btn").prop("disabled", false);
+		$("#new-btn").prop("disabled", true);
+		$("#front-btn").prop("disabled", true);
+	}
+}
+
+function top_tuto() {
+	if (PageNumber > 0) {
+		back_number = true;
+		$.getJSON("js/story" + tuto_number + ".json", function (json) {
+
+			var message = document.getElementById("message");
+			message.innerHTML = "<p>" + json.story[0].comment + "</p>";
+			back = 0;
+			for (let i in json.link) {
+				message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
+			}
+		});
+		if (back <= 0) {
+			$("#top-btn").prop("disabled", true);
+			$("#back-btn").prop("disabled", true);
+			$("#new-btn").prop("disabled", false);
+			$("#front-btn").prop("disabled", false);
+		}
 	}
 }
 
@@ -122,12 +152,15 @@ function back_tuto() {
 
 			var message = document.getElementById("message");
 			message.innerHTML = "<p>" + json.story[back - 1].comment + "</p>";
-			back = back -1;
+			back = back - 1;
 			for (let i in json.link) {
 				message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
 			}
 		});
-		if(back <= 0){
+		$("#new-btn").prop("disabled", false);
+		$("#front-btn").prop("disabled", false);
+		if (back <= 0) {
+			$("#top-btn").prop("disabled", true);
 			$("#back-btn").prop("disabled", true);
 		}
 	}
@@ -145,17 +178,33 @@ function front_tuto() {
 				message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
 			}
 		});
-		if(back > 0){
-			$("#back-btn").prop("disabled", false);
+		$("#top-btn").prop("disabled", false);
+		$("#back-btn").prop("disabled", false);
+		if (back >= PageNumber) {
+			$("#new-btn").prop("disabled", true);
+			$("#front-btn").prop("disabled", true);
 		}
 	}
-	/*
-	if(PageNumber === back){
-	var front = document.getElementById("front-btn");
-	front.innerHTML = "<p>" + json.story[back - 1].comment + "</p>";
-	}
-	*/
 	back_number = false;
+}
+
+function new_tuto() {
+	//back = PageNumber;
+	$.getJSON("js/story" + tuto_number + ".json", function (json) {
+
+		var message = document.getElementById("message");
+		message.innerHTML = "<p>" + json.story[PageNumber].comment + "</p>";
+		back = PageNumber;
+		for (let i in json.link) {
+			message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
+		}
+	});
+	if (back <= PageNumber) {
+		$("#top-btn").prop("disabled", false);
+		$("#back-btn").prop("disabled", false);
+		$("#new-btn").prop("disabled", true);
+		$("#front-btn").prop("disabled", true);
+	}
 }
 
 function save_tuto() {
@@ -186,12 +235,17 @@ $(function () {
 	$("#1").click(function () {
 		pid = $(this).attr("id");
 		console.log(pid)
+		$("#1").prop("disabled", true);
+		$("#2").prop("disabled", false);
 	})
 });
+
 $(function () {
 	$("#2").click(function () {
 		pid = $(this).attr("id");
 		console.log(pid)
+		$("#2").prop("disabled", true);
+		$("#1").prop("disabled", false);
 	})
 });
 
@@ -212,12 +266,18 @@ function select_tuto() {
 			gitstatus = [];
 			tuto_status();
 			console.log("NG");
+			$("#top-btn").prop("disabled", true);
+			$("#back-btn").prop("disabled", true);
+			$("#new-btn").prop("disabled", true);
+			$("#front-btn").prop("disabled", true);
 		} else {
 			$.getJSON("js/story" + tuto_number + ".json", function (json) {
-			fileName = json.file
+				fileName = json.file
 			})
 			load_tuto();
 			tuto_change = true;
+			$("#new-btn").prop("disabled", true);
+			$("#front-btn").prop("disabled", true);
 			console.log("OK")
 		}
 		setTimeout(function () {
@@ -298,10 +358,9 @@ function open_tuto() {
 	console.log(pid + "Sts")
 	sessionStorage.removeItem(pid + "Sts");
 	$("#tutorial-btn").prop("disabled", true);
-	if(!Dirname){
-	select_tuto();
+	if (!Dirname) {
+		select_tuto();
 	}
-	$("#back-btn").prop("disabled", false);
 }
 
 function init_repo() {
@@ -551,75 +610,11 @@ function make() {
 	})
 }
 
-
-function Type_create() {
-	Dirname = testrepo;
-	if (test_clear) {
-		make();
-		test_clear = false
-	}
-}
-
-function Type_edit() {
-	Dirname = testrepo;
-	if (test_clear) {
-		edit()
-		test_clear = false
-	}
-}
-
-function Type_delete() {
-	Dirname = testrepo;
-	if (test_clear) {
-		deleted()
-		test_clear = false
-	}
-}
-
 //ボタン押した時
 function clear_test() {
 	test_json();
 }
-//成功した時
-function click_Test() {
-	if (testNumber === 0) {
-		getIp();
-		testrepo = Dirname;
-		testNumber++
-		test_clear = true
-	}
-	if (test_click) {
-		var size = $('div.jquery-console-prompt-box').length;
-		$('.jquery-console-prompt-box').eq(size - 1).before('<div class="jquery-console-message jquery-console-message-type" style="">確認テストのリポジトリに切り替わりました</div>');
-		test_click = false
-	}
-	PageNumber = 1;
-	gitstatus = []
-	test_status();
-	test_json();
-}
-//json読み込み
-function test_json() {
-	$.getJSON("js/test.json", function (json) {
-		message = document.getElementById("message");
-		fileName = json.file
-		message.textContent = json.test[testNumber - 1].comment;
-		TestPage = json.test[testNumber - 1].number;
-		TestStatus = json.test[testNumber - 1].status;
-		TestType = json.test[testNumber - 1].type;
-		setTimeout(function () {
-			if (TestType === "create") {
-				Type_create()
-			} else if (TestType === "edit") {
-				Type_edit()
-			} else if (TestType === "delete") {
-				Type_delete()
-			} else {
-				Dirname = testrepo;
-			}
-		}, 500);
-	});
-}
+
 
 //チュートリアルメッセージを置換する
 function nextMessage() {
@@ -650,10 +645,20 @@ function onHandle(line, report) {
 	var newfile = new RegExp(/new file:/)
 	var change = new RegExp(/Changed:/)
 	var removed = new RegExp(/Removed:/)
+	input = input.replace(/\n/g, " ");
+	var commands = input.split(" ");
 	var ss = line.split(" ");
 	ss.splice(0, 2);
 	if (ss.indexOf(fileName) >= 0) {
 		addfile = fileName
+	}
+	console.log(commands);
+	console.log(commands[0])
+	console.log(commands.length)
+	if(commands[0] === "git" && commands.length > 4){
+		input = commands.slice(0,2);
+		input = input.join(" ");
+		console.log(input);
 	}
 
 	var file = ss.indexOf(fileName)
@@ -685,18 +690,7 @@ function onHandle(line, report) {
 		} else {
 
 
-			if (input == 'git init') {
-
-				if (PageNumber === 0) {
-					getIp();
-					up_Bar();
-					add_filelist();
-					report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-				} else {
-					report([{ msg: "Reinitialized existing Git repository in .git", className: "jquery-console-message-type" }]);
-				}
-
-			} else if (input == 'help') {
+			if (input == 'help') {
 				report([{ msg: "help - 各コマンドのヘルプを表示します\nls - フォルダ内のファイルリストを表示します\ncreate - フォルダに" + fileName + "ファイルを追加します\nedit - " + fileName + "ファイルの内容を変更します\ncat FILENAME - 指定したファイル内のテキストを表示します\nrm FILENAME  - 指定したファイルを削除します\n git help - このターミナル上で使えるgitコマンドのリストを表示します\n git status help - git statusの状態それぞれの意味を表示します", className: "jquery-console-message-type" }])
 
 			} else if (input == 'ls') {
@@ -732,8 +726,20 @@ function onHandle(line, report) {
 				}])
 
 			} else if (input.match(/^git /)) {
+				if (input == 'git init') {
 
-				if (input == 'git diff') {
+					if (PageNumber === 0) {
+						getIp();
+						up_Bar();
+						add_filelist();
+						report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+					} else {
+						report([{ msg: "Reinitialized existing Git repository in .git", className: "jquery-console-message-type" }]);
+					}
+
+				}
+
+				else if (input == 'git diff') {
 					diff_repo();
 					if (!Dirname) {
 						report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
@@ -771,25 +777,33 @@ function onHandle(line, report) {
 						else if (fileName == addfile || input.match(/[\.\*]$/)) {
 							add_repo();
 							ls();
+							console.log("1")
 							if ("Modified:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(/^Modified:/)) {
 								up_Bar()
 								report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+								console.log("2")
 							} else if ("\n" === gitstatus[PageNumber] && "Removed:[" + fileName + "]\n" === gitstatus[PageNumber + 1]) {
 								if (status.match(/^deleted:/)) {
 									up_Bar();
 									remove();
 									report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+									console.log("3")
+								} else {
+									report();
 								}
 							} else if (statusMessage.match(/deleted:/)) {
 								remove();
 								report();
+								console.log("5")
 							} else if ("Untracked:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(/^Untracked:/)) {
 								up_Bar();
 								report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
+								console.log("6")
 							} else if (lsMessage == "" && statusMessage === "") {
 								report([{ msg: fileName + ":did not match any files", className: "jquery-console-message-error" }])
 							} else {
 								report();
+								console.log("7")
 							}
 						} else {
 							report([{ msg: "did not match any files", className: "jquery-console-message-error" }])
@@ -858,7 +872,7 @@ function onHandle(line, report) {
 				} else if (input.match(/^git commit$/)) {
 					report([{ msg: "Command cannot use at this terminal. See 'git help'", className: "jquery-console-message-type" }]);
 				} else {
-					report([{ msg: "git: " + line + " is not a git command. See 'git help'", className: "jquery-console-message-error" }]);
+					report([{ msg: "git: " + input + " is not a git command. See 'git help'", className: "jquery-console-message-error" }]);
 				}
 
 
@@ -955,14 +969,6 @@ $(document).ready(function () {
 	var comment1 = $('<div id="message">');
 	$('.comment').append(comment1);
 	var message = document.getElementById("message");
-	//message.innerHTML = "右上のチュートリアルボタンからチュートリアルを選択してください<br /><br />チュートリアル1:毎回次に入力するコマンドを確認しながらチュートリアルを進めていきます<br />チュートリアル2:途中からこちらの指定した状態になったコミットになるまで，自分で入力してもらいます。<br /><br />どちらも覚えるコマンドのフローは同じです";
-	/*$.getJSON("js/story1.json", function (json) {
-		for (let i in json.link) {
-
-			message.innerHTML = "<p>"+json.story[PageNumber].comment+"<p>";
-			message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
-		}
-	});*/
 	pid = 1;
 	select_tuto();
 	var controller1 = console1.console({
