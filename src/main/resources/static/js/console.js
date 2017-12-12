@@ -5,7 +5,6 @@ var TestStatus = 0;
 var addfile;
 var ip;
 var Dirname
-var testrepo;
 var diffMessage;
 var statusMessage;
 var lsMessage;
@@ -14,7 +13,7 @@ var fileName;
 var gitstatus = [];
 var test = [];
 var file_img = false
-var test_click = true;
+var first_clear = false;
 var tuto_number;
 var pid;
 var save_id;
@@ -24,6 +23,7 @@ var save_sts;
 var StrNum;
 var Strjson;
 var back;
+var clicknum;
 var tuto_change = false;
 var up_tuto = false;
 var back_number = false;
@@ -39,6 +39,9 @@ function input_name() {
 	var input_number = prompt("あなたの\t学生証番号\tを入力して下さい");
 	if (input_number === null || input_number === "") {
 		window.alert('番号が入力されていません');
+		input_name()
+	} else if (!input_number.match(/^[0-9]+$/)) {
+		window.alert('数字以外が含まれています');
 		input_name()
 	} else {
 		localStorage.setItem("student_number", input_number);
@@ -56,6 +59,9 @@ function delete_number() {
 	var input_number = prompt("あなたの\t学生証番号\tを入力して下さい");
 	if (input_number === "") {
 		window.alert('番号が入力されていません');
+		delete_number()
+	} else if (!input_number.match(/^[0-9]+$/)) {
+		window.alert('数字以外が含まれています');
 		delete_number()
 	} else if (input_number === null) {
 		console.log(input_number)
@@ -105,6 +111,7 @@ function up_Bar() {
 		bargage1 = PageNumber / json.story.length
 		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / (json.story.length - 1) * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / (json.story.length - 1) * 100) + "% ");
 		if (PageNumber == json.story.length - 1) {
+			first_clear = true;
 			$("#1").prop("disabled", false);
 			$("#2").prop("disabled", false);
 			Dirname = sessionStorage.removeItem(pid + "Dir")
@@ -234,37 +241,37 @@ function load_tuto() {
 $(function () {
 	$("#1").click(function () {
 		pid = $(this).attr("id");
-		console.log(pid)
-		$("#1").prop("disabled", true);
-		$("#2").prop("disabled", false);
 	})
 });
 
 $(function () {
 	$("#2").click(function () {
 		pid = $(this).attr("id");
-		console.log(pid)
-		$("#2").prop("disabled", true);
-		$("#1").prop("disabled", false);
 	})
 });
 
 function select_tuto() {
+	$("#1").prop("disabled", true);
+	$("#2").prop("disabled", true);
 	if (Dirname) {
 		save_tuto();
 	}
+
 	setTimeout(function () {
 		tuto_number = pid
 		back_number = false;
+
 		var size = $('div.jquery-console-prompt-box').length;
 		$('.jquery-console-prompt-box').eq(size - 1).before('<div class="jquery-console-message jquery-console-message-type" style="">チュートリアル' + tuto_number + '</div>');
+
 		var pages = sessionStorage.getItem(pid + "Num");
+
 		open_stdnumber();
 		if (pages == null) {
 			PageNumber = -1;
 			Dirname = undefined;
 			gitstatus = [];
-			tuto_status();
+			tuto_status()
 			console.log("NG");
 			$("#top-btn").prop("disabled", true);
 			$("#back-btn").prop("disabled", true);
@@ -274,18 +281,54 @@ function select_tuto() {
 			$.getJSON("js/story" + tuto_number + ".json", function (json) {
 				fileName = json.file
 			})
-			load_tuto();
+			load_tuto()
 			tuto_change = true;
 			$("#new-btn").prop("disabled", true);
 			$("#front-btn").prop("disabled", true);
 			console.log("OK")
 		}
-		setTimeout(function () {
-			up_Bar()
-			tuto_change = false;
-		}, 700);
-
+		if (first_clear) {
+			if (pid == 1) {
+				$("#2").prop("disabled", false);
+			} else if (pid == 2) {
+				$("#1").prop("disabled", false);
+			}
+		}
+		up_Bar();
+		tuto_change = false;
 	}, 500);
+
+}
+/*
+setTimeout(function () {
+	up_Bar()
+	tuto_change = false;
+}, 700);
+*/
+function first_page() {
+	$("#tutorial-btn").prop("disabled", false);
+	$.getJSON("js/story" + tuto_number + ".json", function (json) {
+
+		var message = document.getElementById("message");
+
+		message.innerHTML = "<p>" + json.story[PageNumber].comment + "</p>";
+		for (let i in json.link) {
+			message.innerHTML = message.innerHTML.replace(json.link[i].name, json.link[i].url)
+		}
+		var $pb1 = $('.progress-bar');
+		bargage1 = PageNumber / json.story.length
+		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / (json.story.length - 1) * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / (json.story.length - 1) * 100) + "% ");
+		if (PageNumber == json.story.length - 1) {
+			$("#1").prop("disabled", false);
+			$("#2").prop("disabled", false);
+			Dirname = sessionStorage.removeItem(pid + "Dir")
+			console.log(Dirname);
+			StrNum = sessionStorage.removeItem(pid + "Num")
+			console.log(StrNum);
+			PageNumber = parseInt(StrNum);
+			Strjson = sessionStorage.removeItem(pid + "Sts");
+		}
+	});
 }
 
 function Button_Click() {
@@ -655,8 +698,8 @@ function onHandle(line, report) {
 	console.log(commands);
 	console.log(commands[0])
 	console.log(commands.length)
-	if(commands[0] === "git" && commands.length > 4){
-		input = commands.slice(0,2);
+	if (commands[0] === "git" && commands.length > 4) {
+		input = commands.slice(0, 2);
 		input = input.join(" ");
 		console.log(input);
 	}
