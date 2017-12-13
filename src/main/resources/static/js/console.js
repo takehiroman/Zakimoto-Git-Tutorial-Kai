@@ -122,6 +122,7 @@ function up_Bar() {
 			Strjson = sessionStorage.removeItem(pid + "Sts");
 		}
 	});
+	
 	console.log(PageNumber)
 	if (PageNumber > 0) {
 		$("#top-btn").prop("disabled", false);
@@ -334,6 +335,8 @@ function first_page() {
 function Button_Click() {
 	window.location.reload();
 }
+
+sessionStorage.clear();
 
 
 //ログを保存する
@@ -657,6 +660,12 @@ function make() {
 function clear_test() {
 	test_json();
 }
+
+function reloaded () {
+    return window.name == window.location.href ? true : false;
+}
+
+
 
 
 //チュートリアルメッセージを置換する
