@@ -4,7 +4,7 @@ var testNumberLimit;
 var TestStatus = 0;
 var addfile;
 var ip;
-var Dirname
+var Dirname;
 var diffMessage;
 var statusMessage;
 var lsMessage;
@@ -76,7 +76,6 @@ function delete_number() {
 function open_stdnumber() {
 	var number = document.getElementById("numbers");
 	var num = localStorage.getItem("student_number")
-	console.log(localStorage.getItem("student_number"))
 	number.innerHTML = "<p>" + num + "</p>";
 }
 
@@ -115,15 +114,12 @@ function up_Bar() {
 			$("#1").prop("disabled", false);
 			$("#2").prop("disabled", false);
 			Dirname = sessionStorage.removeItem(pid + "Dir")
-			console.log(Dirname);
 			StrNum = sessionStorage.removeItem(pid + "Num")
-			console.log(StrNum);
 			PageNumber = parseInt(StrNum);
 			Strjson = sessionStorage.removeItem(pid + "Sts");
 		}
 	});
 	
-	console.log(PageNumber)
 	if (PageNumber > 0) {
 		$("#top-btn").prop("disabled", false);
 		$("#back-btn").prop("disabled", false);
@@ -273,7 +269,6 @@ function select_tuto() {
 			Dirname = undefined;
 			gitstatus = [];
 			tuto_status()
-			console.log("NG");
 			$("#top-btn").prop("disabled", true);
 			$("#back-btn").prop("disabled", true);
 			$("#new-btn").prop("disabled", true);
@@ -286,7 +281,6 @@ function select_tuto() {
 			tuto_change = true;
 			$("#new-btn").prop("disabled", true);
 			$("#front-btn").prop("disabled", true);
-			console.log("OK")
 		}
 		if (first_clear) {
 			if (pid == 1) {
@@ -330,10 +324,6 @@ function first_page() {
 			Strjson = sessionStorage.removeItem(pid + "Sts");
 		}
 	});
-}
-
-function Button_Click() {
-	window.location.reload();
 }
 
 sessionStorage.clear();
@@ -634,6 +624,7 @@ function remove() {
 }
 
 function make() {
+	//Dirname = $.now();
 	var hostUrl = '/make'
 	var article11 = new Object();
 	article11.repositoryId = ip;
@@ -660,12 +651,6 @@ function make() {
 function clear_test() {
 	test_json();
 }
-
-function reloaded () {
-    return window.name == window.location.href ? true : false;
-}
-
-
 
 
 //チュートリアルメッセージを置換する
@@ -704,9 +689,7 @@ function onHandle(line, report) {
 	if (ss.indexOf(fileName) >= 0) {
 		addfile = fileName
 	}
-	console.log(commands);
-	console.log(commands[0])
-	console.log(commands.length)
+
 	if (commands[0] === "git" && commands.length > 4) {
 		input = commands.slice(0, 2);
 		input = input.join(" ");
@@ -829,33 +812,27 @@ function onHandle(line, report) {
 						else if (fileName == addfile || input.match(/[\.\*]$/)) {
 							add_repo();
 							ls();
-							console.log("1")
 							if ("Modified:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(/^Modified:/)) {
 								up_Bar()
 								report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-								console.log("2")
 							} else if ("\n" === gitstatus[PageNumber] && "Removed:[" + fileName + "]\n" === gitstatus[PageNumber + 1]) {
 								if (status.match(/^deleted:/)) {
 									up_Bar();
 									remove();
 									report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-									console.log("3")
 								} else {
 									report();
 								}
 							} else if (statusMessage.match(/deleted:/)) {
 								remove();
 								report();
-								console.log("5")
 							} else if ("Untracked:[" + fileName + "]\n" === gitstatus[PageNumber] && status.match(/^Untracked:/)) {
 								up_Bar();
 								report([{ msg: "=> Success", className: "jquery-console-message-value" }]);
-								console.log("6")
 							} else if (lsMessage == "" && statusMessage === "") {
 								report([{ msg: fileName + ":did not match any files", className: "jquery-console-message-error" }])
 							} else {
 								report();
-								console.log("7")
 							}
 						} else {
 							report([{ msg: "did not match any files", className: "jquery-console-message-error" }])
@@ -924,7 +901,7 @@ function onHandle(line, report) {
 				} else if (input.match(/^git commit$/)) {
 					report([{ msg: "Command cannot use at this terminal. See 'git help'", className: "jquery-console-message-type" }]);
 				} else {
-					report([{ msg: "git: " + input + " is not a git command. See 'git help'", className: "jquery-console-message-error" }]);
+					report([{ msg: "git: " + input + " is can not be used. See 'git help'", className: "jquery-console-message-error" }]);
 				}
 
 
