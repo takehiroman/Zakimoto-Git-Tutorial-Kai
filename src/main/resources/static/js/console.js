@@ -843,8 +843,6 @@ function onHandle(line, report) {
 					report([{ msg: "usage: git rm FILENAME", className: "jquery-console-message-type" }])
 
 				} else if (input.match(/^git rm /)) {
-					console.log(gitstatus[PageNumber])
-					console.log(gitstatus[PageNumber + 1])
 					if (!Dirname) {
 						report([{ msg: "Not a git repository", className: "jquery-console-message-error" }])
 					} else {
@@ -863,8 +861,6 @@ function onHandle(line, report) {
 							} else if (lsMessage == "" && statusMessage === "") {
 								report([{ msg: fileName + ":did not match any files", className: "jquery-console-message-error" }])
 							} else {
-								console.log(gitstatus[PageNumber])
-								console.log(gitstatus[PageNumber + 1])
 								report();
 							}
 						} else {
@@ -925,7 +921,6 @@ function onHandle(line, report) {
 				report([{ msg: "usage:create", className: "jquery-console-message-type" }]);
 				//rm				   
 			} else if (input.match(rm)) {
-				console.log(gitstatus[PageNumber])
 				ls()
 				if (!Dirname) {
 					report([{ msg: "No such file or directory", className: "jquery-console-message-error" }]);
