@@ -43,12 +43,14 @@ function input_name() {
 	} else if (!input_number.match(/^[0-9]+$/)) {
 		window.alert('数字以外が含まれています');
 		input_name()
+	} else if (input_number.length > 6) {
+		window.alert('学生証番号が6桁以上です');
+		input_name()
 	} else {
 		localStorage.setItem("student_number", input_number);
 		console.log(input_number)
 		setTimeout(function () { open_stdnumber() }, 500);
 	}
-
 }
 
 if (localStorage.getItem("student_number") === null) {
@@ -62,6 +64,9 @@ function delete_number() {
 		delete_number()
 	} else if (!input_number.match(/^[0-9]+$/)) {
 		window.alert('数字以外が含まれています');
+		delete_number()
+	} else if (input_number.length > 6) {
+		window.alert('学生証番号が6桁以上です');
 		delete_number()
 	} else if (input_number === null) {
 		console.log(input_number)
@@ -119,7 +124,7 @@ function up_Bar() {
 			Strjson = sessionStorage.removeItem(pid + "Sts");
 		}
 	});
-	
+
 	if (PageNumber > 0) {
 		$("#top-btn").prop("disabled", false);
 		$("#back-btn").prop("disabled", false);
@@ -724,7 +729,6 @@ function onHandle(line, report) {
 			}]);
 		} else {
 
-
 			if (input == 'help') {
 				report([{ msg: "help - 各コマンドのヘルプを表示します\nls - フォルダ内のファイルリストを表示します\ncreate - フォルダに" + fileName + "ファイルを追加します\nedit - " + fileName + "ファイルの内容を変更します\ncat FILENAME - 指定したファイル内のテキストを表示します\nrm FILENAME  - 指定したファイルを削除します\n git help - このターミナル上で使えるgitコマンドのリストを表示します\n git status help - git statusの状態それぞれの意味を表示します", className: "jquery-console-message-type" }])
 
@@ -970,15 +974,11 @@ function onHandle(line, report) {
 				}]);
 				console3CancelFlag = false;
 			}
+			/*
 			if (Dirname) {
 				ls()
 			}
-			if (lsMessage === fileName) {
-				add_file();
-				file_add();
-			} else {
-				file_delete()
-			}
+			*/
 		}
 	}, 700);
 	ip = undefined;
