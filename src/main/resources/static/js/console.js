@@ -43,8 +43,8 @@ function input_name() {
 	} else if (!input_number.match(/^[0-9]+$/)) {
 		window.alert('数字以外が含まれています');
 		input_name()
-	} else if (input_number.length > 6) {
-		window.alert('学生証番号が6桁以上です');
+	} else if (input_number.length !== 6) {
+		window.alert('学生証番号が6桁ではありません');
 		input_name()
 	} else {
 		localStorage.setItem("student_number", input_number);
@@ -65,8 +65,8 @@ function delete_number() {
 	} else if (!input_number.match(/^[0-9]+$/)) {
 		window.alert('数字以外が含まれています');
 		delete_number()
-	} else if (input_number.length > 6) {
-		window.alert('学生証番号が6桁以上です');
+	} else if (input_number.length !== 6) {
+		window.alert('学生証番号が6桁ではありません');
 		delete_number()
 	} else if (input_number === null) {
 		console.log(input_number)
