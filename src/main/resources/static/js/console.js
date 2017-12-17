@@ -116,12 +116,11 @@ function up_Bar() {
 		$pb1.attr({ 'style': 'width:' + Math.round(PageNumber / (json.story.length - 1) * 100) + '%;', 'class': 'progress-bar' }).html(" " + Math.round(PageNumber / (json.story.length - 1) * 100) + "% ");
 		if (PageNumber == json.story.length - 1) {
 			first_clear = true;
-			$("#1").prop("disabled", false);
 			$("#2").prop("disabled", false);
-			Dirname = sessionStorage.removeItem(pid + "Dir")
-			StrNum = sessionStorage.removeItem(pid + "Num")
-			PageNumber = parseInt(StrNum);
-			Strjson = sessionStorage.removeItem(pid + "Sts");
+			//Dirname = sessionStorage.removeItem(pid + "Dir")
+			//StrNum = sessionStorage.removeItem(pid + "Num")
+			//PageNumber = parseInt(StrNum);
+			//Strjson = sessionStorage.removeItem(pid + "Sts");
 		}
 	});
 
@@ -270,6 +269,7 @@ function select_tuto() {
 
 		open_stdnumber();
 		if (pages == null) {
+			console.log("NG")
 			PageNumber = -1;
 			Dirname = undefined;
 			gitstatus = [];
@@ -279,6 +279,7 @@ function select_tuto() {
 			$("#new-btn").prop("disabled", true);
 			$("#front-btn").prop("disabled", true);
 		} else {
+			console.log("OK")
 			$.getJSON("js/story" + tuto_number + ".json", function (json) {
 				fileName = json.file
 			})
