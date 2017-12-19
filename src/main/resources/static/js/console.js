@@ -27,6 +27,7 @@ var clicknum;
 var tuto_change = false;
 var up_tuto = false;
 var back_number = false;
+var comp_tuto;
 
 function get_ip() {
 
@@ -117,6 +118,10 @@ function up_Bar() {
 		if (PageNumber == json.story.length - 1) {
 			first_clear = true;
 			$("#2").prop("disabled", false);
+			comp_tuto = localStorage.setItem("clear","complete")
+			if (pid == 2) {
+				$("#2").prop("disabled", true);
+			}
 			//Dirname = sessionStorage.removeItem(pid + "Dir")
 			//StrNum = sessionStorage.removeItem(pid + "Num")
 			//PageNumber = parseInt(StrNum);
@@ -131,6 +136,7 @@ function up_Bar() {
 		$("#front-btn").prop("disabled", true);
 	}
 }
+
 
 function top_tuto() {
 	if (PageNumber > 0) {
@@ -269,7 +275,6 @@ function select_tuto() {
 
 		open_stdnumber();
 		if (pages == null) {
-			console.log("NG")
 			PageNumber = -1;
 			Dirname = undefined;
 			gitstatus = [];
@@ -279,7 +284,6 @@ function select_tuto() {
 			$("#new-btn").prop("disabled", true);
 			$("#front-btn").prop("disabled", true);
 		} else {
-			console.log("OK")
 			$.getJSON("js/story" + tuto_number + ".json", function (json) {
 				fileName = json.file
 			})
@@ -343,7 +347,7 @@ function data_input(line, report) {
 
 	article.number = stname;
 	article.tutoNumber = PageNumber
-	article.testNumber = testNumber
+	article.testNumber = pid
 	article.command = $.trim(line);
 	article.address = ip
 
@@ -720,7 +724,7 @@ function onHandle(line, report) {
 	var status = statusMessage;
 	input = input.replace(/ +/g, " ");
 	input = input.replace(/\'/g, "\"");
-	//data_input(line, report);
+	data_input(line, report);
 	get_ip();
 	setTimeout(function () {
 		if (!ip) {
@@ -975,11 +979,6 @@ function onHandle(line, report) {
 				}]);
 				console3CancelFlag = false;
 			}
-			/*
-			if (Dirname) {
-				ls()
-			}
-			*/
 		}
 	}, 700);
 	ip = undefined;
