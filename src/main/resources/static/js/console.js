@@ -700,11 +700,6 @@ function onHandle(line, report) {
 		addfile = fileName
 	}
 
-	if (commands[0] === "git" && commands.length > 4) {
-		input = commands.slice(0, 2);
-		input = input.join(" ");
-		console.log(input);
-	}
 
 	var file = ss.indexOf(fileName)
 	if (file >= 0) {
